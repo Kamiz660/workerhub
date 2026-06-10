@@ -6,8 +6,8 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-3">
+          <div className="sm:col-span-2 lg:col-span-1 text-center sm:text-left flex flex-col items-center sm:items-start">
+            <Link href="/" className="flex items-center gap-2 mb-3 justify-center sm:justify-start">
               <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center">
                 <span className="text-white font-bold text-xs">W</span>
               </div>
@@ -22,7 +22,7 @@ export function Footer() {
           </div>
 
           {/* Services */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">
               Services
             </h3>
@@ -47,7 +47,7 @@ export function Footer() {
           </div>
 
           {/* Company */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">
               Company
             </h3>
@@ -65,7 +65,7 @@ export function Footer() {
           </div>
 
           {/* Locations */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">
               Locations
             </h3>

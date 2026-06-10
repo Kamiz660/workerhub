@@ -22,7 +22,10 @@ import {
   Wrench,
   Sparkles,
   Landmark,
-  LayoutGrid
+  LayoutGrid,
+  UserSearch,
+  ScanSearch,
+  Plus
 } from "lucide-react";
 import { WorkerCard } from "@/components/workers/worker-card";
 import { workers } from "@/data/mock-workers";
@@ -50,11 +53,11 @@ const categoryButtons = [
 ];
 
 const popularTowns = [
-  "Koothattukulam", "Piravom", "Muvattupuzha", "Thodupuzha", "Perumbavoor", "Kolenchery", "Ernakulam"
+  "Koothattukulam", "Muvattupuzha", "Piravom", "Thodupuzha", "Perumbavoor", "Kolenchery"
 ];
 
 export default function HomePage() {
-  const [locationQuery, setLocationQuery] = useState("Koothattukulam");
+  const [locationQuery, setLocationQuery] = useState("");
   const [jobQuery, setJobQuery] = useState("");
   
   const [showJobDropdown, setShowJobDropdown] = useState(false);
@@ -116,7 +119,7 @@ export default function HomePage() {
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>
             </h1>
-            <p className="mt-2 text-sm sm:text-lg text-gray-600 max-w-xl">
+            <p className="mt-2 text-sm sm:text-lg font-light text-gray-500 max-w-xl text-left">
               Select your town, choose the work you need, and call them directly. Simple, fast & free.
             </p>
 
@@ -125,7 +128,7 @@ export default function HomePage() {
               
               {/* Field 1: Location with working dropdown */}
               <div className="flex-1 flex flex-col items-start gap-1 relative z-20" ref={locationDropdownRef}>
-                <label htmlFor="location-input" className="text-sm font-semibold text-gray-600 ml-1">
+                <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1">
                   Location
                 </label>
                 <div className="relative w-full">
@@ -140,10 +143,21 @@ export default function HomePage() {
                     }}
                     onFocus={() => setShowLocationDropdown(true)}
                     placeholder="e.g. Koothattukulam"
-                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-10 py-3 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm cursor-pointer"
+                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-10 py-3 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md cursor-pointer"
                     autoComplete="off"
                   />
-                  <ChevronDown className={`absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none transition-transform ${showLocationDropdown ? 'rotate-180' : ''}`} />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowLocationDropdown(!showLocationDropdown);
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-600 transition-all cursor-pointer z-30"
+                    aria-label="Toggle location dropdown"
+                  >
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showLocationDropdown ? 'rotate-180' : ''}`} />
+                  </button>
                 </div>
                 
                 {/* Location Dropdown */}
@@ -169,7 +183,7 @@ export default function HomePage() {
 
               {/* Field 2: Job/Profession with working dropdown */}
               <div className="flex-1 flex flex-col items-start gap-1 relative z-10" ref={jobDropdownRef}>
-                <label htmlFor="job-input" className="text-sm font-semibold text-gray-600 ml-1">
+                <label htmlFor="job-input" className="text-sm font-semibold text-gray-700 ml-1">
                   What do you need?
                 </label>
                 <div className="relative w-full">
@@ -184,10 +198,21 @@ export default function HomePage() {
                     }}
                     onFocus={() => setShowJobDropdown(true)}
                     placeholder="e.g. Electrician, Plumber"
-                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-10 py-3 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm cursor-pointer"
+                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-10 py-3 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md cursor-pointer"
                     autoComplete="off"
                   />
-                  <ChevronDown className={`absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none transition-transform ${showJobDropdown ? 'rotate-180' : ''}`} />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowJobDropdown(!showJobDropdown);
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-600 transition-all cursor-pointer z-30"
+                    aria-label="Toggle job dropdown"
+                  >
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showJobDropdown ? 'rotate-180' : ''}`} />
+                  </button>
                 </div>
 
                 {/* Job Dropdown */}
@@ -216,19 +241,20 @@ export default function HomePage() {
               {/* Action Button */}
               <button
                 onClick={scrollToResults}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-blue-600/10 flex items-center justify-center gap-2 cursor-pointer h-[46px]"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-750 text-white font-extrabold px-6 py-3 rounded-xl text-sm transition-all shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 active:scale-98 flex items-center justify-center gap-2 cursor-pointer h-[48px] border-0 mt-2 sm:mt-0"
               >
-                <Search className="h-4 w-4" />
+                <UserSearch className="h-5 w-5" />
                 Search Workers
               </button>
             </div>
 
-            {/* Inline trust signals (visible on mobile to build confidence early) */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 sm:mt-4 text-xs sm:text-sm text-gray-500">
-              <span className="flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5 text-blue-500" /> 100% Free</span>
-              <span className="flex items-center gap-1"><BadgeCheck className="h-3.5 w-3.5 text-emerald-500" /> Local Workers</span>
-              <span className="flex items-center gap-1"><Phone className="h-3.5 w-3.5 text-purple-500" /> Call Directly</span>
+            {/* Compact inline trust signals to save space */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-1 mt-2 text-[11px] sm:text-xs text-gray-400 font-normal">
+              <span className="flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5 text-blue-500/80" /> 100% Free</span>
+              <span className="flex items-center gap-1"><BadgeCheck className="h-3.5 w-3.5 text-emerald-500/80" /> Local Workers</span>
+              <span className="flex items-center gap-1"><Phone className="h-3.5 w-3.5 text-purple-500/80" /> Call Directly</span>
             </div>
+
           </div>
 
           {/* Right: Cartoon Illustration + City Background */}
@@ -262,7 +288,7 @@ export default function HomePage() {
       {/* 2. Categories Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 sm:-mt-6 relative z-30">
         {/* Mobile: horizontal scroll (hidden scrollbar); Desktop: spread evenly */}
-        <div className="flex items-center gap-2 overflow-x-auto sm:overflow-visible sm:flex-nowrap sm:justify-between hide-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto sm:overflow-visible sm:flex-nowrap sm:justify-between hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
           {categoryButtons.map((cat) => (
             <button
               key={cat.id}
@@ -330,6 +356,27 @@ export default function HomePage() {
               {filteredWorkers.map((worker) => (
                 <WorkerCard key={worker.id} worker={worker} />
               ))}
+
+              {/* Extra 'List Your Service' card as the tail card of the grid */}
+              <button
+                type="button"
+                className="bg-white border border-dashed border-blue-200 hover:border-blue-500 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200
+                  p-6 flex flex-col items-center justify-center gap-3
+                  min-h-[220px] w-full h-full
+                  cursor-pointer group hover:-translate-y-0.5"
+              >
+                <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <Plus className="h-6 w-6" />
+                </div>
+                <div className="text-center">
+                  <span className="text-sm font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors block">
+                    List Your Service
+                  </span>
+                  <p className="text-xs text-gray-500 mt-1 max-w-[180px] mx-auto leading-normal">
+                    Join WorkerHub and start receiving local calls today.
+                  </p>
+                </div>
+              </button>
             </div>
           ) : (
             <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200/80 shadow-sm">
