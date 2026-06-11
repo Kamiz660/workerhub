@@ -123,52 +123,6 @@ export default function HomePage() {
               Select your town, choose the work you need, and call them directly. Simple, fast & free.
             </p>
 
-            {/* Mobile How to Use — horizontal 4-step strip with arrows */}
-            <div className="lg:hidden mt-8 mb-6" id="how-to-use">
-              <div className="flex items-center justify-between px-1.5">
-                
-                {/* Step 1 */}
-                <div className="flex flex-col items-center text-center flex-1">
-                  <MapPin className="h-6 w-6 text-blue-500/80" />
-                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Select Town</h3>
-                </div>
-
-                {/* Arrow */}
-                <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-5">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-
-                {/* Step 2 */}
-                <div className="flex flex-col items-center text-center flex-1">
-                  <Briefcase className="h-6 w-6 text-emerald-500/80" />
-                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Choose Work</h3>
-                </div>
-
-                {/* Arrow */}
-                <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-5">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-
-                {/* Step 3 */}
-                <div className="flex flex-col items-center text-center flex-1">
-                  <Phone className="h-6 w-6 text-purple-500/80" />
-                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Call Directly</h3>
-                </div>
-
-                {/* Arrow */}
-                <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-5">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-
-                {/* Step 4 */}
-                <div className="flex flex-col items-center text-center flex-1">
-                  <BadgeCheck className="h-6 w-6 text-orange-500/80" />
-                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Hire & Done</h3>
-                </div>
-
-              </div>
-            </div>
-
             {/* Search inputs row */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-6 sm:mt-8 max-w-3xl relative z-40">
               
@@ -264,12 +218,53 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* Compact inline trust signals to save space */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-1 mt-2 text-[11px] sm:text-xs text-gray-400 font-normal">
-              <span className="flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5 text-blue-500/80" /> 100% Free</span>
-              <span className="flex items-center gap-1"><BadgeCheck className="h-3.5 w-3.5 text-emerald-500/80" /> Local Workers</span>
-              <span className="flex items-center gap-1"><Phone className="h-3.5 w-3.5 text-purple-500/80" /> Call Directly</span>
+            {/* Mobile How to Use — horizontal 4-step strip with arrows */}
+            <div className="lg:hidden mt-8 mb-2" id="how-to-use">
+              <div className="flex items-center justify-between px-1.5">
+                
+                {/* Step 1 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <MapPin className="h-6 w-6 text-blue-500/60" />
+                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Select Town</h3>
+                </div>
+
+                {/* Arrow */}
+                <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-5">
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+
+                {/* Step 2 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <Briefcase className="h-6 w-6 text-emerald-500/60" />
+                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Choose Work</h3>
+                </div>
+
+                {/* Arrow */}
+                <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-5">
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+
+                {/* Step 3 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <Phone className="h-6 w-6 text-purple-500/60" />
+                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Call Directly</h3>
+                </div>
+
+                {/* Arrow */}
+                <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-5">
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+
+                {/* Step 4 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <BadgeCheck className="h-6 w-6 text-orange-500/60" />
+                  <h3 className="font-semibold text-[10px] text-gray-500 leading-tight mt-3">Hire & Done</h3>
+                </div>
+
+              </div>
             </div>
+
+
 
           </div>
 
