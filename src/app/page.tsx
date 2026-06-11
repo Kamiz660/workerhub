@@ -295,7 +295,7 @@ export default function HomePage() {
       </div>
 
       {/* Mobile How to Use — horizontal 4-step strip with arrows */}
-      <div className="lg:hidden max-w-7xl mx-auto px-4 mt-14 mb-4 relative z-30" id="how-to-use">
+      <div className="lg:hidden max-w-7xl mx-auto px-4 mt-10 mb-4 relative z-30" id="how-to-use">
         <div className="flex items-center justify-between px-1.5">
           
           {/* Step 1 */}
