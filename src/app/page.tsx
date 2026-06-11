@@ -108,7 +108,7 @@ export default function HomePage() {
   return (
     <div className="bg-[#fcfdff] min-h-screen">
       {/* 1. Hero & Search Console */}
-      <section className="bg-gradient-to-b from-blue-50/40 to-[#fcfdff] border-b border-gray-100/60 relative pt-6 sm:pt-10 pb-10 sm:pb-12">
+      <section className="bg-gradient-to-b from-blue-50/40 to-[#fcfdff] border-b border-gray-100/60 relative pt-8 sm:pt-10 pb-10 sm:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-40">
           
           {/* Left: Heading & Search Box */}
@@ -119,16 +119,16 @@ export default function HomePage() {
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>
             </h1>
-            <p className="mt-2 text-sm sm:text-lg font-light text-gray-500 max-w-xl text-left">
+            <p className="mt-3 text-sm sm:text-lg font-light text-gray-500 max-w-xl text-left">
               Select your town, choose the work you need, and call them directly. Simple, fast & free.
             </p>
 
             {/* Search inputs row */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 mt-4 sm:mt-6 max-w-3xl relative z-40">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 mt-6 sm:mt-8 max-w-3xl relative z-40">
               
               {/* Field 1: Location with working dropdown */}
               <div className="flex-1 flex flex-col items-start gap-1 relative z-20" ref={locationDropdownRef}>
-                <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1">
+                <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1 mt-2 sm:mt-0">
                   Location
                 </label>
                 <div className="relative w-full">
@@ -241,7 +241,7 @@ export default function HomePage() {
               {/* Action Button */}
               <button
                 onClick={scrollToResults}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-750 text-white font-extrabold px-6 py-3 rounded-xl text-sm transition-all shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 active:scale-98 flex items-center justify-center gap-2 cursor-pointer h-[48px] border-0 mt-2 sm:mt-0"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-750 text-white font-extrabold px-6 py-3 rounded-xl text-sm transition-all shadow-lg hover:shadow-xl active:scale-98 flex items-center justify-center gap-2 cursor-pointer h-[48px] border-0 mt-4 sm:mt-0"
               >
                 <UserSearch className="h-5 w-5" />
                 Search Workers
@@ -303,13 +303,13 @@ export default function HomePage() {
               }}
               className="bg-white border border-gray-150 rounded-xl shadow-sm hover:shadow-md transition-all duration-200
                 flex-shrink-0
-                p-2.5 sm:p-4
-                flex flex-col items-center gap-1
-                min-w-[72px] sm:flex-1
+                p-3 sm:p-4
+                flex flex-col items-center gap-1.5
+                min-w-[80px] sm:flex-1
                 cursor-pointer group hover:-translate-y-0.5"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <cat.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <div className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <cat.icon className="h-4.5 w-4.5 sm:h-4 sm:w-4" />
               </div>
               <span className="text-[11px] sm:text-[12px] font-extrabold text-gray-700 tracking-wide">{cat.label}</span>
             </button>

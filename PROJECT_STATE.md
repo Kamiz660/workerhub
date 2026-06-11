@@ -8,7 +8,7 @@
 - **Auto-Scroll on Search/Category**: Clicking "Search Workers" or any category quick-select button smoothly scrolls the viewport to the "Available Local Workers" section with proper sticky-header offset (80px).
 - **Fixed Dropdown UX**: Removed `overflow-hidden` from the hero section so job/location dropdowns render correctly without clipping. Both dropdowns use `z-50` and open on focus/input. Location and job fields have explicit z-index hierarchy to prevent overlap.
 - **Worker Hero Illustration**: Flat vector graphic of three skilled professionals in the hero section (desktop only), featuring a community trust badge overlay. City background opacity at 80% for higher contrast.
-- **Spread Category Bar**: 8 category icon buttons use `justify-between` on desktop. On mobile, it scrolls horizontally with hidden scrollbars and uses `-mx-4 px-4` negative margin formatting to avoid abrupt margin clipping.
+- **Spread Category Bar**: 8 category icon buttons use `justify-between` on desktop. On mobile, it scrolls horizontally with hidden scrollbars and uses `-mx-4 px-4` negative margin formatting to avoid abrupt margin clipping. Mobile icons are enlarged (w-10 h-10 circles, h-4.5 w-4.5 icons, min-w-[80px] buttons) for better tap targets.
 - **List Your Service Grid Tail Card**: Integrated as the last/tail item within the workers grid. Mimics the exact border size and rounded corners (`rounded-2xl`) of the worker cards but with a dashed, clickable-style light-blue border (`border-blue-200`), plus icon, and a CTA invitation.
 - **Consistent Alignment System**: All sections (hero, categories, worker grid, footer) share the same container pattern — `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` applied on the inner container.
 - **Dual Column Grid**:
@@ -21,7 +21,7 @@
 - Sticky header with HardHat icon logo centered on mobile, "List Your Service" button hidden on mobile (visible sm+) and styled with a lighter `border-blue-600/40` thin border effect.
 - Logo: blue rounded square with `HardHat` lucide icon + "WorkerHub" wordmark.
 - Landing page (`/`) serves as the primary real-time search and browse console.
-- Mobile-optimized hero: left-aligned heading and description, but centered compact trust signals on mobile below the search bar. Spacing added above the Search button on mobile layout.
+- Mobile-optimized hero: left-aligned heading and description with extra top padding (pt-10) for breathing room, centered compact trust signals on mobile below the search bar. Location label has mt-2 on mobile for spacing. Search Workers button uses a clean neutral shadow without blue glow.
 - Worker cards: price badge, compact row, solid blue CTA.
 - Worker detail page: side-by-side avatar layout, sticky bottom CTA on mobile.
 
