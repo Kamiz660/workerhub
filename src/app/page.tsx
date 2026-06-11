@@ -4,7 +4,6 @@ import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import {
   Search,
   MapPin,
-  ChevronDown,
   Briefcase,
   BadgeCheck,
   Users,
@@ -25,7 +24,8 @@ import {
   LayoutGrid,
   UserSearch,
   ScanSearch,
-  Plus
+  Plus,
+  ArrowRight
 } from "lucide-react";
 import { WorkerCard } from "@/components/workers/worker-card";
 import { workers } from "@/data/mock-workers";
@@ -108,7 +108,7 @@ export default function HomePage() {
   return (
     <div className="bg-[#fcfdff] min-h-screen">
       {/* 1. Hero & Search Console */}
-      <section className="bg-gradient-to-b from-blue-50/40 to-[#fcfdff] border-b border-gray-100/60 relative pt-8 sm:pt-10 pb-10 sm:pb-12">
+      <section className="bg-gradient-to-b from-blue-50/70 to-[#fcfdff] border-b border-gray-100/60 relative pt-4 sm:pt-10 pb-10 sm:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-40">
           
           {/* Left: Heading & Search Box */}
@@ -119,16 +119,62 @@ export default function HomePage() {
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>
             </h1>
-            <p className="mt-3 text-sm sm:text-lg font-light text-gray-500 max-w-xl text-left">
+            <p className="hidden sm:block mt-3 text-sm sm:text-lg font-light text-gray-500 max-w-xl text-left">
               Select your town, choose the work you need, and call them directly. Simple, fast & free.
             </p>
 
+            {/* Mobile How to Use — horizontal 4-step strip with arrows */}
+            <div className="lg:hidden mt-6" id="how-to-use">
+              <div className="flex items-center justify-between px-1.5">
+                
+                {/* Step 1 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <MapPin className="h-5 w-5 text-blue-500/80" />
+                  <h3 className="font-semibold text-[10px] text-gray-400/90 leading-tight mt-1.5">Select Town</h3>
+                </div>
+
+                {/* Arrow */}
+                <div className="text-gray-300 mx-0.5 flex-shrink-0 -mt-4">
+                  <ArrowRight className="h-3 w-3" />
+                </div>
+
+                {/* Step 2 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <Briefcase className="h-5 w-5 text-emerald-500/80" />
+                  <h3 className="font-semibold text-[10px] text-gray-400/90 leading-tight mt-1.5">Choose Work</h3>
+                </div>
+
+                {/* Arrow */}
+                <div className="text-gray-300 mx-0.5 flex-shrink-0 -mt-4">
+                  <ArrowRight className="h-3 w-3" />
+                </div>
+
+                {/* Step 3 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <Phone className="h-5 w-5 text-purple-500/80" />
+                  <h3 className="font-semibold text-[10px] text-gray-400/90 leading-tight mt-1.5">Call Directly</h3>
+                </div>
+
+                {/* Arrow */}
+                <div className="text-gray-300 mx-0.5 flex-shrink-0 -mt-4">
+                  <ArrowRight className="h-3 w-3" />
+                </div>
+
+                {/* Step 4 */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <BadgeCheck className="h-5 w-5 text-orange-500/80" />
+                  <h3 className="font-semibold text-[10px] text-gray-400/90 leading-tight mt-1.5">Hire & Done</h3>
+                </div>
+
+              </div>
+            </div>
+
             {/* Search inputs row */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 mt-6 sm:mt-8 max-w-3xl relative z-40">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-6 sm:mt-8 max-w-3xl relative z-40">
               
               {/* Field 1: Location with working dropdown */}
-              <div className="flex-1 flex flex-col items-start gap-1 relative z-20" ref={locationDropdownRef}>
-                <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1 mt-2 sm:mt-0">
+              <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={locationDropdownRef}>
+                <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1 mt-1 sm:mt-0">
                   Location
                 </label>
                 <div className="relative w-full">
@@ -143,29 +189,14 @@ export default function HomePage() {
                     }}
                     onFocus={() => setShowLocationDropdown(true)}
                     placeholder="e.g. Koothattukulam"
-                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-10 py-3 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md cursor-pointer"
+                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
                     autoComplete="off"
                   />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setShowLocationDropdown(!showLocationDropdown);
-                    }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-600 transition-all cursor-pointer z-30"
-                    aria-label="Toggle location dropdown"
-                  >
-                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showLocationDropdown ? 'rotate-180' : ''}`} />
-                  </button>
                 </div>
                 
-                {/* Location Dropdown */}
-                {showLocationDropdown && (
-                  <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto z-50 mt-1">
-                    <div className="px-3 py-2 bg-gray-50 border-b border-gray-100 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                      Popular Towns
-                    </div>
+                {/* Location Suggestions */}
+                {showLocationDropdown && locationQuery.trim().length > 0 && popularTowns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
+                  <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
                     {popularTowns
                       .filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
                       .map((town) => (
@@ -181,8 +212,8 @@ export default function HomePage() {
                 )}
               </div>
 
-              {/* Field 2: Job/Profession with working dropdown */}
-              <div className="flex-1 flex flex-col items-start gap-1 relative z-10" ref={jobDropdownRef}>
+              {/* Field 2: Job/Profession with autofill suggestions */}
+              <div className="flex-1 flex flex-col items-start gap-1.5 relative z-10" ref={jobDropdownRef}>
                 <label htmlFor="job-input" className="text-sm font-semibold text-gray-700 ml-1">
                   What do you need?
                 </label>
@@ -198,29 +229,14 @@ export default function HomePage() {
                     }}
                     onFocus={() => setShowJobDropdown(true)}
                     placeholder="e.g. Electrician, Plumber"
-                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-10 py-3 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md cursor-pointer"
+                    className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
                     autoComplete="off"
                   />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setShowJobDropdown(!showJobDropdown);
-                    }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-600 transition-all cursor-pointer z-30"
-                    aria-label="Toggle job dropdown"
-                  >
-                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showJobDropdown ? 'rotate-180' : ''}`} />
-                  </button>
                 </div>
 
-                {/* Job Dropdown */}
-                {showJobDropdown && (
-                  <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto z-50 mt-1">
-                    <div className="px-3 py-2 bg-gray-50 border-b border-gray-100 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                      Quick Select
-                    </div>
+                {/* Job Suggestions */}
+                {showJobDropdown && jobQuery.trim().length > 0 && categoriesList.filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase())).length > 0 && (
+                  <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
                     {categoriesList
                       .filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase()))
                       .map((category) => (
@@ -241,7 +257,7 @@ export default function HomePage() {
               {/* Action Button */}
               <button
                 onClick={scrollToResults}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-750 text-white font-extrabold px-6 py-3 rounded-xl text-sm transition-all shadow-lg hover:shadow-xl active:scale-98 flex items-center justify-center gap-2 cursor-pointer h-[48px] border-0 mt-4 sm:mt-0"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-750 text-white font-extrabold px-6 py-3.5 rounded-xl text-sm transition-all shadow-lg hover:shadow-xl active:scale-98 flex items-center justify-center gap-2 cursor-pointer h-[52px] border-0 mt-4 sm:mt-0"
               >
                 <UserSearch className="h-5 w-5" />
                 Search Workers
@@ -287,8 +303,8 @@ export default function HomePage() {
 
       {/* 2. Categories Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 sm:-mt-6 relative z-30">
-        {/* Mobile: horizontal scroll (hidden scrollbar); Desktop: spread evenly */}
-        <div className="flex items-center gap-2 overflow-x-auto sm:overflow-visible sm:flex-nowrap sm:justify-between hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+        {/* Mobile: 2×4 grid showing all icons; Desktop: spread evenly in a row */}
+        <div className="grid grid-cols-4 gap-2 sm:flex sm:flex-nowrap sm:justify-between">
           {categoryButtons.map((cat) => (
             <button
               key={cat.id}
@@ -297,15 +313,25 @@ export default function HomePage() {
                   setShowJobDropdown(true);
                   document.getElementById("job-input")?.focus();
                 } else {
+                  if (!locationQuery.trim()) {
+                    const locInput = document.getElementById("location-input");
+                    if (locInput) {
+                      locInput.focus();
+                      locInput.classList.add("ring-2", "ring-red-500", "border-red-500");
+                      setTimeout(() => {
+                        locInput.classList.remove("ring-2", "ring-red-500", "border-red-500");
+                      }, 1500);
+                    }
+                    return;
+                  }
                   setJobQuery(cat.label);
                   scrollToResults();
                 }
               }}
               className="bg-white border border-gray-150 rounded-xl shadow-sm hover:shadow-md transition-all duration-200
-                flex-shrink-0
                 p-3 sm:p-4
                 flex flex-col items-center gap-1.5
-                min-w-[80px] sm:flex-1
+                sm:flex-1
                 cursor-pointer group hover:-translate-y-0.5"
             >
               <div className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -322,30 +348,31 @@ export default function HomePage() {
         
         {/* Left Column: Worker Grid (Expanded to col-span-9 for 3 cards) */}
         <section className="lg:col-span-9 flex flex-col gap-5" id="results-section">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <Users className="h-5 w-5 text-blue-600" />
-                Available Local Workers
+          <div className="flex items-center justify-between border-b border-gray-100 pb-2 sm:pb-3">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-2xl font-bold text-gray-900 flex items-center gap-1.5 sm:gap-2">
+                <Users className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <span className="hidden sm:inline">Available Local Workers</span>
+                <span className="sm:hidden">{filteredWorkers.length} Workers</span>
               </h2>
-              <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                Showing {filteredWorkers.length} worker{filteredWorkers.length !== 1 ? "s" : ""} in {locationQuery || "any location"}
-              </p>
+              <span className="hidden sm:inline text-xs sm:text-sm text-gray-500">
+                — Showing {filteredWorkers.length} in {locationQuery || "any location"}
+              </span>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               {(jobQuery || locationQuery !== "Koothattukulam") && (
                 <button
                   onClick={() => {
                     setJobQuery("");
                     setLocationQuery("Koothattukulam");
                   }}
-                  className="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-1 cursor-pointer"
                 >
-                  <X className="h-3.5 w-3.5" />
-                  Clear Filters
+                  <X className="h-3 w-3" />
+                  Clear
                 </button>
               )}
-              <span className="text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer">
+              <span className="hidden sm:flex text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 items-center gap-1 cursor-pointer">
                 View all <ChevronRight className="h-3.5 w-3.5" />
               </span>
             </div>
@@ -401,76 +428,55 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* Right Column: "How to Use" Sidebar — show FIRST on mobile, sidebar on desktop */}
-        <aside className="order-first lg:order-none lg:col-span-3" id="how-to-use">
+
+        {/* Desktop: Original vertical step sidebar */}
+        <aside className="hidden lg:block lg:col-span-3" id="how-to-use-desktop">
           <div className="bg-white rounded-2xl border border-gray-150 p-5 shadow-sm flex flex-col gap-5 sticky top-24">
             <h2 className="text-base font-bold text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-2.5">
               <BookOpen className="h-4 w-4 text-blue-600" />
               How to Use
             </h2>
 
-            {/* Vertical Flow Steps */}
             <div className="flex flex-col gap-4 relative">
-              {/* Vertical connector line */}
               <div className="absolute left-[13px] top-4 bottom-4 w-0.5 bg-gray-100" />
 
-              {/* Step 1 */}
               <div className="flex items-start gap-3 relative z-10">
-                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-50 text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-100 shadow-sm">
-                  1
-                </div>
+                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-50 text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-100 shadow-sm">1</div>
                 <div className="pt-0.5">
                   <h3 className="font-extrabold text-[13px] text-gray-900 leading-tight flex items-center gap-1.5">
                     <MapPin className="h-3.5 w-3.5 text-blue-500" /> Select Your Town
                   </h3>
-                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">
-                    Choose your location to find local workers.
-                  </p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">Choose your location to find local workers.</p>
                 </div>
               </div>
 
-              {/* Step 2 */}
               <div className="flex items-start gap-3 relative z-10">
-                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 font-bold text-xs flex items-center justify-center border border-emerald-100 shadow-sm">
-                  2
-                </div>
+                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 font-bold text-xs flex items-center justify-center border border-emerald-100 shadow-sm">2</div>
                 <div className="pt-0.5">
                   <h3 className="font-extrabold text-[13px] text-gray-900 leading-tight flex items-center gap-1.5">
                     <Briefcase className="h-3.5 w-3.5 text-emerald-500" /> Choose the Work
                   </h3>
-                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">
-                    Select the type of work you need help with.
-                  </p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">Select the type of work you need help with.</p>
                 </div>
               </div>
 
-              {/* Step 3 */}
               <div className="flex items-start gap-3 relative z-10">
-                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-purple-50 text-purple-600 font-bold text-xs flex items-center justify-center border border-purple-100 shadow-sm">
-                  3
-                </div>
+                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-purple-50 text-purple-600 font-bold text-xs flex items-center justify-center border border-purple-100 shadow-sm">3</div>
                 <div className="pt-0.5">
                   <h3 className="font-extrabold text-[13px] text-gray-900 leading-tight flex items-center gap-1.5">
                     <Phone className="h-3.5 w-3.5 text-purple-500" /> Call Directly
                   </h3>
-                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">
-                    Contact the worker directly and discuss.
-                  </p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">Contact the worker directly and discuss.</p>
                 </div>
               </div>
 
-              {/* Step 4 */}
               <div className="flex items-start gap-3 relative z-10">
-                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-orange-50 text-orange-600 font-bold text-xs flex items-center justify-center border border-orange-100 shadow-sm">
-                  4
-                </div>
+                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-orange-50 text-orange-600 font-bold text-xs flex items-center justify-center border border-orange-100 shadow-sm">4</div>
                 <div className="pt-0.5">
                   <h3 className="font-extrabold text-[13px] text-gray-900 leading-tight flex items-center gap-1.5">
                     <BadgeCheck className="h-3.5 w-3.5 text-orange-500" /> Hire & Get it Done
                   </h3>
-                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">
-                    Hire the best worker and get the job done.
-                  </p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-normal">Hire the best worker and get the job done.</p>
                 </div>
               </div>
             </div>

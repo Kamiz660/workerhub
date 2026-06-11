@@ -87,13 +87,10 @@ export function WorkerCard({ worker }: WorkerCardProps) {
                         {worker.name}
                       </h3>
                       <p className="text-sm text-gray-500">
-                        {worker.profession}
+                        {worker.profession.replace(/^Master\s+/i, '')}
                       </p>
                     </div>
                     <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                      <span className="text-sm font-bold text-gray-900">
-                        ₹{worker.hourlyRate}<span className="text-xs text-gray-400 font-normal">/hr</span>
-                      </span>
                       {!worker.available && (
                         <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-500 hover:bg-gray-100">
                           Unavailable
@@ -115,10 +112,6 @@ export function WorkerCard({ worker }: WorkerCardProps) {
                 <span className="flex items-center gap-1.5 text-sm text-gray-500">
                   <MapPin className="h-3.5 w-3.5 text-gray-400" />
                   {worker.location}
-                </span>
-                <span className="flex items-center gap-1.5 text-sm text-gray-500">
-                  <Phone className="h-3.5 w-3.5 text-gray-400" />
-                  Tap to call
                 </span>
               </div>
             </div>
