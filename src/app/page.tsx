@@ -25,7 +25,6 @@ import {
   UserSearch,
   ScanSearch,
   Plus,
-  ArrowRight,
   ChevronDown
 } from "lucide-react";
 import { WorkerCard } from "@/components/workers/worker-card";
@@ -33,7 +32,7 @@ import { workers } from "@/data/mock-workers";
 
 const categoriesList = [
   { id: "electrician", label: "Electrician", icon: "🔌" },
-  { id: "plumber", label: "Plumber", icon: "🚰" },
+  { id: "plumber", label: "Plumber", icon: "🔧" },
   { id: "carpenter", label: "Carpenter", icon: "🪚" },
   { id: "painter", label: "Painter", icon: "🎨" },
   { id: "technician", label: "Technician", icon: "🛠️" },
@@ -60,10 +59,10 @@ const popularTowns = [
 export default function HomePage() {
   const [locationQuery, setLocationQuery] = useState("");
   const [jobQuery, setJobQuery] = useState("");
-  
+
   const [showJobDropdown, setShowJobDropdown] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
-  
+
   const jobDropdownRef = useRef<HTMLDivElement>(null);
   const locationDropdownRef = useRef<HTMLDivElement>(null);
   const jobDropdownRefMobile = useRef<HTMLDivElement>(null);
@@ -102,13 +101,13 @@ export default function HomePage() {
       const locMatch = worker.location.toLowerCase().includes(locationQuery.trim().toLowerCase());
       const jobSearch = jobQuery.trim().toLowerCase();
       if (!jobSearch) return locMatch;
-      
-      const jobMatch = 
+
+      const jobMatch =
         worker.name.toLowerCase().includes(jobSearch) ||
         worker.profession.toLowerCase().includes(jobSearch) ||
         worker.category.toLowerCase().includes(jobSearch) ||
         worker.services.some(s => s.toLowerCase().includes(jobSearch));
-        
+
       return locMatch && jobMatch;
     });
   }, [locationQuery, jobQuery]);
@@ -119,7 +118,7 @@ export default function HomePage() {
       {/* MOBILE BREAKPOINT ONLY UI (hidden on tablet/desktop)     */}
       {/* ======================================================== */}
       <div className="sm:hidden px-4 pt-4 pb-4 bg-gradient-to-b from-blue-50/40 to-[#f5f8fc]">
-        
+
         {/* Hero Area */}
         <div className="flex justify-between items-start gap-3">
           <div className="flex-1 text-left">
@@ -130,7 +129,7 @@ export default function HomePage() {
             <p className="mt-2 text-[13px] text-gray-500 font-medium">
               Quick. Reliable. Local.
             </p>
-            
+
             {/* Location capsule button */}
             <div className="mt-4 relative inline-block" ref={locationDropdownRefMobile}>
               <button
@@ -143,7 +142,7 @@ export default function HomePage() {
                 <span>{locationQuery || "Koothattukulam"}</span>
                 <ChevronDown className="h-4 w-4 text-gray-400" />
               </button>
-              
+
               {/* Location Suggestions Dropdown */}
               {showLocationDropdown && (
                 <div className="absolute left-0 top-[110%] w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden max-h-48 overflow-y-auto mt-1">
@@ -162,9 +161,9 @@ export default function HomePage() {
               )}
             </div>
           </div>
-          
+
           {/* Map Illustration */}
-          <div className="w-[125px] h-[95px] relative flex-shrink-0 self-center -translate-y-5">
+          <div className="w-[145px] h-[165px] relative flex-shrink-0 self-center -translate-y-5">
             <img
               src="/mobile_map_illustration.png"
               alt="Local Workers"
@@ -193,7 +192,7 @@ export default function HomePage() {
               className="w-full bg-white border border-gray-200/90 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all"
               autoComplete="off"
             />
-            
+
             {/* Job Suggestions Dropdown */}
             {showJobDropdown && jobQuery.trim().length > 0 && categoriesList.filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase())).length > 0 && (
               <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
@@ -213,7 +212,7 @@ export default function HomePage() {
               </div>
             )}
           </div>
-          
+
           <button
             onClick={scrollToResults}
             className="w-full bg-blue-600 hover:bg-blue-750 text-white font-extrabold py-3.5 rounded-xl text-sm transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2 border-0 cursor-pointer"
@@ -252,49 +251,60 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* How to Use Section (replaces Trusted & Verified section entirely) */}
+        {/* How to Use Section */}
         <div className="mt-8 mb-4">
           <h2 className="text-sm font-bold text-gray-900 tracking-tight mb-3">How to Use</h2>
-          <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-4">
-            <div className="flex items-center justify-between px-1">
-              
+          <div className="bg-white border border-gray-100 shadow-sm rounded-2xl px-4 py-5">
+            <div className="flex items-start justify-between">
+
               {/* Step 1 */}
-              <div className="flex flex-col items-center text-center flex-1">
-                <MapPin className="h-5 w-5 text-blue-500/60" />
-                <h3 className="font-semibold text-[9px] text-gray-500 leading-tight mt-2">Select Town</h3>
+              <div className="flex flex-col items-center text-center flex-1 gap-1.5">
+                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                  <MapPin className="h-4 w-4 text-blue-600" />
+                </div>
+                <span className="text-[10px] font-bold text-gray-800 leading-tight">Select<br/>Town</span>
               </div>
-              
-              {/* Arrow */}
-              <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-4">
-                <ArrowRight className="h-3.5 w-3.5" />
+
+              {/* Connector */}
+              <div className="flex items-center pt-3.5 text-gray-300">
+                <div className="w-4 h-px bg-gray-200" />
+                <ChevronDown className="h-3 w-3 -rotate-90 -mx-0.5" />
               </div>
 
               {/* Step 2 */}
-              <div className="flex flex-col items-center text-center flex-1">
-                <Briefcase className="h-5 w-5 text-emerald-500/60" />
-                <h3 className="font-semibold text-[9px] text-gray-500 leading-tight mt-2">Choose Work</h3>
+              <div className="flex flex-col items-center text-center flex-1 gap-1.5">
+                <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center">
+                  <Briefcase className="h-4 w-4 text-emerald-600" />
+                </div>
+                <span className="text-[10px] font-bold text-gray-800 leading-tight">Choose<br/>Work</span>
               </div>
 
-              {/* Arrow */}
-              <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-4">
-                <ArrowRight className="h-3.5 w-3.5" />
+              {/* Connector */}
+              <div className="flex items-center pt-3.5 text-gray-300">
+                <div className="w-4 h-px bg-gray-200" />
+                <ChevronDown className="h-3 w-3 -rotate-90 -mx-0.5" />
               </div>
 
               {/* Step 3 */}
-              <div className="flex flex-col items-center text-center flex-1">
-                <Phone className="h-5 w-5 text-purple-500/60" />
-                <h3 className="font-semibold text-[9px] text-gray-500 leading-tight mt-2">Call Directly</h3>
+              <div className="flex flex-col items-center text-center flex-1 gap-1.5">
+                <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
+                  <Phone className="h-4 w-4 text-purple-600" />
+                </div>
+                <span className="text-[10px] font-bold text-gray-800 leading-tight">Call<br/>Directly</span>
               </div>
 
-              {/* Arrow */}
-              <div className="text-gray-400 mx-0.5 flex-shrink-0 -mt-4">
-                <ArrowRight className="h-3.5 w-3.5" />
+              {/* Connector */}
+              <div className="flex items-center pt-3.5 text-gray-300">
+                <div className="w-4 h-px bg-gray-200" />
+                <ChevronDown className="h-3 w-3 -rotate-90 -mx-0.5" />
               </div>
 
               {/* Step 4 */}
-              <div className="flex flex-col items-center text-center flex-1">
-                <BadgeCheck className="h-5 w-5 text-orange-500/60" />
-                <h3 className="font-semibold text-[9px] text-gray-500 leading-tight mt-2">Hire & Done</h3>
+              <div className="flex flex-col items-center text-center flex-1 gap-1.5">
+                <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center">
+                  <BadgeCheck className="h-4 w-4 text-amber-600" />
+                </div>
+                <span className="text-[10px] font-bold text-gray-800 leading-tight">Hire &<br/>Done</span>
               </div>
             </div>
           </div>
@@ -306,11 +316,11 @@ export default function HomePage() {
       {/* DESKTOP/TABLET ONLY UI (hidden on mobile)                */}
       {/* ======================================================== */}
       <div className="hidden sm:block">
-        
+
         {/* 1. Hero & Search Console */}
         <section className="bg-gradient-to-b from-blue-50/70 to-[#fcfdff] border-b border-gray-100/60 relative pt-4 sm:pt-10 pb-10 sm:pb-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-40">
-            
+
             {/* Left: Heading & Search Box */}
             <div className="lg:col-span-7 text-left">
               <h1 className="text-2xl sm:text-[2.75rem] font-extrabold text-gray-900 tracking-tight leading-tight flex flex-wrap items-center">
@@ -325,7 +335,7 @@ export default function HomePage() {
 
               {/* Search inputs row */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-6 sm:mt-8 max-w-3xl relative z-40">
-                
+
                 {/* Field 1: Location with working dropdown */}
                 <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={locationDropdownRef}>
                   <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1 mt-1 sm:mt-0">
@@ -347,7 +357,7 @@ export default function HomePage() {
                       autoComplete="off"
                     />
                   </div>
-                  
+
                   {/* Location Suggestions */}
                   {showLocationDropdown && locationQuery.trim().length > 0 && popularTowns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
                     <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
@@ -494,7 +504,7 @@ export default function HomePage() {
 
       {/* 3. Main Split Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
+
         {/* Left Column: Worker Grid (Expanded to col-span-9 for 3 cards) */}
         <section className="lg:col-span-9 flex flex-col gap-5" id="results-section">
           <div className="flex items-center justify-between border-b border-gray-100 pb-2 sm:pb-3">

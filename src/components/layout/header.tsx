@@ -30,9 +30,9 @@ export function Header() {
             {/* Mobile prominent plus button (replaces notification bell) */}
             <button
               id="header-mobile-plus-btn"
-              className="sm:hidden flex w-8 h-8 items-center justify-center rounded-full bg-gray-50 text-gray-900 border border-gray-200 active:scale-95 transition-all"
+              className="sm:hidden flex items-center justify-center text-gray-900 active:scale-95 transition-all p-1"
             >
-              <Plus className="h-4 w-4" strokeWidth={2.5} />
+              <Plus className="h-5 w-5" strokeWidth={2.5} />
             </button>
           </div>
         </div>
