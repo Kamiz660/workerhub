@@ -25,7 +25,9 @@ import {
   UserSearch,
   ScanSearch,
   Plus,
-  ChevronDown
+  ChevronDown,
+  LocateFixed,
+  Loader2
 } from "lucide-react";
 import { WorkerCard } from "@/components/workers/worker-card";
 import { workers } from "@/data/mock-workers";
@@ -59,6 +61,57 @@ const popularTowns = [
 export default function HomePage() {
   const [locationQuery, setLocationQuery] = useState("");
   const [jobQuery, setJobQuery] = useState("");
+  const [isLocating, setIsLocating] = useState(false);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [placeholderVisible, setPlaceholderVisible] = useState(true);
+
+  const locationExamples = ["Koothattukulam", "Muvattupuzha", "Piravom", "Thodupuzha", "Perumbavoor"];
+  const jobExamples = ["Plumber", "Electrician", "Carpenter", "Painter", "Mechanic"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderVisible(false);
+      setTimeout(() => {
+        setPlaceholderIndex((prev) => (prev + 1) % 5);
+        setPlaceholderVisible(true);
+      }, 800);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          // Find the most relevant city/town name from Nominatim response
+          const city = data.address.city || data.address.town || data.address.village || data.address.county || "Current Location";
+          setLocationQuery(city);
+        } catch (error) {
+          console.error("Error fetching location details:", error);
+          alert("Could not fetch location details.");
+        } finally {
+          setIsLocating(false);
+          setShowLocationDropdown(false);
+        }
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        alert("Please allow location access to use this feature.");
+        setIsLocating(false);
+      }
+    );
+  };
 
   const [showJobDropdown, setShowJobDropdown] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
@@ -129,41 +182,10 @@ export default function HomePage() {
             <p className="mt-2 text-[13px] text-gray-500 font-medium">
               Quick. Reliable. Local.
             </p>
-
-            {/* Location capsule button */}
-            <div className="mt-4 relative inline-block" ref={locationDropdownRefMobile}>
-              <button
-                onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm text-[13px] font-semibold text-gray-800 cursor-pointer active:scale-95 transition-transform"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4.5 w-4.5 text-blue-600">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                </svg>
-                <span>{locationQuery || "Koothattukulam"}</span>
-                <ChevronDown className="h-4 w-4 text-gray-400" />
-              </button>
-
-              {/* Location Suggestions Dropdown */}
-              {showLocationDropdown && (
-                <div className="absolute left-0 top-[110%] w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden max-h-48 overflow-y-auto mt-1">
-                  {popularTowns.map((town) => (
-                    <button
-                      key={town}
-                      onClick={() => { setLocationQuery(town); setShowLocationDropdown(false); }}
-                      className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors text-xs font-bold text-gray-700 border-b border-gray-50 last:border-b-0 flex items-center gap-2"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-3 w-3 text-gray-400">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                      </svg> {town}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Map Illustration */}
-          <div className="w-[145px] h-[165px] relative flex-shrink-0 self-center -translate-y-5">
+          <div className="w-[120px] h-[120px] relative flex-shrink-0 self-center">
             <img
               src="/mobile_map_illustration.png"
               alt="Local Workers"
@@ -173,44 +195,113 @@ export default function HomePage() {
         </div>
 
         {/* Search Card */}
-        <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 mt-5 relative z-40">
-          <label htmlFor="job-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
-            What do you need?
-          </label>
-          <div className="relative w-full mb-4" ref={jobDropdownRefMobile}>
-            <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-blue-500" />
-            <input
-              id="job-input-mobile"
-              type="text"
-              value={jobQuery}
-              onChange={(e) => {
-                setJobQuery(e.target.value);
-                setShowJobDropdown(true);
-              }}
-              onFocus={() => setShowJobDropdown(true)}
-              placeholder="e.g. Plumber, Electrician"
-              className="w-full bg-white border border-gray-200/90 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all"
-              autoComplete="off"
-            />
+        <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 -mt-1 relative z-40 flex flex-col gap-4">
+          
+          {/* Location Field */}
+          <div>
+            <label htmlFor="location-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
+              Your Location
+            </label>
+            <div className="relative w-full" ref={locationDropdownRefMobile}>
+              <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-blue-500 z-10" />
+              <input
+                id="location-input-mobile"
+                type="text"
+                value={locationQuery}
+                onChange={(e) => {
+                  setLocationQuery(e.target.value);
+                  setShowLocationDropdown(true);
+                }}
+                onFocus={() => setShowLocationDropdown(true)}
+                placeholder=" "
+                className="w-full bg-white border border-gray-200/90 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-[145px] py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm"
+                autoComplete="off"
+              />
+              {!locationQuery && (
+                <span
+                  className="absolute left-11 top-0 bottom-0 flex items-center text-sm text-gray-400 font-medium pointer-events-none transition-all duration-700 ease-in-out"
+                  style={{ opacity: placeholderVisible ? 1 : 0, transform: `translateY(${placeholderVisible ? '0px' : '-6px'})` }}
+                >
+                  {locationExamples[placeholderIndex]}
+                </span>
+              )}
 
-            {/* Job Suggestions Dropdown */}
-            {showJobDropdown && jobQuery.trim().length > 0 && categoriesList.filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase())).length > 0 && (
-              <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
-                {categoriesList
-                  .filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase()))
-                  .map((category) => (
-                    <button
-                      key={category.id}
-                      type="button"
-                      onClick={() => { setJobQuery(category.label.split(" ")[0]); setShowJobDropdown(false); }}
-                      className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
-                    >
-                      <span className="text-lg flex-shrink-0">{category.icon}</span>
-                      <span className="font-semibold text-gray-800 text-sm">{category.label}</span>
-                    </button>
-                  ))}
-              </div>
-            )}
+              {/* Current Location Capsule — inside input, right side */}
+              <button
+                onClick={getCurrentLocation}
+                disabled={isLocating}
+                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {isLocating ? "Locating..." : "Current Location"}
+              </button>
+              
+              {/* Location Suggestions Dropdown */}
+              {showLocationDropdown && locationQuery.trim().length > 0 && popularTowns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
+                <div className="absolute top-[105%] left-0 right-0 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden max-h-48 overflow-y-auto mt-1">
+                  {popularTowns
+                    .filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
+                    .map((town) => (
+                      <button
+                        key={town}
+                        onClick={() => { setLocationQuery(town); setShowLocationDropdown(false); }}
+                        className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors text-xs font-bold text-gray-700 border-b border-gray-50 last:border-b-0 flex items-center gap-2"
+                      >
+                        <MapPin className="h-3.5 w-3.5 text-gray-400" /> {town}
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Job Field */}
+          <div>
+            <label htmlFor="job-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
+              What do you need?
+            </label>
+            <div className="relative w-full" ref={jobDropdownRefMobile}>
+              <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-blue-500" />
+              <input
+                id="job-input-mobile"
+                type="text"
+                value={jobQuery}
+                onChange={(e) => {
+                  setJobQuery(e.target.value);
+                  setShowJobDropdown(true);
+                }}
+                onFocus={() => setShowJobDropdown(true)}
+                placeholder=" "
+                className="w-full bg-white border border-gray-200/90 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm"
+                autoComplete="off"
+              />
+              {!jobQuery && (
+                <span
+                  className="absolute left-11 top-0 bottom-0 flex items-center text-sm text-gray-400 font-medium pointer-events-none transition-all duration-700 ease-in-out"
+                  style={{ opacity: placeholderVisible ? 1 : 0, transform: `translateY(${placeholderVisible ? '0px' : '-6px'})` }}
+                >
+                  {jobExamples[placeholderIndex]}
+                </span>
+              )}
+
+              {/* Job Suggestions Dropdown */}
+              {showJobDropdown && jobQuery.trim().length > 0 && categoriesList.filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase())).length > 0 && (
+                <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
+                  {categoriesList
+                    .filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase()))
+                    .map((category) => (
+                      <button
+                        key={category.id}
+                        type="button"
+                        onClick={() => { setJobQuery(category.label.split(" ")[0]); setShowJobDropdown(false); }}
+                        className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
+                      >
+                        <span className="text-lg flex-shrink-0">{category.icon}</span>
+                        <span className="font-semibold text-gray-800 text-sm">{category.label}</span>
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <button
