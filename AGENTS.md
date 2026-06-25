@@ -9,8 +9,8 @@ Before performing any task:
 Prefer existing library solutions over custom implementations.
 
 1. Read AGENTS.md
-2. Read DESIGN.md
-3. Read SKILLS.md
+2. Read docs/design.md
+3. Read docs/skills.md
 4. Follow all applicable guidance.
 
 If instructions conflict:
@@ -107,6 +107,28 @@ Users understand the product, browse workers, and attempt to contact them.
 
 Failure metric:
 Spending months building infrastructure before validating demand.
+
+---
+
+## Core User Flow
+
+1. User lands on site
+2. Browses workers
+3. Searches/filter workers
+4. Opens profile
+5. Contacts worker
+
+No backend yet. No auth yet. No database yet.
+
+---
+
+## UX Philosophy
+
+- Clear > clever
+- Familiar marketplace patterns
+- Trust first design
+- Mobile-first
+- Reference style: Airbnb, Thumbtack, Upwork
 
 ---
 
