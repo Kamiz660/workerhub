@@ -9,7 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { categories } from "@/data/mock-workers";
+import { getCategories } from "@/services/workers";
+
+const categories = getCategories();
 
 interface SearchBarProps {
   searchQuery: string;

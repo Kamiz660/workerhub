@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,13 +13,15 @@ import {
   CheckCircle2,
   Star,
   Phone,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { RatingStars } from "@/components/shared/rating-stars";
 import { ContactModal } from "@/components/shared/contact-modal";
-import { workers, reviews } from "@/data/mock-workers";
+import { getWorkerById, getReviewsByWorkerId } from "@/services/workers";
+import type { Worker, Review } from "@/lib/types";
 
 interface WorkerProfilePageProps {
   params: Promise<{ id: string }>;
@@ -29,8 +31,45 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
   const { id } = use(params);
   const router = useRouter();
   const [contactOpen, setContactOpen] = useState(false);
+  const [worker, setWorker] = useState<Worker | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const worker = workers.find((w) => w.id === id);
+  useEffect(() => {
+    let isActive = true;
+
+    async function load() {
+      setIsLoading(true);
+      try {
+        const w = await getWorkerById(id);
+        if (isActive) {
+          setWorker(w ?? null);
+          // Reviews are still static from mock data for now
+          if (w) {
+            const r = await getReviewsByWorkerId(w.id);
+            if (isActive) setReviews(r);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load worker:", err);
+        if (isActive) setWorker(null);
+      } finally {
+        if (isActive) setIsLoading(false);
+      }
+    }
+
+    load();
+    return () => { isActive = false; };
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+        <span className="ml-2 text-gray-500">Loading profile...</span>
+      </div>
+    );
+  }
 
   if (!worker) {
     return (
@@ -50,7 +89,6 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
     );
   }
 
-  const workerReviews = reviews.filter((r) => r.workerId === worker.id);
   const initials = worker.name
     .split(" ")
     .map((n) => n[0])
@@ -80,9 +118,20 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
             <div className="flex flex-row items-start gap-4 sm:gap-6">
               {/* Avatar */}
               <div className="relative flex-shrink-0">
-                <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl sm:text-3xl">
-                  {initials}
-                </div>
+                {worker.image ? (
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={worker.image}
+                      alt={worker.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl sm:text-3xl">
+                    {initials}
+                  </div>
+                )}
                 {worker.verified && (
                   <div className="absolute -bottom-1.5 -right-1.5 sm:-bottom-2 sm:-right-2 bg-white rounded-full p-0.5 sm:p-1 shadow-sm">
                     <BadgeCheck className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
@@ -118,10 +167,18 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
 
                   <div className="flex flex-col items-start sm:items-end gap-2">
                     <div className="text-2xl font-bold text-gray-900">
-                      ₹{worker.hourlyRate}
-                      <span className="text-base text-gray-400 font-normal">
-                        /hr
-                      </span>
+                      {worker.hourlyRate !== null && worker.hourlyRate !== undefined ? (
+                        <>
+                          ₹{worker.hourlyRate}
+                          <span className="text-base text-gray-400 font-normal">
+                            /hr
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-lg font-semibold text-gray-600 mt-1 block">
+                          Contact for rates
+                        </span>
+                      )}
                     </div>
                     <Badge
                       variant={worker.available ? "default" : "secondary"}
@@ -142,10 +199,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                     <MapPin className="h-4 w-4" />
                     {worker.location}
                   </span>
-                  <span className="flex items-center gap-1.5">
-                    <Briefcase className="h-4 w-4" />
-                    {worker.experience} years experience
-                  </span>
+                  {worker.experience !== null && worker.experience !== undefined && (
+                    <span className="flex items-center gap-1.5">
+                      <Briefcase className="h-4 w-4" />
+                      {worker.experience} {worker.experience === 1 ? "year" : "years"} experience
+                    </span>
+                  )}
                   <span className="flex items-center gap-1.5">
                     <Clock className="h-4 w-4" />
                     {worker.jobsCompleted} jobs completed
@@ -194,12 +253,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
           {/* Reviews */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 mt-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Reviews ({workerReviews.length})
+              Reviews ({reviews.length})
             </h2>
 
-            {workerReviews.length > 0 ? (
+            {reviews.length > 0 ? (
               <div className="space-y-6">
-                {workerReviews.map((review) => (
+                {reviews.map((review) => (
                   <div key={review.id}>
                     <div className="flex items-center gap-3 mb-2">
                       <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm font-medium text-gray-600">

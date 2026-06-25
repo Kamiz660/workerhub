@@ -137,3 +137,9 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Hide global layout header and footer inside the experiments sandbox */
+body.redesign-sandbox-route > header,
+body.redesign-sandbox-route > footer {
+  display: none !important;
+}

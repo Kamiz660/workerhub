@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { HardHat, Plus } from "lucide-react";
+import { HardHat, Plus, CircleUserRound } from "lucide-react";
+import { EVENTS } from "@/lib/constants";
 
 export function Header() {
   return (
@@ -22,17 +23,22 @@ export function Header() {
             <button
               id="header-list-btn"
               className="hidden sm:flex border border-blue-600/40 text-blue-600 font-medium text-sm rounded-lg items-center gap-1.5 px-3 py-1.5 transition-all bg-transparent hover:bg-blue-600 hover:text-white cursor-pointer"
+              onClick={() =>
+                window.dispatchEvent(
+                  new CustomEvent(EVENTS.OPEN_ADD_WORKER_MODAL)
+                )
+              }
             >
               <Plus className="h-3.5 w-3.5" />
               List Your Service
             </button>
 
-            {/* Mobile prominent plus button (replaces notification bell) */}
+            {/* Mobile avatar/login button */}
             <button
-              id="header-mobile-plus-btn"
-              className="sm:hidden flex items-center justify-center text-gray-900 active:scale-95 transition-all p-1"
+              id="header-mobile-login-btn"
+              className="sm:hidden flex items-center justify-center text-gray-500 active:scale-95 transition-all p-1"
             >
-              <Plus className="h-5 w-5" strokeWidth={2.5} />
+              <CircleUserRound className="h-6 w-6" strokeWidth={1.5} />
             </button>
           </div>
         </div>

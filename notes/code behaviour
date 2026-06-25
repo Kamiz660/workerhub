@@ -1,0 +1,254 @@
+React
+Next.js
+Supabase
+Zod
+shadcn/ui
+For every task, require AI to output:
+
+Goal
+Files affected
+Risk level
+Implementation plan
+
+before coding.
+
+Then:
+
+Changes made
+Files modified
+Testing required
+Rollback plan
+
+Not because AI is special, but because AI has the same weakness as a new developer joining a project:
+
+> It understands local context much better than global context.
+
+A human senior engineer can hold a lot of the architecture in their head. An AI is constantly seeing only slices of the codebase. So some structures are dramatically easier for AI to work with.
+
+## AI-friendly codebase characteristics
+
+### 1. Small files
+
+Bad:
+
+```text
+page.tsx (1200 lines)
+```
+
+Good:
+
+```text
+page.tsx (50 lines)
+search-console.tsx (150 lines)
+location-input.tsx (120 lines)
+worker-grid.tsx (180 lines)
+```
+
+Why?
+
+When AI opens a file, it can understand the whole thing quickly.
+
+When a file becomes huge, the model starts spending context on navigation instead of reasoning.
+
+---
+
+### 2. Clear ownership
+
+Bad:
+
+```text
+page.tsx
+- UI
+- API calls
+- search logic
+- geolocation
+- state management
+```
+
+Good:
+
+```text
+page.tsx
+  ↓
+HeroSection
+
+useGeolocation
+
+workersService
+```
+
+Each thing has an obvious owner.
+
+If you ask AI:
+
+> Add caching to worker fetching
+
+it immediately knows where to look.
+
+---
+
+### 3. Feature grouping
+
+Usually better than giant shared folders.
+
+Good:
+
+```text
+features/
+  search/
+  workers/
+  certificate/
+```
+
+Why?
+
+You can tell AI:
+
+> Only modify files inside features/search
+
+and it won't wander into unrelated code.
+
+---
+
+### 4. Service boundaries
+
+Bad:
+
+```text
+fetch(...)
+```
+
+scattered everywhere.
+
+Good:
+
+```text
+services/workers.ts
+services/location.ts
+```
+
+Then later:
+
+```text
+Switch to Supabase
+```
+
+AI modifies one place instead of twenty.
+
+---
+
+### 5. Predictable naming
+
+Bad:
+
+```text
+helper.ts
+utils2.ts
+newStuff.ts
+temp.ts
+```
+
+AI has to open everything.
+
+Good:
+
+```text
+worker-service.ts
+location-service.ts
+search-console.tsx
+```
+
+The filename tells the story.
+
+---
+
+### 6. Explicit types
+
+This is huge.
+
+Bad:
+
+```ts
+const worker = {}
+```
+
+Good:
+
+```ts
+type Worker = {
+  id: string
+  name: string
+  rating: number
+}
+```
+
+AI becomes far more accurate because the data model is visible.
+
+---
+
+## The biggest AI-friendly trick
+
+Create a root document:
+
+```text
+ARCHITECTURE.md
+```
+
+with:
+
+```text
+Features:
+- Search
+- Workers
+- Messaging (future)
+
+Rules:
+- Components render only
+- Hooks own state
+- Services own data access
+
+Do not fetch directly inside components.
+```
+
+Then every AI session starts with:
+
+> Read ARCHITECTURE.md before making changes.
+
+This is probably the highest ROI thing you can do.
+
+---
+
+## For your WorkerHub project
+
+Your proposed structure is already moving toward an AI-friendly architecture:
+
+```text
+features/
+services/
+hooks/
+types/
+```
+
+That's good.
+
+The one thing I'd add is:
+
+```text
+docs/
+  architecture.md
+  conventions.md
+```
+
+and keep them short.
+
+Because AI doesn't struggle most with code.
+
+It struggles with:
+
+> "How do the humans want this project organized?"
+
+If you answer that once in a document, every future AI session becomes more consistent.
+
+A useful rule of thumb:
+
+> If a new developer could understand where to make a change in 5 minutes, an AI will usually perform well there too. If a new developer would be lost, the AI will be lost faster.

@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { SearchBar } from "@/components/workers/search-bar";
 import { WorkerGrid } from "@/components/workers/worker-grid";
-import { workers } from "@/data/mock-workers";
+import { getWorkers } from "@/services/workers";
+import { EVENTS } from "@/lib/constants";
+import type { Worker } from "@/lib/types";
 
 function WorkersContent() {
   const searchParams = useSearchParams();
@@ -16,8 +18,52 @@ function WorkersContent() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState("rating");
 
+  // Page owns the workers list state
+  const [allWorkers, setAllWorkers] = useState<Worker[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchAllWorkers = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getWorkers();
+      setAllWorkers(data);
+    } catch (err) {
+      console.error("Failed to fetch workers:", err);
+      setAllWorkers([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function load() {
+      setIsLoading(true);
+      try {
+        const data = await getWorkers();
+        if (isActive) setAllWorkers(data);
+      } catch (err) {
+        console.error("Failed to fetch workers:", err);
+        if (isActive) setAllWorkers([]);
+      } finally {
+        if (isActive) setIsLoading(false);
+      }
+    }
+
+    load();
+    return () => { isActive = false; };
+  }, []);
+
+  // Listen for WORKER_ADDED to refresh locally
+  useEffect(() => {
+    const handler = () => fetchAllWorkers();
+    window.addEventListener(EVENTS.WORKER_ADDED, handler);
+    return () => window.removeEventListener(EVENTS.WORKER_ADDED, handler);
+  }, []);
+
   const filteredWorkers = useMemo(() => {
-    let result = [...workers];
+    let result = [...allWorkers];
 
     // Filter by search query
     if (searchQuery.trim()) {
@@ -43,13 +89,13 @@ function WorkersContent() {
         result.sort((a, b) => b.rating - a.rating);
         break;
       case "experience":
-        result.sort((a, b) => b.experience - a.experience);
+        result.sort((a, b) => (b.experience ?? 0) - (a.experience ?? 0));
         break;
       case "price-low":
-        result.sort((a, b) => a.hourlyRate - b.hourlyRate);
+        result.sort((a, b) => (a.hourlyRate ?? Infinity) - (b.hourlyRate ?? Infinity));
         break;
       case "price-high":
-        result.sort((a, b) => b.hourlyRate - a.hourlyRate);
+        result.sort((a, b) => (b.hourlyRate ?? 0) - (a.hourlyRate ?? 0));
         break;
       case "reviews":
         result.sort((a, b) => b.reviewCount - a.reviewCount);
@@ -57,7 +103,15 @@ function WorkersContent() {
     }
 
     return result;
-  }, [searchQuery, selectedCategory, sortBy]);
+  }, [allWorkers, searchQuery, selectedCategory, sortBy]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50/30 flex items-center justify-center">
+        <p className="text-gray-500">Loading workers...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50/30">

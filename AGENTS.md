@@ -1,7 +1,12 @@
 # AGENTS.md
+
 # Project Instructions
+Database password in.env.local do not remove this or edit, you can add below it.
+
+Do not run screenshot tests, visual regression tests, or image comparison tests unless explicitly requested.
 
 Before performing any task:
+Prefer existing library solutions over custom implementations.
 
 1. Read AGENTS.md
 2. Read DESIGN.md
@@ -12,30 +17,90 @@ If instructions conflict:
 
 AGENTS.md > DESIGN.md > SKILLS.md
 
+---
+
+## Hard Safety Rules (NEW)
+
+These rules override everything except explicit user instructions.
+
+### 1. No Silent Scope Expansion
+Do NOT:
+- Refactor unrelated code
+- “Improve architecture”
+- Rename system-wide variables
+- Optimize areas not touched by the task
+
+Reason: AI tends to “help too much” and accidentally rewrites systems.
+
+---
+
+### 2. File Change Limit
+Default maximum:
+- 3 files per task
+
+Exception:
+Only if explicitly justified in the plan.
+
+Reason: Multi-file edits are the main source of unintended breakage.
+
+---
+
+### 3. Execution Gate (IMPORTANT)
+For any change affecting:
+- Authentication
+- Database
+- Routing
+- State management
+- Payments
+- Multi-feature flows
+
+You MUST first output:
+- Goal
+- Affected files
+- Implementation plan
+- Testing approach
+- Rollback plan
+
+Then STOP and wait for confirmation.
+
+---
+
+### 4. Trivial Change Auto-Execute Rule
+If change is:
+- Text
+- Styling
+- Minor UI adjustment
+- Single file, <20 lines impact
+
+You may execute directly without planning.
+
+Reason: Planning overhead is wasteful for micro-changes.
+
+---
+
+## Project State System
+
 PROJECT_STATE.md
+
 What exists right now
 After every task:
 
 1. Read relevant project files
 2. Understand current system state
-3. Update PROJECT_STATE.md to reflect the current truth of the project
-4. Ensure PROJECT_STATE.md is a compressed, accurate snapshot of:
+3. Update PROJECT_STATE.md to reflect current truth
+4. Overwrite file completely (no append)
 
-   * current features
-   * current UI structure
-   * current constraints
-   * current assumptions
-5. Overwrite PROJECT_STATE.md completely (do NOT append)
+PROJECT_STATE.md is the ONLY runtime memory of the system.
 
-PROJECT_STATE.md is the ONLY file that represents runtime understanding of the project.
+It must always be accurate before task completion.
 
-It must always be up to date before finishing a task.
+---
 
 ## Project Purpose
 
 This project is an MVP marketplace for connecting users with local contract workers.
 
-The objective is validation, not scale.
+Objective: validation, not scale.
 
 Success metric:
 Users understand the product, browse workers, and attempt to contact them.
@@ -47,103 +112,98 @@ Spending months building infrastructure before validating demand.
 
 ## Technology Stack
 
-* Next.js (latest App Router)
-* TypeScript
-* Tailwind CSS
-* Shadcn/ui
-* Framer Motion
+- Next.js (latest App Router)
+- TypeScript
+- Tailwind CSS
+- Shadcn/ui
+- Framer Motion
 
-Future:
+Future (DO NOT IMPLEMENT YET):
+- Supabase
+- Payments
+- Messaging
 
-* Supabase
-* Payments
-* Messaging
-
-Do not implement future infrastructure unless explicitly requested.
+Reason: premature backend work kills MVP speed.
 
 ---
 
 ## Development Philosophy
 
 Prefer:
-
-* Simplicity
-* Speed
-* Readability
-* Reuse
+- Simplicity
+- Speed
+- Readability
+- Reuse of existing components
+- Minimal abstraction
 
 Avoid:
-
-* Premature optimization
-* Microservices
-* Complex architecture
-* Over-engineering
-* Enterprise patterns
-
----
-
-## UI Philosophy
-
-The product should feel:
-
-* Professional
-* Modern
-* Trustworthy
-* Fast
-
-Use existing design patterns from successful marketplaces.
-
-Avoid unusual navigation or experimental interactions.
+- Premature optimization
+- Microservices
+- Enterprise architecture patterns
+- Over-engineering
+- Parallel implementations of same feature
 
 ---
 
 ## Code Standards
 
-* TypeScript strict mode.
-* Strong typing.
-* Small focused components.
-* Clear naming.
-* Avoid deeply nested components.
-* Favor composition over complexity.
+- TypeScript strict mode
+- Strong typing where meaningful, not ceremonial
+- Small focused components
+- Clear naming
+- Avoid deep nesting
+- Prefer composition over abstraction
 
 ---
 
 ## Layout Standards
 
-* Mobile-first.
-* Responsive.
-* Consistent spacing.
-* Consistent typography.
-* Consistent card designs.
+- Mobile-first design
+- Consistent spacing system
+- Consistent typography system
+- Reusable card and list patterns
 
-Use design tokens and reusable components whenever possible.
+Do not create new design systems if existing patterns already solve the problem.
 
 ---
 
 ## AI Implementation Rules
 
 Before implementing:
+1. Check existing codebase patterns
+2. Reuse existing components
+3. Identify minimal change set
 
-1. Analyze existing code.
-2. Reuse existing patterns.
-3. Explain reasoning.
+During implementation:
+- Do not expand scope
+- Do not introduce unrelated improvements
+- Do not refactor unless required
 
-After implementing:
+After implementation:
+- List changed files
+- Briefly explain decisions
+- Note technical debt only if directly introduced
 
-1. List changed files.
-2. Explain decisions.
-3. Identify future technical debt.
-
-Never rewrite large sections of the application without justification.
-
-Always prefer modifying existing structures over creating parallel systems.
+Never rewrite large sections of the application without explicit justification.
 
 ---
 
-## Product Reminder
+## PRODUCT REALITY CHECK
 
-We are validating an idea.
+This is a validation MVP.
 
-The goal is not perfect architecture.
+Not:
+- A scalable system
+- A perfect architecture
+- An enterprise platform
 
-The goal is learning whether users want the product.
+If a decision does not help validate user demand faster, it is unnecessary.
+
+---
+
+## FINAL RULE
+
+If uncertain:
+Prefer doing less, not more.
+
+AI failure mode is over-action, not under-action.

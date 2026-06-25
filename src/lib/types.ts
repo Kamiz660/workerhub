@@ -16,9 +16,9 @@ export interface Worker {
   rating: number;
   reviewCount: number;
   location: string;
-  experience: number;
+  experience: number | null;
   jobsCompleted: number;
-  hourlyRate: number;
+  hourlyRate: number | null;
   bio: string;
   services: string[];
   verified: boolean;
