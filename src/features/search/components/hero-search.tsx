@@ -277,17 +277,8 @@ export function DesktopHeroSearch({
             Select your town, choose the work you need, and call them directly. Simple, fast & free.
           </p>
 
-          {/* Trust chips */}
-          <div className="hidden sm:flex items-center gap-4.5 mt-3.5 ml-1 text-slate-500 text-[12.5px] font-semibold">
-            <span className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold text-base">✓</span> Free to list</span>
-            <span className="text-gray-300">•</span>
-            <span className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold text-base">✓</span> No signup</span>
-            <span className="text-gray-300">•</span>
-            <span className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold text-base">✓</span> Contact workers directly</span>
-          </div>
-
           {/* Search inputs row */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-4 sm:mt-5 max-w-3xl relative z-40">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-6 sm:mt-8 max-w-3xl relative z-40">
 
             {/* Field 1: Location */}
             <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={locationDropdownRef}>
@@ -397,6 +388,21 @@ export function DesktopHeroSearch({
             alt="Local Workers"
             className="w-full h-full object-contain relative z-10 scale-[1.02] origin-bottom"
           />
+          {/* Trust badges overlay */}
+          <div className="absolute bottom-[72px] right-0 bg-white border border-gray-150 shadow-md rounded-2xl p-3 px-3.5 flex flex-col gap-1.5 z-20 hover:scale-[1.02] transition-transform w-[170px]">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
+              <span className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-[10px] font-extrabold flex-shrink-0">✓</span>
+              <span>Free to list</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
+              <span className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-[10px] font-extrabold flex-shrink-0">✓</span>
+              <span>No signup</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
+              <span className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-[10px] font-extrabold flex-shrink-0">✓</span>
+              <span>Direct contact</span>
+            </div>
+          </div>
           {/* Trusted badge overlay */}
           <div className="absolute bottom-4 right-0 bg-white border border-gray-150 shadow-lg rounded-2xl p-2.5 px-3 flex items-center gap-2 z-20 hover:scale-[1.02] transition-transform">
             <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center">
