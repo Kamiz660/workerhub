@@ -1,5 +1,5 @@
 /**
- * Workers API — Centralized data layer for all Supabase CRUD + storage operations.
+ * Workers API - Centralized data layer for all Supabase CRUD + storage operations.
  *
  * All database access must go through this file.
  * No direct Supabase calls in UI components.

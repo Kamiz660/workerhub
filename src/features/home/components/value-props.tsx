@@ -4,7 +4,7 @@ import { Gift, ShieldCheck, Phone, Timer } from "lucide-react";
  * Value Propositions Bar
  *
  * Bottom trust/benefit indicators: Free, Trusted, Direct, Quick.
- * Fully self-contained — no external state needed.
+ * Fully self-contained - no external state needed.
  */
 export function ValueProps() {
   return (
@@ -23,7 +23,7 @@ export function ValueProps() {
 
         {/* Badge 2 */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center flex-shrink-0 border border-blue-100">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-primary/10 text-primary/80 flex items-center justify-center flex-shrink-0 border border-primary/10">
             <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
           <div className="text-left">

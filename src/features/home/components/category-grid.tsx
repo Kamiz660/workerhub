@@ -32,7 +32,7 @@ const categoryButtons: CategoryButton[] = [
 interface CategoryGridProps {
   /** Callback when a category is selected (receives category label) */
   onCategorySelect: (label: string) => void;
-  /** Callback when "More" is tapped — focuses the job input */
+  /** Callback when "More" is tapped - focuses the job input */
   onMoreClick: () => void;
   /** Whether a location has been set (guards category selection) */
   hasLocation: boolean;
@@ -41,7 +41,7 @@ interface CategoryGridProps {
 }
 
 /**
- * Popular Services — Mobile Category Grid
+ * Popular Services - Mobile Category Grid
  *
  * 4×2 grid of quick-tap service category buttons.
  * Shown only on mobile (sm:hidden is handled by the parent).
@@ -72,7 +72,7 @@ export function MobileCategoryGrid({
             }}
             className="bg-white border border-gray-150 rounded-2xl shadow-sm active:scale-95 transition-all p-2 flex flex-col items-center justify-center gap-2 h-24"
           >
-            <cat.icon className="h-5 w-5 text-blue-600" />
+            <cat.icon className="h-5 w-5 text-primary" />
             <span className="text-[10px] font-extrabold text-gray-700 leading-tight">{cat.label}</span>
           </button>
         ))}
@@ -82,7 +82,7 @@ export function MobileCategoryGrid({
 }
 
 /**
- * Categories Row — Desktop
+ * Categories Row - Desktop
  *
  * Horizontal row of category buttons spread evenly.
  * Shown only on desktop (hidden sm:block is handled by the parent).
@@ -116,7 +116,7 @@ export function DesktopCategoryRow({
               sm:flex-1
               cursor-pointer group hover:-translate-y-0.5"
           >
-            <div className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+            <div className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <cat.icon className="h-4.5 w-4.5 sm:h-4 sm:w-4" />
             </div>
             <span className="text-[11px] sm:text-[12px] font-extrabold text-gray-700 tracking-wide">{cat.label}</span>

@@ -10,19 +10,18 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3.5" id="header-logo">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <HardHat className="h-4 w-4 text-white" strokeWidth={2} />
             </div>
             <span className="text-xl font-bold text-gray-900">
-              Worker<span className="text-blue-600">Hub</span>
+              Worker<span className="text-primary">Hub</span>
             </span>
           </Link>
 
           <div className="flex items-center gap-3">
-            {/* Desktop button */}
             <button
               id="header-list-btn"
-              className="hidden sm:flex border border-blue-600/40 text-blue-600 font-medium text-sm rounded-lg items-center gap-1.5 px-3 py-1.5 transition-all bg-transparent hover:bg-blue-600 hover:text-white cursor-pointer"
+              className="hidden sm:flex border border-primary/40 text-primary font-medium text-sm rounded-lg items-center gap-1.5 px-3 py-1.5 transition-all duration-150 ease-out active:scale-[0.98] bg-transparent hover:bg-primary hover:text-white cursor-pointer"
               onClick={() =>
                 window.dispatchEvent(
                   new CustomEvent(EVENTS.OPEN_ADD_WORKER_MODAL)

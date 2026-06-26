@@ -69,8 +69,8 @@ export function ContactModal({
                 className="w-full justify-start gap-3 h-14 text-base"
                 id={`contact-email-${worker.id}`}
               >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50">
-                  <Mail className="h-5 w-5 text-blue-600" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
+                  <Mail className="h-5 w-5 text-primary" />
                 </div>
                 <div className="text-left">
                   <div className="font-medium">Email</div>

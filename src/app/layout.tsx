@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AddWorkerModal } from "@/components/shared/add-worker-modal";
 
-const inter = Inter({
+const geist = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "WorkerHub — Find Local Workers",
+  title: "WorkerHub - Find Local Workers",
   description:
     "Connect with verified electricians, plumbers, carpenters, and skilled tradespeople in Koothattukulam and nearby areas. Quality work, fair prices, trusted professionals.",
   keywords: [
@@ -32,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans bg-[#f5f8fc] text-gray-900">
+    <html lang="en" className={`${geist.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-sans bg-[#fcfdfd] text-slate-900">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

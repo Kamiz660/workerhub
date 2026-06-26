@@ -217,7 +217,7 @@ export function AddWorkerModal() {
           <p className="text-gray-600 mb-6">
             Your profile is now live in the directory. Users can search and contact you directly.
           </p>
-          <Button onClick={() => { setOpen(false); resetForm(); }} className="w-full bg-blue-600 hover:bg-blue-700">
+          <Button onClick={() => { setOpen(false); resetForm(); }} className="w-full bg-primary hover:bg-primary/90">
             Done
           </Button>
         </DialogContent>
@@ -314,11 +314,11 @@ export function AddWorkerModal() {
                       onClick={() => setCategory(cat.value)}
                       className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-200 ${
                         isSelected 
-                          ? "border-blue-600 bg-blue-50 text-blue-700 shadow-sm" 
+                          ? "border-primary bg-primary/10 text-primary shadow-sm" 
                           : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
                       }`}
                     >
-                      <Icon className={`h-5 w-5 mb-1.5 ${isSelected ? "text-blue-600" : "text-gray-400"}`} />
+                      <Icon className={`h-5 w-5 mb-1.5 ${isSelected ? "text-primary" : "text-gray-400"}`} />
                       <span className="text-xs font-medium">{cat.label}</span>
                     </button>
                   );
@@ -333,7 +333,7 @@ export function AddWorkerModal() {
             <button
               type="button"
               onClick={() => setShowOptional(!showOptional)}
-              className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 w-full justify-center p-2 rounded-lg hover:bg-blue-50 transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary w-full justify-center p-2 rounded-lg hover:bg-primary/10 transition-colors"
             >
               {showOptional ? (
                 <><ChevronUp className="h-4 w-4" /> Hide optional details</>
@@ -503,7 +503,7 @@ export function AddWorkerModal() {
             </Button>
             <Button
               type="submit"
-              className="flex-[2] bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm"
+              className="flex-[2] bg-primary hover:bg-primary/90 text-white rounded-xl shadow-sm"
               disabled={submitting}
             >
               {submitting ? (

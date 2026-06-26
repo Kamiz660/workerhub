@@ -8,11 +8,11 @@ export function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1 text-center sm:text-left flex flex-col items-center sm:items-start">
             <Link href="/" className="flex items-center gap-2 mb-3 justify-center sm:justify-start">
-              <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-white font-bold text-xs">W</span>
               </div>
               <span className="text-lg font-bold text-gray-900">
-                Worker<span className="text-blue-600">Hub</span>
+                Worker<span className="text-primary">Hub</span>
               </span>
             </Link>
             <p className="text-sm text-gray-500 max-w-xs">

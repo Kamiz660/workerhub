@@ -13,7 +13,7 @@ import {
  * Renders both mobile (horizontal step indicators) and
  * desktop (vertical sidebar with step details) variants.
  *
- * Fully self-contained — no external state needed.
+ * Fully self-contained - no external state needed.
  */
 
 export function HowToUseMobile() {
@@ -25,8 +25,8 @@ export function HowToUseMobile() {
 
           {/* Step 1 */}
           <div className="flex flex-col items-center text-center flex-1 gap-1.5">
-            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
-              <MapPin className="h-4 w-4 text-blue-600" />
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <MapPin className="h-4 w-4 text-primary" />
             </div>
             <span className="text-[10px] font-bold text-gray-800 leading-tight">Select<br/>Town</span>
           </div>
@@ -83,7 +83,7 @@ export function HowToUseDesktop() {
     <aside className="hidden lg:block lg:col-span-3" id="how-to-use-desktop">
       <div className="bg-white rounded-2xl border border-gray-150 p-5 shadow-sm flex flex-col gap-5 sticky top-24">
         <h2 className="text-base font-bold text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-2.5">
-          <BookOpen className="h-4 w-4 text-blue-600" />
+          <BookOpen className="h-4 w-4 text-primary" />
           How to Use
         </h2>
 
@@ -91,10 +91,10 @@ export function HowToUseDesktop() {
           <div className="absolute left-[13px] top-4 bottom-4 w-0.5 bg-gray-100" />
 
           <div className="flex items-start gap-3 relative z-10">
-            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-50 text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-100 shadow-sm">1</div>
+            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center border border-primary/10 shadow-sm">1</div>
             <div className="pt-0.5">
               <h3 className="font-extrabold text-[13px] text-gray-900 leading-tight flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-blue-500" /> Select Your Town
+                <MapPin className="h-3.5 w-3.5 text-primary/80" /> Select Your Town
               </h3>
               <p className="text-[11px] text-gray-500 mt-1 leading-normal">Choose your location to find local workers.</p>
             </div>

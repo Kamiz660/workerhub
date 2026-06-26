@@ -16,7 +16,7 @@ import {
 import { categories, reviews } from "@/data/mock-workers";
 import type { Worker, CategoryInfo, Review } from "@/lib/types";
 
-/** Get all workers (async — fetches from Supabase). */
+/** Get all workers (async - fetches from Supabase). */
 export async function getWorkers(): Promise<Worker[]> {
   return apiGetWorkers();
 }

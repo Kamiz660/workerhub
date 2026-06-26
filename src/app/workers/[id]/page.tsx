@@ -65,7 +65,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
         <span className="ml-2 text-gray-500">Loading profile...</span>
       </div>
     );
@@ -128,13 +128,13 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                     />
                   </div>
                 ) : (
-                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl sm:text-3xl">
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-primary/20 flex items-center justify-center text-primary font-bold text-xl sm:text-3xl">
                     {initials}
                   </div>
                 )}
                 {worker.verified && (
                   <div className="absolute -bottom-1.5 -right-1.5 sm:-bottom-2 sm:-right-2 bg-white rounded-full p-0.5 sm:p-1 shadow-sm">
-                    <BadgeCheck className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                    <BadgeCheck className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   </div>
                 )}
               </div>
@@ -148,7 +148,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                         {worker.name}
                       </h1>
                       {worker.verified && (
-                        <Badge className="bg-blue-50 text-blue-700 border-blue-200 text-xs">
+                        <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
                           Verified
                         </Badge>
                       )}
@@ -211,11 +211,11 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                   </span>
                 </div>
 
-                {/* CTA (hidden on mobile — sticky bar handles it) */}
+                {/* CTA (hidden on mobile - sticky bar handles it) */}
                 <div className="mt-6 hidden sm:block">
                   <Button
                     size="lg"
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+                    className="bg-primary hover:bg-primary/90 text-white px-8"
                     onClick={() => setContactOpen(true)}
                     id="profile-contact-btn"
                   >
@@ -243,7 +243,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                   key={service}
                   className="flex items-center gap-2 text-gray-600"
                 >
-                  <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                   <span className="text-sm">{service}</span>
                 </div>
               ))}
@@ -305,12 +305,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
       {/* Sticky bottom CTA for mobile */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 p-3 px-4 z-50 sm:hidden">
         <Button
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2"
+          className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2"
           onClick={() => setContactOpen(true)}
           id="profile-contact-btn-mobile"
         >
           <Phone className="h-4 w-4" />
-          Contact {worker.name.split(" ")[0]} — Call Now
+          Contact {worker.name.split(" ")[0]} - Call Now
         </Button>
       </div>
 

@@ -229,3 +229,11 @@ If uncertain:
 Prefer doing less, not more.
 
 AI failure mode is over-action, not under-action.
+
+---
+
+## Mobile vs Desktop Separation Rules
+
+- **Treat mobile and desktop layouts as completely separate UIs.** Only the underlying functions are the same.
+- **Do NOT apply changes to both mobile and desktop layouts simultaneously unless explicitly directed.**
+- **If you are unsure whether a request applies to mobile, PC (desktop), or both, ALWAYS ask the user for clarification first.**

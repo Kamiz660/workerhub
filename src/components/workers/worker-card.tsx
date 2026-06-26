@@ -18,9 +18,9 @@ const getColorClasses = (category: string) => {
   const c = category.toLowerCase();
   if (c.includes("electrician")) {
     return {
-      avatarBg: "bg-blue-100 text-blue-700",
-      btn: "bg-blue-50 text-blue-600 hover:bg-blue-100",
-      iconColor: "text-blue-600"
+      avatarBg: "bg-primary/20 text-primary",
+      btn: "bg-primary/10 text-primary hover:bg-primary/20",
+      iconColor: "text-primary"
     };
   } else if (c.includes("plumber")) {
     return {
@@ -42,9 +42,9 @@ const getColorClasses = (category: string) => {
     };
   } else {
     return {
-      avatarBg: "bg-blue-100 text-blue-700",
-      btn: "bg-blue-50 text-blue-600 hover:bg-blue-100",
-      iconColor: "text-blue-600"
+      avatarBg: "bg-primary/20 text-primary",
+      btn: "bg-primary/10 text-primary hover:bg-primary/20",
+      iconColor: "text-primary"
     };
   }
 };
@@ -62,7 +62,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
   return (
     <>
       <Card
-        className="group hover:shadow-md transition-all duration-200 border border-gray-150 overflow-hidden bg-white rounded-2xl"
+        className="group hover:shadow-md hover:bg-primary/[0.02] hover:border-primary/30 transition-all duration-300 border border-gray-150 overflow-hidden bg-white rounded-2xl"
         id={`worker-card-${worker.id}`}
       >
         <CardContent className="p-0">
@@ -76,14 +76,14 @@ export function WorkerCard({ worker }: WorkerCardProps) {
                   </div>
                   {worker.verified && (
                     <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm">
-                      <BadgeCheck className="h-4 w-4 text-blue-600" />
+                      <BadgeCheck className="h-4 w-4 text-primary" />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors truncate">
                         {worker.name}
                       </h3>
                       <p className="text-sm text-gray-500">
@@ -120,7 +120,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
           {/* Call Now Action Button */}
           <div className="px-5 pb-5 pt-1">
             <Button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 py-5 shadow-sm border-0"
+              className="w-full bg-primary hover:bg-primary/90 text-white font-bold rounded-xl flex items-center justify-center gap-2 py-5 shadow-sm border-0"
               onClick={(e) => {
                 e.preventDefault();
                 setContactOpen(true);

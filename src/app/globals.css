@@ -55,7 +55,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.51 0.15 252);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -142,4 +142,14 @@
 body.redesign-sandbox-route > header,
 body.redesign-sandbox-route > footer {
   display: none !important;
+}
+
+/* Mount shimmer animation for CTA banner */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-200%) skewX(12deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(12deg);
+  }
 }

@@ -8,7 +8,7 @@ import type { Worker } from "@/lib/types";
 
 // Feature components
 import { MobileHeroSearch, DesktopHeroSearch } from "@/features/search/components/hero-search";
-import { CtaBanner } from "@/features/home/components/cta-banner";
+import { MobileCtaBanner, DesktopCtaBanner } from "@/features/home/components/cta-banner";
 import { HowToUseMobile, HowToUseDesktop } from "@/features/home/components/how-to-use";
 import { MobileCategoryGrid, DesktopCategoryRow } from "@/features/home/components/category-grid";
 import { WorkerResults } from "@/features/home/components/worker-results";
@@ -135,7 +135,7 @@ export default function HomePage() {
       <div className="sm:hidden">
         <MobileHeroSearch {...searchProps} />
         <div className="px-4">
-          <CtaBanner />
+          <MobileCtaBanner />
           <HowToUseMobile />
           <MobileCategoryGrid
             onCategorySelect={handleCategorySelect}
@@ -170,6 +170,7 @@ export default function HomePage() {
             }
           }}
         />
+        <DesktopCtaBanner />
       </div>
 
       {/* ── SHARED SECTIONS ── */}
