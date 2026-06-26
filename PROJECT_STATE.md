@@ -8,16 +8,17 @@
 - **Dual CTA Banners (Platform-Specific)**:
   - **Mobile**: Translucent glass-style (`bg-primary/90` + `backdrop-blur-xl`) vertical block with action buttons "List Yourself" and "Add a Worker". (Completely untouched to preserve isolated mobile layout).
   - **Desktop**: Premium white card with thin border (`border-slate-200/80`), corner glow micro-decorations, Vercel-style vertical gradient divider, once-off mount shimmer, and interactive button hovers.
-    - **Friction-Reduction Badges**: Added tags `About 1 minute` next to "Add a Worker" and `Always Free` next to "List Yourself" headers.
-    - **Genuine Database Social Proof**: The "List Yourself" button card queries the Supabase database on mount for the real worker count and displays "Join {count} workers already listed" (falls back to "Free to list your services").
-    - **Honest Footer Status**: The "Add a Worker" button card displays "Workers are joining every week" to keep the layout aligned and build credible interest.
-    - **Hover Chroma & Spring Click Feedback**: Card 2 ("List Yourself") has a hover chroma shift (`hover:bg-primary/[0.02] hover:border-primary/30 hover:shadow-md`) and both cards use scale animation (`active:scale-[0.98] transition-all duration-150 ease-out`).
+    - **Visual Priority**: Swapped styling so Card 2 ("List Yourself") takes priority with a highlighted light-blue background (`bg-[#f5f8fc] border-transparent`), and Card 1 ("Add a Worker") is secondary with a white background (`bg-white border-slate-200`).
+    - **Badge Layout**: Badges (`≈1 min` in primary blue, `Always Free` in emerald) are nested inline underneath the card titles within a vertical flex flow. This solves the layout overlapping and text truncation (`List Yourse...`) issue on smaller desktop displays.
+    - **No Database Count**: Reverted Supabase count fetching logic, import, and state to align with MVP validation speed constraints.
+    - **No Card Footers**: Removed bottom footer text lines (e.g. "Workers are joining every week") to keep clean aesthetic focus.
+    - **Hover Chroma & Spring Click Feedback**: Swapped hover configurations to match respective backgrounds, retaining scale animation (`active:scale-[0.98] transition-all duration-150 ease-out`).
 - **Worker Registration Form**: Full registration modal accessible from Header ("List Your Service"), CTA Banner ("List Yourself" / "Add a Worker"), and the results grid tail card. Features progressive disclosure UI, interactive category grid, Zod validation, profile picture upload (max 5MB), duplicate submission prevention (10m cooldown), and a hidden honeypot field.
 - **Compact Results Header**: On mobile, the available workers header is simplified into a clean single line showing `{Count} Workers` and a quick "Clear" filter link, maximizing vertical space.
 - **Simplified Worker Cards**: Removed "Tap to call" meta info and stripped the "Master" prefix from profession names (e.g. "Master Plumber" -> "Plumber") for clean, readable listings.
 - **Worker Card Hover Chroma**: Replaced plain card shadows with subtle color-temperature hover transitions (`hover:bg-primary/[0.02] hover:border-primary/30 hover:shadow-md transition-all duration-300`).
 - **Worker Results Grid Tail Card**: Enhanced the "List Your Service" grid tail card with an `Always Free` badge next to the title, active scale spring (`active:scale-[0.98] transition-all duration-150 ease-out`), and hover chroma shift (`hover:bg-primary/[0.02] hover:border-primary/30 hover:shadow-md transition-all duration-300`).
-- **Desktop Hero Search Trust Chips**: Positioned bullet-separated trust chips (`✓ Free to list • ✓ No signup • ✓ Contact workers directly`) directly below the hero description paragraph. The search row margin-top is adjusted to `mt-4 sm:mt-5` to accommodate the chips without pushing the search inputs or results grid layout down.
+- **Desktop Hero Search Trust Chips**: Positioned as a right-aligned vertical transparent text list (`Free to list ✓`, `No signup ✓`, `Contact workers directly ✓`) overlaid in the illustration column directly above the local community badge.
 - **Fixed Dropdown UX**: Dropdowns render above the main page fold using a high `z-50` stack order.
 - **Design System Update**: Redesigned UI to use `Geist` font for a modern feel. Added a semantic slate-blue `primary` brand color. Replaced generic black shadows with tinted shadows and improved padding/layout hierarchy across the search hero and CTA banner without over-engineering the MVP.
 
@@ -49,7 +50,7 @@
 
 ### Feature Modules
 - `src/features/search/components/hero-search.tsx` — MobileHeroSearch (untouched) + DesktopHeroSearch (search inputs, dropdowns, hero headline, illustration, trust chips).
-- `src/features/home/components/cta-banner.tsx` — Self-contained platform-specific CTA banners with modal triggers and dynamic database count query.
+- `src/features/home/components/cta-banner.tsx` — Self-contained platform-specific CTA banners with modal triggers.
 - `src/features/home/components/how-to-use.tsx` — HowToUseMobile (horizontal) + HowToUseDesktop (vertical sidebar).
 - `src/features/home/components/category-grid.tsx` — MobileCategoryGrid + DesktopCategoryRow with callback interface.
 - `src/features/home/components/worker-results.tsx` — Worker grid, results header, empty state, loading indicator, and enhanced "List Your Service" tail card.

@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Plus, UserPlus, Users, ChevronRight, ArrowRight } from "lucide-react";
 import { EVENTS } from "@/lib/constants";
-import { supabase } from "@/lib/supabase";
 
 /**
  * Mobile Dual CTA Banner
@@ -63,23 +61,6 @@ export function DesktopCtaBanner() {
   const openModal = () =>
     window.dispatchEvent(new CustomEvent(EVENTS.OPEN_ADD_WORKER_MODAL));
 
-  const [workerCount, setWorkerCount] = useState<number | null>(null);
-
-  useEffect(() => {
-    async function fetchCount() {
-      try {
-        const { count, error } = await supabase
-          .from("workers")
-          .select("id", { count: "exact", head: true });
-        if (error) throw error;
-        if (count !== null) setWorkerCount(count);
-      } catch (err) {
-        console.error("Error fetching worker count:", err);
-      }
-    }
-    fetchCount();
-  }, []);
-
   return (
     <div className="w-full max-w-7xl mx-auto z-40 relative px-4 sm:px-6 lg:px-8 mt-2 sm:mt-8 mb-2">
       <div className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-sm border border-slate-200/80 transition-all duration-300 flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden">
@@ -122,18 +103,23 @@ export function DesktopCtaBanner() {
           {/* Button 1: Add a Worker */}
           <button 
             onClick={openModal}
-            className="group/add relative flex-1 bg-[#f5f8fc] border border-transparent rounded-2xl p-5 text-left transition-all duration-150 ease-out active:scale-[0.98] overflow-hidden flex flex-col justify-between cursor-pointer"
+            className="group/add relative flex-1 bg-white border border-slate-200 hover:border-primary/30 hover:bg-primary/[0.02] rounded-2xl p-5 text-left transition-all duration-150 ease-out active:scale-[0.98] overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md cursor-pointer"
           >
-            {/* Mount Shimmer (runs once on load via CSS animation) */}
-            <div className="absolute inset-0 -translate-x-[200%] animate-[shimmer_2s_ease-in-out_0.5s_1_forwards] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none skew-x-12" />
+            {/* Mount Shimmer (runs once on load, slightly delayed) */}
+            <div className="absolute inset-0 -translate-x-[200%] animate-[shimmer_2s_ease-in-out_0.8s_1_forwards] bg-gradient-to-r from-transparent via-slate-100/60 to-transparent pointer-events-none skew-x-12" />
             {/* Soft Glow on hover */}
-            <div className="absolute inset-0 opacity-0 group-hover/add:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/[0.04] to-transparent pointer-events-none" />
-            
-            <div className="flex items-start justify-between relative z-10">
-              <div className="flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-primary" />
-                <span className="font-bold text-[14px] lg:text-[15px] text-primary">Add a Worker</span>
-                <span className="text-[10px] font-medium text-slate-400 bg-slate-200/60 px-1.5 py-0.5 rounded-full border border-slate-200/40 ml-1.5">About 1 minute</span>
+            <div className="absolute inset-0 opacity-0 group-hover/add:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/[0.03] to-transparent pointer-events-none" />
+
+            <div className="flex items-start justify-between relative z-10 w-full">
+              <div className="flex flex-col items-start gap-1">
+                <div className="flex items-center gap-2">
+                  <UserPlus className="w-5 h-5 text-primary" />
+                  <span className="font-bold text-[14px] lg:text-[15px] text-primary">Add a Worker</span>
+                </div>
+                {/* Friction badge below title */}
+                <div className="bg-primary/10 text-primary text-[10px] font-semibold px-2 py-0.5 rounded-full border border-primary/20 mt-1">
+                  ≈1 min
+                </div>
               </div>
               {/* Arrow with momentum slide */}
               <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-primary flex items-center justify-center text-white transition-transform duration-300 group-hover/add:translate-x-1 relative flex-shrink-0">
@@ -144,26 +130,28 @@ export function DesktopCtaBanner() {
             <p className="text-[12px] lg:text-[13px] text-slate-500 mt-3 font-medium leading-snug relative z-10">
               Know a skilled worker?<br className="hidden lg:block"/>Add them to the community.
             </p>
-            <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-slate-100/60 relative z-10 text-slate-400">
-              <span className="text-[11px] text-slate-500 font-medium">Workers are joining every week</span>
-            </div>
           </button>
 
           {/* Button 2: List Yourself */}
           <button 
             onClick={openModal}
-            className="group/list relative flex-1 bg-white border border-slate-200 hover:border-primary/30 hover:bg-primary/[0.02] rounded-2xl p-5 text-left transition-all duration-150 ease-out active:scale-[0.98] overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md cursor-pointer"
+            className="group/list relative flex-1 bg-[#f5f8fc] border border-transparent rounded-2xl p-5 text-left transition-all duration-150 ease-out active:scale-[0.98] overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md cursor-pointer"
           >
-            {/* Mount Shimmer (runs once on load, slightly delayed) */}
-            <div className="absolute inset-0 -translate-x-[200%] animate-[shimmer_2s_ease-in-out_0.8s_1_forwards] bg-gradient-to-r from-transparent via-slate-100/60 to-transparent pointer-events-none skew-x-12" />
+            {/* Mount Shimmer (runs once on load via CSS animation) */}
+            <div className="absolute inset-0 -translate-x-[200%] animate-[shimmer_2s_ease-in-out_0.5s_1_forwards] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none skew-x-12" />
             {/* Soft Glow on hover */}
-            <div className="absolute inset-0 opacity-0 group-hover/list:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/[0.03] to-transparent pointer-events-none" />
-            
-            <div className="flex items-start justify-between relative z-10">
-              <div className="flex items-center gap-2">
-                <Plus className="w-5 h-5 text-primary" />
-                <span className="font-bold text-[14px] lg:text-[15px] text-primary">List Yourself</span>
-                <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-100/50 ml-1.5">Always Free</span>
+            <div className="absolute inset-0 opacity-0 group-hover/list:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/[0.04] to-transparent pointer-events-none" />
+
+            <div className="flex items-start justify-between relative z-10 w-full">
+              <div className="flex flex-col items-start gap-1">
+                <div className="flex items-center gap-2">
+                  <Plus className="w-5 h-5 text-primary" />
+                  <span className="font-bold text-[14px] lg:text-[15px] text-primary">List Yourself</span>
+                </div>
+                {/* Friction badge below title */}
+                <div className="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-100/50 mt-1">
+                  Always Free
+                </div>
               </div>
               {/* Arrow with momentum slide */}
               <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-primary flex items-center justify-center text-white transition-transform duration-300 group-hover/list:translate-x-1 relative flex-shrink-0">
@@ -174,13 +162,6 @@ export function DesktopCtaBanner() {
             <p className="text-[12px] lg:text-[13px] text-slate-500 mt-3 font-medium leading-snug relative z-10">
               Offer your services and get<br className="hidden lg:block"/>discovered by locals.
             </p>
-            <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-slate-150 relative z-10 text-slate-400">
-              <span className="text-[11px] text-slate-500 font-medium font-semibold text-primary">
-                {workerCount !== null && workerCount > 0 
-                  ? `Join ${workerCount} workers already listed` 
-                  : "Free to list your services"}
-              </span>
-            </div>
           </button>
         </div>
       </div>

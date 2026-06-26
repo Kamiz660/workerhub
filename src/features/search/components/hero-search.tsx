@@ -389,18 +389,18 @@ export function DesktopHeroSearch({
             className="w-full h-full object-contain relative z-10 scale-[1.02] origin-bottom"
           />
           {/* Trust badges overlay */}
-          <div className="absolute bottom-[72px] right-0 bg-white border border-gray-150 shadow-md rounded-2xl p-3 px-3.5 flex flex-col gap-1.5 z-20 hover:scale-[1.02] transition-transform w-[170px]">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
-              <span className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-[10px] font-extrabold flex-shrink-0">✓</span>
+          <div className="absolute bottom-16 right-2 flex flex-col gap-2.5 z-20 items-end">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-500/95">
               <span>Free to list</span>
+              <span className="text-emerald-600 font-extrabold text-sm">✓</span>
             </div>
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
-              <span className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-[10px] font-extrabold flex-shrink-0">✓</span>
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-500/95">
               <span>No signup</span>
+              <span className="text-emerald-600 font-extrabold text-sm">✓</span>
             </div>
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
-              <span className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-[10px] font-extrabold flex-shrink-0">✓</span>
-              <span>Direct contact</span>
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-500/95">
+              <span>Contact workers directly</span>
+              <span className="text-emerald-600 font-extrabold text-sm">✓</span>
             </div>
           </div>
           {/* Trusted badge overlay */}
