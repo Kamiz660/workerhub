@@ -18,7 +18,6 @@
 - **Simplified Worker Cards**: Removed "Tap to call" meta info and stripped the "Master" prefix from profession names (e.g. "Master Plumber" -> "Plumber") for clean, readable listings.
 - **Worker Card Hover Chroma**: Replaced plain card shadows with subtle color-temperature hover transitions (`hover:bg-primary/[0.02] hover:border-primary/30 hover:shadow-md transition-all duration-300`).
 - **Worker Results Grid Tail Card**: Enhanced the "List Your Service" grid tail card with an `Always Free` badge next to the title, active scale spring (`active:scale-[0.98] transition-all duration-150 ease-out`), and hover chroma shift (`hover:bg-primary/[0.02] hover:border-primary/30 hover:shadow-md transition-all duration-300`).
-- **Desktop Hero Search Trust Chips**: Positioned as a right-aligned vertical transparent text list (`Free to list ✓`, `No signup ✓`, `Contact workers directly ✓`) overlaid in the illustration column directly above the local community badge.
 - **Fixed Dropdown UX**: Dropdowns render above the main page fold using a high `z-50` stack order.
 - **Design System Update**: Redesigned UI to use `Geist` font for a modern feel. Added a semantic slate-blue `primary` brand color. Replaced generic black shadows with tinted shadows and improved padding/layout hierarchy across the search hero and CTA banner without over-engineering the MVP.
 

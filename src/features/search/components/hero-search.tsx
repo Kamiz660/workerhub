@@ -388,21 +388,6 @@ export function DesktopHeroSearch({
             alt="Local Workers"
             className="w-full h-full object-contain relative z-10 scale-[1.02] origin-bottom"
           />
-          {/* Trust badges overlay */}
-          <div className="absolute bottom-16 right-2 flex flex-col gap-2.5 z-20 items-end">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-500/95">
-              <span>Free to list</span>
-              <span className="text-emerald-600 font-extrabold text-sm">✓</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-500/95">
-              <span>No signup</span>
-              <span className="text-emerald-600 font-extrabold text-sm">✓</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-500/95">
-              <span>Contact workers directly</span>
-              <span className="text-emerald-600 font-extrabold text-sm">✓</span>
-            </div>
-          </div>
           {/* Trusted badge overlay */}
           <div className="absolute bottom-4 right-0 bg-white border border-gray-150 shadow-lg rounded-2xl p-2.5 px-3 flex items-center gap-2 z-20 hover:scale-[1.02] transition-transform">
             <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center">
