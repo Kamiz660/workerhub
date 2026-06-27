@@ -110,11 +110,11 @@ export function DesktopCategoryRow({
                 onCategorySelect(cat.label);
               }
             }}
-            className="bg-white border border-gray-150 rounded-xl shadow-sm hover:shadow-md transition-all duration-200
+            className="bg-white border border-gray-150 rounded-xl hover:border-slate-300 transition-all duration-200
               p-3 sm:p-4
               flex flex-col items-center gap-1.5
               sm:flex-1
-              cursor-pointer group hover:-translate-y-0.5"
+              cursor-pointer group"
           >
             <div className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <cat.icon className="h-4.5 w-4.5 sm:h-4 sm:w-4" />

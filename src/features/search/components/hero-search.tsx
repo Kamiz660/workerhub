@@ -7,6 +7,8 @@ import {
   Briefcase,
   BadgeCheck,
   UserSearch,
+  Locate,
+  Loader2,
 } from "lucide-react";
 
 const categoriesList = [
@@ -87,8 +89,8 @@ export function MobileHeroSearch({
       <div className="flex justify-between items-start gap-3">
         <div className="flex-1 text-left">
           <h1 className="text-[28px] font-extrabold text-slate-900 tracking-tighter leading-[1.1]">
-            Find trusted local <br />
-            <span className="text-primary">workers</span> near you
+            Find Trusted Local <br />
+            <span className="text-primary">Workers</span> Near You
           </h1>
           <p className="mt-2 text-[13px] text-gray-500 font-medium">
             Quick. Reliable. Local.
@@ -242,6 +244,10 @@ export function DesktopHeroSearch({
   setShowLocationDropdown,
   showJobDropdown,
   setShowJobDropdown,
+  placeholderIndex,
+  placeholderVisible,
+  isLocating,
+  onGetCurrentLocation,
   onScrollToResults,
 }: HeroSearchProps) {
   const locationDropdownRef = useRef<HTMLDivElement>(null);
@@ -296,10 +302,37 @@ export function DesktopHeroSearch({
                     setShowLocationDropdown(true);
                   }}
                   onFocus={() => setShowLocationDropdown(true)}
-                  placeholder="e.g. Koothattukulam"
-                  className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
+                  placeholder=" "
+                  className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-12 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
                   autoComplete="off"
                 />
+                {!locationQuery && (
+                  <span
+                    className="absolute left-11 top-0 bottom-0 flex items-center text-sm text-gray-400 font-medium pointer-events-none transition-all duration-700 ease-in-out z-10"
+                    style={{ opacity: placeholderVisible ? 1 : 0, transform: `translateY(${placeholderVisible ? '0px' : '-6px'})` }}
+                  >
+                    {locationExamples[placeholderIndex]}
+                  </span>
+                )}
+                
+                {/* Current Location Capsule */}
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 group/tooltip flex items-center justify-center z-20">
+                  <button
+                    onClick={onGetCurrentLocation}
+                    disabled={isLocating}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    {isLocating ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
+                    ) : (
+                      <Locate className="h-4 w-4 text-emerald-600" />
+                    )}
+                  </button>
+                  {/* Tooltip helper info */}
+                  <div className="absolute bottom-[120%] right-1/2 translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 border border-slate-800">
+                    {isLocating ? "Locating..." : "Use Current Location"}
+                  </div>
+                </div>
               </div>
 
               {/* Location Suggestions */}
@@ -336,10 +369,18 @@ export function DesktopHeroSearch({
                     setShowJobDropdown(true);
                   }}
                   onFocus={() => setShowJobDropdown(true)}
-                  placeholder="e.g. Electrician, Plumber"
+                  placeholder=" "
                   className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
                   autoComplete="off"
                 />
+                {!jobQuery && (
+                  <span
+                    className="absolute left-11 top-0 bottom-0 flex items-center text-sm text-gray-400 font-medium pointer-events-none transition-all duration-700 ease-in-out z-10"
+                    style={{ opacity: placeholderVisible ? 1 : 0, transform: `translateY(${placeholderVisible ? '0px' : '-6px'})` }}
+                  >
+                    {jobExamples[placeholderIndex]}
+                  </span>
+                )}
               </div>
 
               {/* Job Suggestions */}

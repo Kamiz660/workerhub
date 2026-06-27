@@ -12,7 +12,7 @@ export function MobileCtaBanner() {
     window.dispatchEvent(new CustomEvent(EVENTS.OPEN_ADD_WORKER_MODAL));
 
   return (
-    <div className="mt-8">
+    <div className="mt-4">
       <div className="bg-primary/90 backdrop-blur-xl rounded-2xl p-6 shadow-xl relative overflow-hidden border border-white/10">
         <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-white/[0.07]" />
         <div className="absolute -bottom-5 -left-5 w-20 h-20 rounded-full bg-white/[0.04]" />
@@ -73,7 +73,7 @@ export function DesktopCtaBanner() {
         {/* LEFT SIDE: Icon + Text */}
         <div className="flex items-center gap-5 lg:gap-6 flex-1 w-full relative z-10">
           {/* Big Icon */}
-          <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 relative">
+          <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white border border-slate-200/90 shadow-sm flex items-center justify-center flex-shrink-0 relative">
             <Users className="w-8 h-8 lg:w-9 lg:h-9 text-primary/80" />
             <div className="absolute bottom-0 right-0 bg-primary text-white rounded-full p-1 border-2 border-white shadow-sm">
               <Plus className="w-3 h-3 lg:w-3.5 lg:h-3.5" strokeWidth={3} />
@@ -116,10 +116,6 @@ export function DesktopCtaBanner() {
                   <UserPlus className="w-5 h-5 text-primary" />
                   <span className="font-bold text-[14px] lg:text-[15px] text-primary">Add a Worker</span>
                 </div>
-                {/* Friction badge below title */}
-                <div className="bg-primary/10 text-primary text-[10px] font-semibold px-2 py-0.5 rounded-full border border-primary/20 mt-1">
-                  ≈1 min
-                </div>
               </div>
               {/* Arrow with momentum slide */}
               <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-primary flex items-center justify-center text-white transition-transform duration-300 group-hover/add:translate-x-1 relative flex-shrink-0">
@@ -130,6 +126,10 @@ export function DesktopCtaBanner() {
             <p className="text-[12px] lg:text-[13px] text-slate-500 mt-3 font-medium leading-snug relative z-10">
               Know a skilled worker?<br className="hidden lg:block"/>Add them to the community.
             </p>
+            {/* Friction label below subtext */}
+            <div className="text-[11px] font-bold text-primary mt-2 relative z-10">
+              ≈1 min
+            </div>
           </button>
 
           {/* Button 2: List Yourself */}
@@ -148,10 +148,6 @@ export function DesktopCtaBanner() {
                   <Plus className="w-5 h-5 text-primary" />
                   <span className="font-bold text-[14px] lg:text-[15px] text-primary">List Yourself</span>
                 </div>
-                {/* Friction badge below title */}
-                <div className="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-100/50 mt-1">
-                  Always Free
-                </div>
               </div>
               {/* Arrow with momentum slide */}
               <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-primary flex items-center justify-center text-white transition-transform duration-300 group-hover/list:translate-x-1 relative flex-shrink-0">
@@ -162,6 +158,10 @@ export function DesktopCtaBanner() {
             <p className="text-[12px] lg:text-[13px] text-slate-500 mt-3 font-medium leading-snug relative z-10">
               Offer your services and get<br className="hidden lg:block"/>discovered by locals.
             </p>
+            {/* Friction label below subtext */}
+            <div className="text-[11px] font-bold text-emerald-600 mt-2 relative z-10">
+              Always Free
+            </div>
           </button>
         </div>
       </div>

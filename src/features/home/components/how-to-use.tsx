@@ -18,7 +18,7 @@ import {
 
 export function HowToUseMobile() {
   return (
-    <div className="mt-6">
+    <div className="mt-4">
       <h2 className="text-sm font-bold text-gray-900 tracking-tight mb-3">How to Use</h2>
       <div className="bg-white border border-gray-100 shadow-sm rounded-2xl px-4 py-5">
         <div className="flex items-start justify-between">

@@ -9,7 +9,7 @@
   - **Mobile**: Translucent glass-style (`bg-primary/90` + `backdrop-blur-xl`) vertical block with action buttons "List Yourself" and "Add a Worker". (Completely untouched to preserve isolated mobile layout).
   - **Desktop**: Premium white card with thin border (`border-slate-200/80`), corner glow micro-decorations, Vercel-style vertical gradient divider, once-off mount shimmer, and interactive button hovers.
     - **Visual Priority**: Swapped styling so Card 2 ("List Yourself") takes priority with a highlighted light-blue background (`bg-[#f5f8fc] border-transparent`), and Card 1 ("Add a Worker") is secondary with a white background (`bg-white border-slate-200`).
-    - **Badge Layout**: Badges (`≈1 min` in primary blue, `Always Free` in emerald) are nested inline underneath the card titles within a vertical flex flow. This solves the layout overlapping and text truncation (`List Yourse...`) issue on smaller desktop displays.
+    - **Badge Layout**: Badges (`≈1 min` in primary blue, `Always Free` in emerald) are nested as text-only bold labels placed below the descriptive subtext paragraph inside the desktop CTA buttons, with capsule backgrounds and borders removed.
     - **No Database Count**: Reverted Supabase count fetching logic, import, and state to align with MVP validation speed constraints.
     - **No Card Footers**: Removed bottom footer text lines (e.g. "Workers are joining every week") to keep clean aesthetic focus.
     - **Hover Chroma & Spring Click Feedback**: Swapped hover configurations to match respective backgrounds, retaining scale animation (`active:scale-[0.98] transition-all duration-150 ease-out`).
@@ -20,6 +20,14 @@
 - **Worker Results Grid Tail Card**: Enhanced the "List Your Service" grid tail card with an `Always Free` badge next to the title, active scale spring (`active:scale-[0.98] transition-all duration-150 ease-out`), and hover chroma shift (`hover:bg-primary/[0.02] hover:border-primary/30 hover:shadow-md transition-all duration-300`).
 - **Fixed Dropdown UX**: Dropdowns render above the main page fold using a high `z-50` stack order.
 - **Design System Update**: Redesigned UI to use `Geist` font for a modern feel. Added a semantic slate-blue `primary` brand color. Replaced generic black shadows with tinted shadows and improved padding/layout hierarchy across the search hero and CTA banner without over-engineering the MVP.
+- **Flat Desktop Category Row**: Removed shadows (`shadow-sm`, `hover:shadow-md`) and lift translation (`hover:-translate-y-0.5`) from the desktop category cards in `category-grid.tsx` to decrease visual depth, opting for a clean, border-only layout that shifts border color (`hover:border-slate-300`) on hover.
+- **Desktop Search Locator Icon & Tooltip**: Integrated a small "Current Location" locator target icon button inside the desktop search input, styled as a circular button (`rounded-full`). Features an animated loader during location fetches, and displays a clean hover tooltip (`Use Current Location` / `Locating...`). Adjusted the input padding-right to `pr-12` to maximize input space.
+- **Animated Search Placeholders on Desktop**: Brought the cycling animated example placeholders ("e.g. Koothattukulam", "Plumber", etc.) from the mobile layout to both the location and job input fields on desktop.
+- **Unified Header Login Pill Button**: Removed the desktop "List Your Service" header button and made the "Log In" button globally visible. On desktop, it is rendered as a stylized pill button with the `LogIn` icon and text ("Log In") in blue (`text-primary`, `bg-primary/5`), providing a better UX size and visual presence. On mobile, it displays as a compact icon button to save space.
+- **Mobile Layout Polish**: Slightly reduced top spacing before `MobileCtaBanner` (`mt-4` instead of `mt-8`) and `HowToUseMobile` (`mt-4` instead of `mt-6`) to make mobile layout tighter. Capitalized the mobile hero section heading text to be "Find Trusted Local Workers Near You".
+- **Help Grow Local Network Icon Border**: Added a defined `border-slate-200/90` and `bg-white shadow-sm` to the large "Help grow your local network" icon container on PC.
+
+
 
 ## Architecture (Supabase Backend Integration Complete)
 
@@ -63,7 +71,7 @@
 - Data boundary ownership: Pages own state, hooks own side effects, workers-api owns data access, components render only.
 
 ## UI Structure
-- Sticky header: Logo on the left, avatar icon on mobile (right), desktop "List Your Service" button (right) — opens registration modal with active scale spring transition.
+- Sticky header: Logo on the left, global "Log In" button (`LogIn` icon + text on desktop, `LogIn` icon only on mobile) on the right.
 - Mobile Layout (top to bottom): Hero area with map illustration → Search card with location + job inputs → Glass CTA banner (dual buttons) → How to Use step indicators → Popular Services grid → Worker results.
 - Desktop Layout: Traditional split hero section, category buttons row, and results sidebar with How to Use.
 - Category Buttons: Grid of 8 options on mobile for easy single-tap filters.

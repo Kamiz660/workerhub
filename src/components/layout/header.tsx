@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { HardHat, Plus, CircleUserRound } from "lucide-react";
-import { EVENTS } from "@/lib/constants";
+import { HardHat, LogIn } from "lucide-react";
 
 export function Header() {
   return (
@@ -19,25 +18,14 @@ export function Header() {
           </Link>
 
           <div className="flex items-center gap-3">
+            {/* Global login button */}
             <button
-              id="header-list-btn"
-              className="hidden sm:flex border border-primary/40 text-primary font-medium text-sm rounded-lg items-center gap-1.5 px-3 py-1.5 transition-all duration-150 ease-out active:scale-[0.98] bg-transparent hover:bg-primary hover:text-white cursor-pointer"
-              onClick={() =>
-                window.dispatchEvent(
-                  new CustomEvent(EVENTS.OPEN_ADD_WORKER_MODAL)
-                )
-              }
+              id="header-login-btn"
+              className="flex items-center justify-center text-gray-500 hover:text-primary/80 active:scale-95 transition-all p-1 cursor-pointer
+                sm:bg-primary/5 sm:border sm:border-primary/15 sm:text-primary sm:hover:bg-primary/10 sm:px-3.5 sm:py-2 sm:rounded-xl sm:font-semibold sm:text-sm sm:gap-1.5"
             >
-              <Plus className="h-3.5 w-3.5" />
-              List Your Service
-            </button>
-
-            {/* Mobile avatar/login button */}
-            <button
-              id="header-mobile-login-btn"
-              className="sm:hidden flex items-center justify-center text-gray-500 active:scale-95 transition-all p-1"
-            >
-              <CircleUserRound className="h-6 w-6" strokeWidth={1.5} />
+              <LogIn className="h-6 w-6 sm:h-4.5 sm:w-4.5" strokeWidth={1.5} />
+              <span className="hidden sm:inline">Log In</span>
             </button>
           </div>
         </div>
