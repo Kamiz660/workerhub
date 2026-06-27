@@ -29,6 +29,7 @@
 - **`workers` table**: Stores all worker records. RLS enabled with public SELECT and INSERT policies.
 - **`avatars` storage bucket**: Public bucket for profile picture uploads. RLS policies allow public read and insert.
 - **Current Data**: Real workers queried dynamically on client components.
+- **Fallback Initialization**: Initialized with placeholder URL and anon-key fallbacks in `src/lib/supabase.ts` to prevent build-time prerendering crashes when environment variables are not set (e.g. during Vercel builds).
 
 ### Data Layer
 - All database access centralized in `src/lib/workers-api.ts`.
