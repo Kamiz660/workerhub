@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { RatingStars } from "@/components/shared/rating-stars";
 import { ContactModal } from "@/components/shared/contact-modal";
 import type { Worker } from "@/lib/types";
+import { useLanguage } from "@/context/language-context";
 
 interface WorkerCardProps {
   worker: Worker;
@@ -50,6 +51,7 @@ const getColorClasses = (category: string) => {
 };
 
 export function WorkerCard({ worker }: WorkerCardProps) {
+  const { t, language } = useLanguage();
   const [contactOpen, setContactOpen] = useState(false);
   const initials = worker.name
     .split(" ")
@@ -58,6 +60,16 @@ export function WorkerCard({ worker }: WorkerCardProps) {
     .toUpperCase();
 
   const colors = getColorClasses(worker.category);
+
+  // Map Malayalam locations naturally if matched
+  const locationDisplay = language === "ml" && worker.location === "Koothattukulam" 
+    ? "കൂത്താട്ടുകുളം"
+    : worker.location;
+
+  // Localize profession label
+  const professionDisplay = language === "ml"
+    ? t(`categories.${worker.category.toLowerCase()}`)
+    : worker.profession.replace(/^Master\s+/i, '');
 
   return (
     <>
@@ -87,13 +99,13 @@ export function WorkerCard({ worker }: WorkerCardProps) {
                         {worker.name}
                       </h3>
                       <p className="text-sm text-gray-500">
-                        {worker.profession.replace(/^Master\s+/i, '')}
+                        {professionDisplay}
                       </p>
                     </div>
                     <div className="flex flex-col items-end gap-1 flex-shrink-0">
                       {!worker.available && (
                         <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-500 hover:bg-gray-100">
-                          Unavailable
+                          {t("card.unavailable")}
                         </Badge>
                       )}
                     </div>
@@ -111,7 +123,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
               <div className="flex items-center gap-4 mt-4 pt-2 border-t border-gray-50">
                 <span className="flex items-center gap-1.5 text-sm text-gray-500">
                   <MapPin className="h-3.5 w-3.5 text-gray-400" />
-                  {worker.location}
+                  {locationDisplay}
                 </span>
               </div>
             </div>
@@ -120,7 +132,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
           {/* Call Now Action Button */}
           <div className="px-5 pb-5 pt-1">
             <Button
-              className="w-full bg-primary hover:bg-primary/90 text-white font-bold rounded-xl flex items-center justify-center gap-2 py-5 shadow-sm border-0"
+              className="w-full bg-primary hover:bg-primary/90 text-white font-bold rounded-xl flex items-center justify-center gap-2 py-5 shadow-sm border-0 cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
                 setContactOpen(true);
@@ -128,7 +140,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
               id={`contact-btn-${worker.id}`}
             >
               <Phone className="h-4 w-4" />
-              Call Now
+              {t("card.callNow")}
             </Button>
           </div>
         </CardContent>

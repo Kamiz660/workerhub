@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AddWorkerModal } from "@/components/shared/add-worker-modal";
+import { LanguageProvider } from "@/context/language-context";
 
 const geist = Geist({
   variable: "--font-sans",
@@ -34,10 +35,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans bg-[#fcfdfd] text-slate-900">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <AddWorkerModal />
+        <LanguageProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <AddWorkerModal />
+        </LanguageProvider>
       </body>
     </html>
   );

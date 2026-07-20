@@ -16,6 +16,28 @@ import {
 import { categories, reviews } from "@/data/mock-workers";
 import type { Worker, CategoryInfo, Review } from "@/lib/types";
 
+const malayalamToEnglishMap: Record<string, string> = {
+  // Towns
+  "കൂത്താട്ടുകുളം": "Koothattukulam",
+  "മൂവാറ്റുപുഴ": "Muvattupuzha",
+  "പിറവം": "Piravom",
+  "തൊടുപുഴ": "Thodupuzha",
+  "പെരുമ്പാവൂർ": "Perumbavoor",
+  "കോലഞ്ചേരി": "Kolenchery",
+  
+  // Jobs/Categories
+  "ഇലക്ട്രീഷ്യൻ": "electrician",
+  "പ്ലംബർ": "plumber",
+  "കാർപെന്റർ": "carpenter",
+  "പെയിന്റർ": "painter",
+  "ടെക്നീഷ്യൻ": "technician",
+  "ക്ലീനർ": "cleaner",
+  "മേസൺ": "mason",
+  "വെൽഡർ": "welder",
+  "മെക്കാനിക്": "mechanic",
+  "മറ്റുള്ളവ": "more"
+};
+
 /** Get all workers (async - fetches from Supabase). */
 export async function getWorkers(): Promise<Worker[]> {
   return apiGetWorkers();
@@ -41,7 +63,14 @@ export async function searchWorkers(
   locationQuery: string,
   jobQuery: string
 ): Promise<Worker[]> {
-  return apiSearchWorkers(locationQuery, jobQuery);
+  const normalizedLocation = locationQuery.trim();
+  const normalizedJob = jobQuery.trim();
+
+  // Map Malayalam search values back to English equivalents
+  const mappedLocation = malayalamToEnglishMap[normalizedLocation] || normalizedLocation;
+  const mappedJob = malayalamToEnglishMap[normalizedJob] || normalizedJob;
+
+  return apiSearchWorkers(mappedLocation, mappedJob);
 }
 
 /** Get all reviews for a specific worker (static mock data for now). */

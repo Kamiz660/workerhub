@@ -5,6 +5,7 @@ import { searchWorkers } from "@/services/workers";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { EVENTS } from "@/lib/constants";
 import type { Worker } from "@/lib/types";
+import { X } from "lucide-react";
 
 // Feature components
 import { MobileHeroSearch, DesktopHeroSearch } from "@/features/search/components/hero-search";
@@ -20,6 +21,8 @@ export default function HomePage() {
   const [jobQuery, setJobQuery] = useState("");
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [showJobDropdown, setShowJobDropdown] = useState(false);
+  // Offline indicator
+  const [offline, setOffline] = useState(false);
 
   // ─── Workers State (page owns this) ───
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -41,6 +44,8 @@ export default function HomePage() {
     } catch (err) {
       console.error("Failed to fetch workers:", err);
       setWorkers([]);
+      setOffline(true);
+      setTimeout(() => setOffline(false), 4000);
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +61,8 @@ export default function HomePage() {
         if (isActive) setWorkers(results);
       } catch (err) {
         console.error("Failed to fetch workers:", err);
+        setOffline(true);
+        setTimeout(() => setOffline(false), 4000);
         if (isActive) setWorkers([]);
       } finally {
         if (isActive) setIsLoading(false);
@@ -148,6 +155,21 @@ export default function HomePage() {
           />
         </div>
       </div>
+
+      {/* Offline toast */}
+      {offline && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999] bg-slate-900/95 text-white text-xs px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 border border-slate-700/50 backdrop-blur-sm transition-all duration-300">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+          <span>Offline mode active</span>
+          <button 
+            onClick={() => setOffline(false)} 
+            className="ml-1 text-slate-400 hover:text-white cursor-pointer transition-colors p-0.5"
+            aria-label="Close offline indicator"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        </div>
+      )}
 
       {/* ── DESKTOP/TABLET ONLY ── */}
       <div className="hidden sm:block">

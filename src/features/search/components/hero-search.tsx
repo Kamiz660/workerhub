@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import {
   Search,
   MapPin,
@@ -9,21 +9,28 @@ import {
   UserSearch,
   Locate,
   Loader2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 const categoriesList = [
-  { id: "electrician", label: "Electrician", icon: "🔌" },
-  { id: "plumber", label: "Plumber", icon: "🔧" },
-  { id: "carpenter", label: "Carpenter", icon: "🪚" },
-  { id: "painter", label: "Painter", icon: "🎨" },
-  { id: "technician", label: "Technician", icon: "🛠️" },
-  { id: "cleaner", label: "Cleaner", icon: "🧹" },
-  { id: "mason", label: "Mason", icon: "🧱" },
-  { id: "welder", label: "Welder", icon: "🔥" },
+  { id: "electrician", icon: "🔌" },
+  { id: "plumber", icon: "🔧" },
+  { id: "carpenter", icon: "🪚" },
+  { id: "painter", icon: "🎨" },
+  { id: "technician", icon: "🛠️" },
+  { id: "cleaner", icon: "🧹" },
+  { id: "mason", icon: "🧱" },
+  { id: "welder", icon: "🔥" },
 ];
 
-const popularTowns = [
+const popularTownsEn = [
   "Koothattukulam", "Muvattupuzha", "Piravom", "Thodupuzha", "Perumbavoor", "Kolenchery",
+];
+
+const popularTownsMl = [
+  "കൂത്താട്ടുകുളം", "മൂവാറ്റുപുഴ", "പിറവം", "തൊടുപുഴ", "പെരുമ്പാവൂർ", "കോലഞ്ചേരി",
 ];
 
 interface HeroSearchProps {
@@ -42,14 +49,14 @@ interface HeroSearchProps {
   onScrollToResults: () => void;
 }
 
-const locationExamples = ["Koothattukulam", "Muvattupuzha", "Piravom", "Thodupuzha", "Perumbavoor"];
-const jobExamples = ["Plumber", "Electrician", "Carpenter", "Painter", "Mechanic"];
+const locationExamplesEn = ["Koothattukulam", "Muvattupuzha", "Piravom", "Thodupuzha", "Perumbavoor"];
+const locationExamplesMl = ["കൂത്താട്ടുകുളം", "മൂവാറ്റുപുഴ", "പിറവം", "തൊടുപുഴ", "പെരുമ്പാവൂർ"];
+
+const jobExamplesEn = ["Plumber", "Electrician", "Carpenter", "Painter", "Mechanic"];
+const jobExamplesMl = ["പ്ലംബർ", "ഇലക്ട്രീഷ്യൻ", "കാർപെന്റർ", "പെയിന്റർ", "ടെക്നീഷ്യൻ"];
 
 /**
  * Mobile Hero + Search Card
- *
- * Contains the hero headline, map illustration, and the search card
- * with location + job inputs and their autocomplete dropdowns.
  */
 export function MobileHeroSearch({
   locationQuery,
@@ -66,8 +73,13 @@ export function MobileHeroSearch({
   onGetCurrentLocation,
   onScrollToResults,
 }: HeroSearchProps) {
+  const { language, t } = useLanguage();
   const locationDropdownRef = useRef<HTMLDivElement>(null);
   const jobDropdownRef = useRef<HTMLDivElement>(null);
+
+  const towns = language === "en" ? popularTownsEn : popularTownsMl;
+  const locationExamples = language === "en" ? locationExamplesEn : locationExamplesMl;
+  const jobExamples = language === "en" ? jobExamplesEn : jobExamplesMl;
 
   // Handle outside clicks for dropdowns
   useEffect(() => {
@@ -88,12 +100,18 @@ export function MobileHeroSearch({
       {/* Hero Area */}
       <div className="flex justify-between items-start gap-3">
         <div className="flex-1 text-left">
-          <h1 className="text-[28px] font-extrabold text-slate-900 tracking-tighter leading-[1.1]">
-            Find Trusted Local <br />
-            <span className="text-primary">Workers</span> Near You
-          </h1>
-          <p className="mt-2 text-[13px] text-gray-500 font-medium">
-            Quick. Reliable. Local.
+          {language === "en" ? (
+            <h1 className="text-[28px] font-extrabold text-slate-900 tracking-tighter leading-[1.1]">
+              Find Trusted Local <br />
+              <span className="text-primary">Workers</span> Near You
+            </h1>
+          ) : (
+            <h1 className="text-[26px] font-extrabold text-slate-900 tracking-tighter leading-[1.2]">
+              അടുത്തുള്ള <span className="text-primary">തൊഴിലാളികളെ</span> കണ്ടെത്തൂ
+            </h1>
+          )}
+          <p className="mt-2 text-[13px] text-gray-500 font-medium leading-relaxed">
+            {t("hero.subtitle")}
           </p>
         </div>
 
@@ -113,7 +131,7 @@ export function MobileHeroSearch({
         {/* Location Field */}
         <div>
           <label htmlFor="location-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
-            Your Location
+            {t("hero.locationLabel")}
           </label>
           <div className="relative w-full" ref={locationDropdownRef}>
             <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80 z-10" />
@@ -145,13 +163,14 @@ export function MobileHeroSearch({
               disabled={isLocating}
               className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 text-[11px] font-bold hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
-              {isLocating ? "Locating..." : "Current Location"}
+              {isLocating ? t("hero.locating") : t("hero.currentLocation")}
             </button>
-            
+
             {/* Location Suggestions Dropdown */}
-            {showLocationDropdown && locationQuery.trim().length > 0 && popularTowns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
-              <div className="absolute top-[105%] left-0 right-0 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden max-h-48 overflow-y-auto mt-1">
-                {popularTowns
+            {showLocationDropdown && locationQuery.trim().length > 0 && towns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
+              <div className="absolute top-[105%] left-0 right-0 w-full bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl z-50 overflow-hidden max-h-48 overflow-y-auto mt-1
+                [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
+                {towns
                   .filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
                   .map((town) => (
                     <button
@@ -170,7 +189,7 @@ export function MobileHeroSearch({
         {/* Job Field */}
         <div>
           <label htmlFor="job-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
-            What do you need?
+            {t("hero.jobLabel")}
           </label>
           <div className="relative w-full" ref={jobDropdownRef}>
             <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
@@ -184,7 +203,7 @@ export function MobileHeroSearch({
               }}
               onFocus={() => setShowJobDropdown(true)}
               placeholder=" "
-              className="w-full bg-white border border-gray-200/90 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm"
+              className="w-full bg-white border border-gray-200/90 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-10 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm"
               autoComplete="off"
             />
             {!jobQuery && (
@@ -196,23 +215,46 @@ export function MobileHeroSearch({
               </span>
             )}
 
+            {/* Dropdown toggle button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowJobDropdown(!showJobDropdown);
+              }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+            >
+              {showJobDropdown ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </button>
+
             {/* Job Suggestions Dropdown */}
-            {showJobDropdown && jobQuery.trim().length > 0 && categoriesList.filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase())).length > 0 && (
-              <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
-                {categoriesList
-                  .filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase()))
-                  .map((category) => (
-                    <button
-                      key={category.id}
-                      type="button"
-                      onClick={() => { setJobQuery(category.label.split(" ")[0]); setShowJobDropdown(false); }}
-                      className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
-                    >
-                      <span className="text-lg flex-shrink-0">{category.icon}</span>
-                      <span className="font-semibold text-gray-800 text-sm">{category.label}</span>
-                    </button>
-                  ))}
-              </div>
+            {showJobDropdown && (
+              (() => {
+                const filtered = jobQuery.trim()
+                  ? categoriesList.filter(cat => t(`categories.${cat.id}`).toLowerCase().includes(jobQuery.toLowerCase()))
+                  : categoriesList;
+                if (filtered.length === 0) return null;
+                return (
+                  <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1
+                    [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
+                    {filtered.map((category) => (
+                      <button
+                        key={category.id}
+                        type="button"
+                        onClick={() => { setJobQuery(t(`categories.${category.id}`).split(" ")[0]); setShowJobDropdown(false); }}
+                        className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
+                      >
+                        <span className="text-lg flex-shrink-0">{category.icon}</span>
+                        <span className="font-semibold text-gray-800 text-sm">{t(`categories.${category.id}`)}</span>
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()
             )}
           </div>
         </div>
@@ -222,7 +264,7 @@ export function MobileHeroSearch({
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-xl text-[15px] transition-all shadow-[0_8px_16px_-6px_rgba(0,0,0,0.1)] active:scale-[0.98] flex items-center justify-center gap-2 border-0 cursor-pointer"
         >
           <Search className="h-4.5 w-4.5" />
-          Search Workers
+          {t("hero.searchBtn")}
         </button>
       </div>
     </div>
@@ -231,9 +273,6 @@ export function MobileHeroSearch({
 
 /**
  * Desktop Hero + Search Section
- *
- * Split layout with heading + search inputs on the left
- * and illustration + trust badge on the right.
  */
 export function DesktopHeroSearch({
   locationQuery,
@@ -250,8 +289,14 @@ export function DesktopHeroSearch({
   onGetCurrentLocation,
   onScrollToResults,
 }: HeroSearchProps) {
+  const { language, t } = useLanguage();
   const locationDropdownRef = useRef<HTMLDivElement>(null);
   const jobDropdownRef = useRef<HTMLDivElement>(null);
+
+  const towns = language === "en" ? popularTownsEn : popularTownsMl;
+  const locationExamples = language === "en" ? locationExamplesEn : locationExamplesMl;
+  const jobExamples = language === "en" ? jobExamplesEn : jobExamplesMl;
+  const isMinimized = isLocating || locationQuery.trim() !== "";
 
   // Handle outside clicks for dropdowns
   useEffect(() => {
@@ -268,28 +313,37 @@ export function DesktopHeroSearch({
   }, [setShowLocationDropdown, setShowJobDropdown]);
 
   return (
-    <section className="bg-gradient-to-b from-primary/10/70 to-[#fcfdff] border-b border-gray-100/60 relative pt-4 sm:pt-10 pb-10 sm:pb-12">
+    <section className="bg-gradient-to-b from-primary/10/70 to-[#fcfdff] border-b border-gray-100/60 relative z-40 pt-4 sm:pt-10 pb-10 sm:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative">
 
         {/* Left: Heading & Search Box */}
         <div className="lg:col-span-7 text-left">
-          <h1 className="text-3xl sm:text-[3rem] font-extrabold text-slate-900 tracking-tighter leading-[1.1] flex flex-wrap items-center">
-            Find Trusted Local <span className="text-primary mx-1 sm:mx-2">Workers</span> Near You
-            <span className="inline-flex items-center justify-center ml-1 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 text-primary shadow-sm border border-primary/20">
-              <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
-            </span>
-          </h1>
+          {language === "en" ? (
+            <h1 className="text-3xl sm:text-[3rem] font-extrabold text-slate-900 tracking-tighter leading-[1.1] flex flex-wrap items-center">
+              Find Trusted Local <span className="text-primary mx-1 sm:mx-2">Workers</span> Near You
+              <span className="inline-flex items-center justify-center ml-1 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 text-primary shadow-sm border border-primary/20">
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
+              </span>
+            </h1>
+          ) : (
+            <h1 className="text-3xl sm:text-[2.75rem] font-extrabold text-slate-900 tracking-tighter leading-[1.2] flex flex-wrap items-center">
+              അടുത്തുള്ള <span className="text-primary mx-1 sm:mx-2">തൊഴിലാളികളെ</span> കണ്ടെത്തൂ
+              <span className="inline-flex items-center justify-center ml-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 text-primary shadow-sm border border-primary/20">
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
+              </span>
+            </h1>
+          )}
           <p className="hidden sm:block mt-3 text-sm sm:text-lg font-light text-gray-500 max-w-xl text-left">
-            Select your town, choose the work you need, and call them directly. Simple, fast & free.
+            {t("hero.subtitleDesktop")}
           </p>
 
           {/* Search inputs row */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-6 sm:mt-8 max-w-3xl relative z-40">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-6 sm:mt-8 max-w-4xl lg:-mr-24 relative z-40">
 
             {/* Field 1: Location */}
             <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={locationDropdownRef}>
               <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1 mt-1 sm:mt-0">
-                Location
+                1. {t("hero.locationLabel")}
               </label>
               <div className="relative w-full">
                 <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
@@ -303,7 +357,9 @@ export function DesktopHeroSearch({
                   }}
                   onFocus={() => setShowLocationDropdown(true)}
                   placeholder=" "
-                  className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-12 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
+                  className={`w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all duration-300 shadow-md ${
+                    isMinimized ? "pr-12" : "pr-[46%]"
+                  }`}
                   autoComplete="off"
                 />
                 {!locationQuery && (
@@ -315,30 +371,42 @@ export function DesktopHeroSearch({
                   </span>
                 )}
                 
-                {/* Current Location Capsule */}
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 group/tooltip flex items-center justify-center z-20">
-                  <button
-                    onClick={onGetCurrentLocation}
-                    disabled={isLocating}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {isLocating ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
+                {/* Current Location Capsule / Icon */}
+                <button
+                  type="button"
+                  onClick={onGetCurrentLocation}
+                  disabled={isLocating}
+                  className={`absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center bg-emerald-50 border border-emerald-200 text-emerald-600 font-bold hover:bg-emerald-100 active:scale-95 transition-all duration-300 ease-out disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer z-20 overflow-hidden ${
+                    isMinimized 
+                      ? "w-8 h-8 rounded-full p-0" 
+                      : "px-3 py-1.5 rounded-xl max-w-[44%] w-auto"
+                  }`}
+                  title={isMinimized ? t("hero.currentLocation") : undefined}
+                >
+                  {isMinimized && (
+                    isLocating ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-600 flex-shrink-0" />
                     ) : (
-                      <Locate className="h-4 w-4 text-emerald-600" />
-                    )}
-                  </button>
-                  {/* Tooltip helper info */}
-                  <div className="absolute bottom-[120%] right-1/2 translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 border border-slate-800">
-                    {isLocating ? "Locating..." : "Use Current Location"}
-                  </div>
-                </div>
+                      <Locate className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0" />
+                    )
+                  )}
+                  <span 
+                    className={`transition-all duration-300 ease-out truncate font-bold text-[11px] ${
+                      isMinimized 
+                        ? "max-w-0 opacity-0" 
+                        : "max-w-[120px] opacity-100"
+                    }`}
+                  >
+                    {isLocating ? t("hero.locating") : t("hero.currentLocation")}
+                  </span>
+                </button>
               </div>
 
               {/* Location Suggestions */}
-              {showLocationDropdown && locationQuery.trim().length > 0 && popularTowns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
-                <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
-                  {popularTowns
+              {showLocationDropdown && locationQuery.trim().length > 0 && towns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
+                <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1
+                  [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
+                  {towns
                     .filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
                     .map((town) => (
                       <button
@@ -356,7 +424,7 @@ export function DesktopHeroSearch({
             {/* Field 2: Job/Profession */}
             <div className="flex-1 flex flex-col items-start gap-1.5 relative z-10" ref={jobDropdownRef}>
               <label htmlFor="job-input" className="text-sm font-semibold text-gray-700 ml-1">
-                What do you need?
+                2. {t("hero.jobLabel")}
               </label>
               <div className="relative w-full">
                 <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
@@ -370,7 +438,7 @@ export function DesktopHeroSearch({
                   }}
                   onFocus={() => setShowJobDropdown(true)}
                   placeholder=" "
-                  className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-4 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
+                  className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-10 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
                   autoComplete="off"
                 />
                 {!jobQuery && (
@@ -381,25 +449,48 @@ export function DesktopHeroSearch({
                     {jobExamples[placeholderIndex]}
                   </span>
                 )}
+
+                {/* Dropdown toggle button */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowJobDropdown(!showJobDropdown);
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+                >
+                  {showJobDropdown ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
               </div>
 
               {/* Job Suggestions */}
-              {showJobDropdown && jobQuery.trim().length > 0 && categoriesList.filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase())).length > 0 && (
-                <div className="absolute top-[105%] left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1">
-                  {categoriesList
-                    .filter(cat => cat.label.toLowerCase().includes(jobQuery.toLowerCase()) || cat.id.toLowerCase().includes(jobQuery.toLowerCase()))
-                    .map((category) => (
-                      <button
-                        key={category.id}
-                        type="button"
-                        onClick={() => { setJobQuery(category.label.split(" ")[0]); setShowJobDropdown(false); }}
-                        className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
-                      >
-                        <span className="text-lg flex-shrink-0">{category.icon}</span>
-                        <span className="font-semibold text-gray-800 text-sm">{category.label}</span>
-                      </button>
-                    ))}
-                </div>
+              {showJobDropdown && (
+                (() => {
+                  const filtered = jobQuery.trim()
+                    ? categoriesList.filter(cat => t(`categories.${cat.id}`).toLowerCase().includes(jobQuery.toLowerCase()))
+                    : categoriesList;
+                  if (filtered.length === 0) return null;
+                  return (
+                    <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1
+                      [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
+                      {filtered.map((category) => (
+                        <button
+                          key={category.id}
+                          type="button"
+                          onClick={() => { setJobQuery(t(`categories.${category.id}`).split(" ")[0]); setShowJobDropdown(false); }}
+                          className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
+                        >
+                          <span className="text-lg flex-shrink-0">{category.icon}</span>
+                          <span className="font-semibold text-gray-800 text-sm">{t(`categories.${category.id}`)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  );
+                })()
               )}
             </div>
 
@@ -409,7 +500,7 @@ export function DesktopHeroSearch({
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 py-3.5 rounded-xl text-[15px] transition-all shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center justify-center gap-2 cursor-pointer h-[52px] border-0 mt-4 sm:mt-0"
             >
               <UserSearch className="h-5 w-5" />
-              Search Workers
+              {t("hero.searchBtn")}
             </button>
           </div>
 

@@ -11,11 +11,12 @@ Prefer existing library solutions over custom implementations.
 1. Read AGENTS.md
 2. Read docs/design.md
 3. Read docs/skills.md
-4. Follow all applicable guidance.
+4. Read docs/architecture.md
+5. Follow all applicable guidance.
 
 If instructions conflict:
 
-AGENTS.md > DESIGN.md > SKILLS.md
+AGENTS.md > DESIGN.md > ARCHITECTURE.md > SKILLS.md
 
 ---
 
