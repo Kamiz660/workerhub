@@ -99,14 +99,14 @@ export function MobileHeroSearch({
     <div className="sm:hidden px-4 pt-4 pb-4 bg-gradient-to-b from-primary/10/40 to-[#f5f8fc]">
       {/* Hero Area */}
       <div className="flex justify-between items-start gap-3">
-        <div className="flex-1 text-left">
+        <div className="flex-1 text-left relative z-10">
           {language === "en" ? (
             <h1 className="text-[28px] font-extrabold text-slate-900 tracking-tighter leading-[1.1]">
               Find Trusted Local <br />
               <span className="text-primary">Workers</span> Near You
             </h1>
           ) : (
-            <h1 className="text-[26px] font-extrabold text-slate-900 tracking-tighter leading-[1.2]">
+            <h1 className="text-[24px] font-extrabold text-slate-900 tracking-tighter leading-[1.2]">
               <span className="whitespace-nowrap">അടുത്തുള്ള <span className="text-primary">തൊഴിലാളികളെ</span></span> കണ്ടെത്തൂ
             </h1>
           )}
@@ -317,7 +317,7 @@ export function DesktopHeroSearch({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative">
 
         {/* Left: Heading & Search Box */}
-        <div className="lg:col-span-7 text-left">
+        <div className="lg:col-span-7 text-left relative z-20">
           {language === "en" ? (
             <h1 className="text-3xl sm:text-[3rem] font-extrabold text-slate-900 tracking-tighter leading-[1.1] flex flex-wrap items-center">
               Find Trusted Local <span className="text-primary mx-1 sm:mx-2">Workers</span> Near You
@@ -326,7 +326,7 @@ export function DesktopHeroSearch({
               </span>
             </h1>
           ) : (
-            <h1 className="text-3xl sm:text-[2.75rem] font-extrabold text-slate-900 tracking-tighter leading-[1.2] flex flex-wrap items-center">
+            <h1 className="text-3xl sm:text-[2.5rem] font-extrabold text-slate-900 tracking-tighter leading-[1.2] flex flex-wrap items-center">
               <span className="whitespace-nowrap">അടുത്തുള്ള <span className="text-primary mx-1 sm:mx-2">തൊഴിലാളികളെ</span></span> കണ്ടെത്തൂ
               <span className="inline-flex items-center justify-center ml-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 text-primary shadow-sm border border-primary/20">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
