@@ -107,7 +107,7 @@ export function MobileHeroSearch({
             </h1>
           ) : (
             <h1 className="text-[26px] font-extrabold text-slate-900 tracking-tighter leading-[1.2]">
-              അടുത്തുള്ള <span className="text-primary">തൊഴിലാളികളെ</span> കണ്ടെത്തൂ
+              <span className="whitespace-nowrap">അടുത്തുള്ള <span className="text-primary">തൊഴിലാളികളെ</span></span> കണ്ടെത്തൂ
             </h1>
           )}
           <p className="mt-2 text-[13px] text-gray-500 font-medium leading-relaxed">
@@ -327,7 +327,7 @@ export function DesktopHeroSearch({
             </h1>
           ) : (
             <h1 className="text-3xl sm:text-[2.75rem] font-extrabold text-slate-900 tracking-tighter leading-[1.2] flex flex-wrap items-center">
-              അടുത്തുള്ള <span className="text-primary mx-1 sm:mx-2">തൊഴിലാളികളെ</span> കണ്ടെത്തൂ
+              <span className="whitespace-nowrap">അടുത്തുള്ള <span className="text-primary mx-1 sm:mx-2">തൊഴിലാളികളെ</span></span> കണ്ടെത്തൂ
               <span className="inline-flex items-center justify-center ml-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 text-primary shadow-sm border border-primary/20">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>
