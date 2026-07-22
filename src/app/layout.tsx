@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AddWorkerModal } from "@/components/shared/add-worker-modal";
 import { LanguageProvider } from "@/context/language-context";
+import { AuthProvider } from "@/context/auth-context";
 
 const geist = Geist({
   variable: "--font-sans",
@@ -36,10 +37,12 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans bg-[#fcfdfd] text-slate-900">
         <LanguageProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <AddWorkerModal />
+          <AuthProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <AddWorkerModal />
+          </AuthProvider>
         </LanguageProvider>
       </body>
     </html>

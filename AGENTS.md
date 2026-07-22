@@ -126,6 +126,7 @@ No backend yet. No auth yet. No database yet.
 ## UX Philosophy
 
 - Clear > clever
+- Friction Reduction Priority: Optimize for the fewest decisions and shortest path to publishing a listing. Measure and reduce completion time, but prioritize completion rate over arbitrary time targets.
 - Familiar marketplace patterns
 - Trust first design
 - Mobile-first
@@ -208,6 +209,13 @@ After implementation:
 - Note technical debt only if directly introduced
 
 Never rewrite large sections of the application without explicit justification.
+
+- Read existing files before writing. Don't re-read unless changed.
+- Thorough in reasoning, concise in output.
+- Skip files over 100KB unless required.
+- No sycophantic openers or closing fluff.
+- No emojis or em-dashes.
+- Do not guess APIs, versions, flags, commit SHAs, or package names. Verify by reading code or docs before asserting.
 
 ---
 

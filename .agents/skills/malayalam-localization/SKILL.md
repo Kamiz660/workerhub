@@ -58,3 +58,36 @@ Malayalam text uses taller characters and runs longer than English. Follow these
   - Check for clipped text or cut-off ligatures.
   - Verify that status badges and text tags do not overflow.
   - Confirm buttons remain fully responsive on mobile layout.
+
+---
+
+## 5. Action Controls vs Marketing Copy Guidelines
+
+### Action Controls
+For buttons, links, menu items, form actions, and interactive controls, always use **imperative verbs** describing the action being performed. When the user clicks something, the label should describe the action being performed, not suggest or invite an action.
+
+- **Preferred (Imperative):**
+  - ചേർക്കുക
+  - തിരയുക
+  - കാണുക
+  - ആരംഭിക്കുക
+  - തുടരുക
+  - സമർപ്പിക്കുക
+  - ലോഗിൻ ചെയ്യുക
+  - രജിസ്റ്റർ ചെയ്യുക
+  - പോസ്റ്റ് ചെയ്യുക
+
+- **Avoid (Conversational):**
+  - ചേർക്കാം
+  - തിരയാം
+  - കാണാം
+  - തുടങ്ങാം
+  - നോക്കാം
+
+### Marketing & Informational Copy
+Conversational language ("-ാം" forms) is encouraged for hero sections, onboarding, announcements, and descriptive text.
+- *Examples:*
+  - പ്രാദേശിക തൊഴിലാളികളെ കണ്ടെത്താം.
+  - നമുക്ക് ഒരുമിച്ച് വളരാം.
+  - നിങ്ങളുടെ സേവനം കൂടുതൽ ആളുകളിലേക്ക് എത്തിക്കാം.
+
