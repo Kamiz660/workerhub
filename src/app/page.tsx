@@ -17,7 +17,7 @@ import { ValueProps } from "@/features/home/components/value-props";
 
 export default function HomePage() {
   // ─── Search State ───
-  const [locationQuery, setLocationQuery] = useState("");
+  const [locationQuery, setLocationQuery] = useState("Koothattukulam");
   const [jobQuery, setJobQuery] = useState("");
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [showJobDropdown, setShowJobDropdown] = useState(false);

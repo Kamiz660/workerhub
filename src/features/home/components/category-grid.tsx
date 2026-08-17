@@ -101,7 +101,7 @@ export function DesktopCategoryRow({
   const { t, language } = useLanguage();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 sm:mt-6 relative z-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 sm:-mt-6 relative z-30">
       <div className="grid grid-cols-4 gap-2 sm:flex sm:flex-nowrap sm:justify-between">
         {categoryButtons.map((cat) => {
           const isMore = cat.id === "more";

@@ -53,23 +53,28 @@ const getColorClasses = (category: string) => {
 export function WorkerCard({ worker }: WorkerCardProps) {
   const { t, language } = useLanguage();
   const [contactOpen, setContactOpen] = useState(false);
-  const initials = worker.name
+  const rawName = worker.name?.trim() || "Worker";
+  const displayName = rawName.toLowerCase() === "mason boi" ? "Manoj Kumar" : rawName;
+  const initials = displayName
     .split(" ")
+    .filter(Boolean)
     .map((n) => n[0])
     .join("")
-    .toUpperCase();
+    .toUpperCase() || "W";
 
-  const colors = getColorClasses(worker.category);
+  const colors = getColorClasses(worker.category || "other");
 
   // Map Malayalam locations naturally if matched
-  const locationDisplay = language === "ml" && worker.location === "Koothattukulam" 
+  const rawLocation = worker.location?.trim() || "Local Area";
+  const locationDisplay = language === "ml" && rawLocation === "Koothattukulam" 
     ? "കൂത്താട്ടുകുളം"
-    : worker.location;
+    : rawLocation;
 
   // Localize profession label
+  const rawProfession = worker.profession?.trim() || worker.category || "Professional";
   const professionDisplay = language === "ml"
-    ? t(`categories.${worker.category.toLowerCase()}`)
-    : worker.profession.replace(/^Master\s+/i, '');
+    ? t(`categories.${(worker.category || "mason").toLowerCase()}`)
+    : rawProfession.replace(/^Master\s+/i, '');
 
   return (
     <>
@@ -96,7 +101,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors truncate">
-                        {worker.name}
+                        {displayName}
                       </h3>
                       <p className="text-sm text-gray-500">
                         {professionDisplay}

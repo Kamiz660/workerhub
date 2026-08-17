@@ -313,7 +313,7 @@ export function DesktopHeroSearch({
   }, [setShowLocationDropdown, setShowJobDropdown]);
 
   return (
-    <section className="bg-gradient-to-b from-primary/10/70 to-[#fcfdff] border-b border-gray-100/60 relative z-40 pt-4 sm:pt-10 pb-10 sm:pb-12">
+    <section className="bg-gradient-to-b from-primary/10/70 to-[#fcfdff] border-b border-gray-100/60 relative z-10 pt-4 sm:pt-10 pb-10 sm:pb-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative">
 
         {/* Left: Heading & Search Box */}

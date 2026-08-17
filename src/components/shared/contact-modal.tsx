@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import type { Worker } from "@/lib/types";
 import { useLanguage } from "@/context/language-context";
+import { getTelLink, getWhatsAppLink } from "@/lib/contact";
 
 interface ContactModalProps {
   worker: Worker;
@@ -39,6 +40,9 @@ export function ContactModal({
     ? `${worker.name} typically responds within a few hours.`
     : `${worker.name} സാധാരണയായി ഏതാനും മണിക്കൂറുകൾക്കുള്ളിൽ മറുപടി നൽകും.`;
 
+  const telLink = getTelLink(worker.phone);
+  const whatsAppLink = getWhatsAppLink(worker.phone);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -48,69 +52,59 @@ export function ContactModal({
 
         {!contacted ? (
           <div className="flex flex-col gap-3 py-4">
-            <a
-              href={`tel:${worker.phone}`}
-              onClick={() => handleContact("phone")}
-              className="w-full"
-            >
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-3 h-14 text-base cursor-pointer"
-                id={`contact-phone-${worker.id}`}
+            {telLink && (
+              <a
+                href={telLink}
+                onClick={() => handleContact("phone")}
+                className="w-full"
               >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-50">
-                  <Phone className="h-5 w-5 text-green-600" />
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-sm sm:text-base">{language === "en" ? "Call" : "വിളിക്കുക"}</div>
-                  <div className="text-sm text-gray-500">{worker.phone}</div>
-                </div>
-              </Button>
-            </a>
-
-            <a
-              href={`mailto:${worker.email}`}
-              onClick={() => handleContact("email")}
-              className="w-full"
-            >
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-3 h-14 text-base cursor-pointer"
-                id={`contact-email-${worker.id}`}
-              >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
-                  <Mail className="h-5 w-5 text-primary" />
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-sm sm:text-base">{t("card.email")}</div>
-                  <div className="text-sm text-gray-500">{worker.email || "No email provided"}</div>
-                </div>
-              </Button>
-            </a>
-
-            <a
-              href={`https://wa.me/${worker.phone.replace(/[\s+]/g, "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => handleContact("whatsapp")}
-              className="w-full"
-            >
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-3 h-14 text-base cursor-pointer"
-                id={`contact-whatsapp-${worker.id}`}
-              >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-50">
-                  <MessageCircle className="h-5 w-5 text-emerald-600" />
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-sm sm:text-base">{t("card.whatsapp")}</div>
-                  <div className="text-sm text-gray-500">
-                    {language === "en" ? "Send a message" : "സന്ദേശം അയക്കുക"}
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-3 h-14 text-base cursor-pointer"
+                  id={`contact-phone-${worker.id}`}
+                >
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-50">
+                    <Phone className="h-5 w-5 text-green-600" />
                   </div>
-                </div>
-              </Button>
-            </a>
+                  <div className="text-left">
+                    <div className="font-bold text-sm sm:text-base">{language === "en" ? "Call" : "വിളിക്കുക"}</div>
+                    <div className="text-sm text-gray-500">{worker.phone}</div>
+                  </div>
+                </Button>
+              </a>
+            )}
+
+            {whatsAppLink && (
+              <a
+                href={whatsAppLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleContact("whatsapp")}
+                className="w-full"
+              >
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-3 h-14 text-base cursor-pointer"
+                  id={`contact-whatsapp-${worker.id}`}
+                >
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-50">
+                    <MessageCircle className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-sm sm:text-base">{t("card.whatsapp")}</div>
+                    <div className="text-sm text-gray-500">
+                      {language === "en" ? "Send a message" : "സന്ദേശം അയക്കുക"}
+                    </div>
+                  </div>
+                </Button>
+              </a>
+            )}
+
+            {!telLink && !whatsAppLink && (
+              <p className="text-sm text-slate-500 text-center py-4">
+                {language === "en" ? "No contact information available." : "ബന്ധപ്പെടാനുള്ള വിവരങ്ങൾ ലഭ്യമല്ല."}
+              </p>
+            )}
           </div>
         ) : (
           <div className="py-8 text-center">
