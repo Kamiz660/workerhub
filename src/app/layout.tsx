@@ -26,6 +26,11 @@ export const metadata: Metadata = {
     "home repair",
     "contractor",
   ],
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

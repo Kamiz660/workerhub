@@ -26,7 +26,8 @@
   - **Desktop**: Premium white card with thin border (`border-slate-200/80`), corner glow micro-decorations, Vercel-style vertical gradient divider, once-off mount shimmer, and interactive button hovers. Card 2 ("List Yourself") takes priority with a light-blue background.
 - **Compact Results Header**: On mobile, the available workers header is simplified into a clean single line showing `{Count} Workers` and a quick "Clear" filter link.
 - **Simplified Worker Cards**: Removed "Tap to call" meta info and stripped "Master" prefix from profession names. Hover transitions use subtle color-temperature shifts.
-- **Fixed Dropdown UX**: Dropdowns render above the main page fold using a high `z-50` stack order.
+- **Fixed Dropdown & Stacking UX**: Dropdowns render above the main page fold using a high `z-50` stack order. `DesktopCategoryRow` uses clean positive margin (`mt-4 sm:mt-6`) to prevent hero section stacking context from clipping card tops.
+- **Brand Favicon & Identity**: Favicon updated to match the navbar logo (rounded primary-blue container with centered white HardHat emblem) in vector SVG and layout metadata.
 - **Design System Update**: Redesigned UI to use `Geist` font for a modern feel. Added a semantic slate-blue `primary` brand color. Replaced generic black shadows with tinted shadows.
 
 ## Customizations & Developer Tools
