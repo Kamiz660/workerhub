@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, BadgeCheck, Phone, MessageCircle } from "lucide-react";
+import { MapPin, BadgeCheck, Phone, MessageCircle, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { getTelLink, getWhatsAppLink } from "@/lib/contact";
 import type { Worker } from "@/lib/types";
@@ -57,10 +57,11 @@ export function WorkerCard({ worker }: WorkerCardProps) {
 
           <div className="flex-1 min-w-0">
             <div>
-              <Link href={`/workers/${worker.id}`} className="block group-hover:text-primary transition-colors">
-                <h3 className="font-bold text-gray-900 text-lg leading-snug tracking-tight hover:text-primary">
+              <Link href={`/workers/${worker.id}`} className="flex items-center justify-between gap-1.5 group/name transition-colors">
+                <h3 className="font-bold text-gray-900 text-lg leading-snug tracking-tight group-hover/name:text-primary transition-colors truncate">
                   {displayName}
                 </h3>
+                <ChevronRight className="h-5 w-5 text-slate-400 group-hover/name:text-primary group-hover/name:translate-x-0.5 transition-all flex-shrink-0" />
               </Link>
               <p className="text-sm font-semibold text-primary mt-0.5">
                 {professionDisplay}

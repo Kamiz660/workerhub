@@ -42,9 +42,9 @@ interface HeroSearchProps {
   jobQuery: string;
   setJobQuery: (value: string) => void;
   showLocationDropdown: boolean;
-  setShowLocationDropdown: (value: boolean) => void;
+  setShowLocationDropdown: (value: boolean | ((prev: boolean) => boolean)) => void;
   showJobDropdown: boolean;
-  setShowJobDropdown: (value: boolean) => void;
+  setShowJobDropdown: (value: boolean | ((prev: boolean) => boolean)) => void;
   placeholderIndex: number;
   placeholderVisible: boolean;
   isLocating: boolean;
@@ -84,7 +84,7 @@ export function MobileHeroSearch({
   const locationExamples = language === "en" ? locationExamplesEn : locationExamplesMl;
   const jobExamples = language === "en" ? jobExamplesEn : jobExamplesMl;
 
-  // Handle outside clicks for dropdowns
+  // Handle outside clicks and keyboard navigation for dropdowns
   useEffect(() => {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
@@ -94,11 +94,19 @@ export function MobileHeroSearch({
         setShowJobDropdown(false);
       }
     }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setShowLocationDropdown(false);
+        setShowJobDropdown(false);
+      }
+    }
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [setShowLocationDropdown, setShowJobDropdown]);
 
@@ -142,16 +150,20 @@ export function MobileHeroSearch({
             {t("hero.locationLabel")}
           </label>
           <div className="relative w-full z-30" ref={locationDropdownRef}>
-            <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80 z-10" />
+            <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80 z-10 pointer-events-none" />
             <input
               id="location-input-mobile"
               type="text"
               value={locationQuery}
               onChange={(e) => {
                 setLocationQuery(e.target.value);
+                setShowJobDropdown(false);
                 setShowLocationDropdown(true);
               }}
-              onFocus={() => setShowLocationDropdown(true)}
+              onFocus={() => {
+                setShowJobDropdown(false);
+                setShowLocationDropdown(true);
+              }}
               placeholder=" "
               className="w-full bg-white border border-gray-200/90 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-[145px] py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm"
               autoComplete="off"
@@ -168,11 +180,7 @@ export function MobileHeroSearch({
             {/* Location Dropdown toggle button */}
             <button
               type="button"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              onTouchStart={(e) => {
+              onPointerDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
               }}
@@ -182,37 +190,39 @@ export function MobileHeroSearch({
                 if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                   document.activeElement.blur();
                 }
-                setShowLocationDropdown(!showLocationDropdown);
+                setShowJobDropdown(false);
+                setShowLocationDropdown((prev) => !prev);
               }}
-              className="absolute right-[128px] top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+              className="absolute right-[120px] top-0 bottom-0 w-9 text-gray-400 hover:text-gray-600 active:text-primary transition-colors cursor-pointer flex items-center justify-center z-30"
               aria-label="Toggle Location List"
+              aria-expanded={showLocationDropdown}
+              aria-haspopup="listbox"
+              aria-controls="mobile-location-dropdown-list"
             >
               {showLocationDropdown ? (
-                <ChevronUp className="h-4 w-4" />
+                <ChevronUp className="h-4.5 w-4.5" />
               ) : (
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4.5 w-4.5" />
               )}
             </button>
 
             {/* Current Location Capsule */}
             <button
               type="button"
-              onMouseDown={(e) => {
+              onPointerDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
               }}
-              onTouchStart={(e) => {
+              onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-              }}
-              onClick={() => {
                 if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                   document.activeElement.blur();
                 }
                 onGetCurrentLocation();
               }}
               disabled={isLocating}
-              className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 text-[11px] font-bold hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer z-10"
+              className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 text-[11px] font-bold hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer z-30"
             >
               {isLocating ? t("hero.locating") : t("hero.currentLocation")}
             </button>
@@ -225,7 +235,11 @@ export function MobileHeroSearch({
                   : towns;
                 if (filteredTowns.length === 0) return null;
                 return (
-                  <div className="absolute top-[105%] left-0 right-0 w-full bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl z-50 overflow-hidden max-h-52 overflow-y-auto mt-1
+                  <div 
+                    id="mobile-location-dropdown-list"
+                    role="listbox"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    className="absolute top-[105%] left-0 right-0 w-full bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl z-50 overflow-hidden max-h-52 overflow-y-auto mt-1 transition-opacity duration-150 ease-out motion-reduce:transition-none
                     [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
                     {filteredTowns.map((town) => {
                       const isAvailable = activeTowns.includes(town.toLowerCase());
@@ -233,18 +247,16 @@ export function MobileHeroSearch({
                         return (
                           <button
                             key={town}
+                            role="option"
+                            aria-selected={locationQuery.toLowerCase() === town.toLowerCase()}
                             type="button"
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setLocationQuery(town);
-                              setShowLocationDropdown(false);
-                            }}
-                            onTouchStart={(e) => {
+                            onPointerDown={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                             }}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
                               if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                                 document.activeElement.blur();
                               }
@@ -263,6 +275,8 @@ export function MobileHeroSearch({
                       return (
                         <div
                           key={town}
+                          role="option"
+                          aria-disabled="true"
                           className="w-full text-left px-4 py-2.5 text-xs font-semibold text-zinc-500 border-b border-zinc-100 last:border-b-0 flex items-center justify-between bg-zinc-50/90 select-none cursor-not-allowed grayscale"
                         >
                           <span className="flex items-center gap-2 text-zinc-500">
@@ -287,18 +301,22 @@ export function MobileHeroSearch({
             {t("hero.jobLabel")}
           </label>
           <div className="relative w-full z-20" ref={jobDropdownRef}>
-            <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
+            <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80 pointer-events-none" />
             <input
               id="job-input-mobile"
               type="text"
               value={jobQuery}
               onChange={(e) => {
                 setJobQuery(e.target.value);
+                setShowLocationDropdown(false);
                 setShowJobDropdown(true);
               }}
-              onFocus={() => setShowJobDropdown(true)}
+              onFocus={() => {
+                setShowLocationDropdown(false);
+                setShowJobDropdown(true);
+              }}
               placeholder=" "
-              className="w-full bg-white border border-gray-200/90 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-10 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm"
+              className="w-full bg-white border border-gray-200/90 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-12 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-sm"
               autoComplete="off"
             />
             {!jobQuery && (
@@ -313,11 +331,7 @@ export function MobileHeroSearch({
             {/* Dropdown toggle button */}
             <button
               type="button"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              onTouchStart={(e) => {
+              onPointerDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
               }}
@@ -327,15 +341,19 @@ export function MobileHeroSearch({
                 if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                   document.activeElement.blur();
                 }
-                setShowJobDropdown(!showJobDropdown);
+                setShowLocationDropdown(false);
+                setShowJobDropdown((prev) => !prev);
               }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+              className="absolute right-1 top-0 bottom-0 w-11 text-gray-400 hover:text-gray-600 active:text-primary transition-colors cursor-pointer flex items-center justify-center z-30"
               aria-label="Toggle Service List"
+              aria-expanded={showJobDropdown}
+              aria-haspopup="listbox"
+              aria-controls="mobile-job-dropdown-list"
             >
               {showJobDropdown ? (
-                <ChevronUp className="h-4 w-4" />
+                <ChevronUp className="h-4.5 w-4.5" />
               ) : (
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4.5 w-4.5" />
               )}
             </button>
 
@@ -347,7 +365,11 @@ export function MobileHeroSearch({
                   : categoriesList;
                 if (filtered.length === 0) return null;
                 return (
-                  <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1
+                  <div 
+                    id="mobile-job-dropdown-list"
+                    role="listbox"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1 transition-opacity duration-150 ease-out motion-reduce:transition-none
                     [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
                     {filtered.map((category) => {
                       const isAvailable = activeCategories.includes(category.id);
@@ -355,18 +377,16 @@ export function MobileHeroSearch({
                         return (
                           <button
                             key={category.id}
+                            role="option"
+                            aria-selected={jobQuery.toLowerCase() === t(`categories.${category.id}`).toLowerCase()}
                             type="button"
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setJobQuery(t(`categories.${category.id}`).split(" ")[0]);
-                              setShowJobDropdown(false);
-                            }}
-                            onTouchStart={(e) => {
+                            onPointerDown={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                             }}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
                               if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                                 document.activeElement.blur();
                               }
@@ -386,6 +406,8 @@ export function MobileHeroSearch({
                       return (
                         <div
                           key={category.id}
+                          role="option"
+                          aria-disabled="true"
                           className="w-full text-left px-4 py-2.5 flex items-center justify-between border-b border-zinc-100 last:border-b-0 bg-zinc-50/90 select-none cursor-not-allowed grayscale"
                         >
                           <div className="flex items-center gap-3">
@@ -444,7 +466,7 @@ export function DesktopHeroSearch({
   const jobExamples = language === "en" ? jobExamplesEn : jobExamplesMl;
   const isMinimized = isLocating || locationQuery.trim() !== "";
 
-  // Handle outside clicks for dropdowns
+  // Handle outside clicks and keyboard navigation for dropdowns
   useEffect(() => {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
@@ -454,11 +476,19 @@ export function DesktopHeroSearch({
         setShowJobDropdown(false);
       }
     }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setShowLocationDropdown(false);
+        setShowJobDropdown(false);
+      }
+    }
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [setShowLocationDropdown, setShowJobDropdown]);
 
@@ -496,16 +526,20 @@ export function DesktopHeroSearch({
                 1. {t("hero.locationLabel")}
               </label>
               <div className="relative w-full">
-                <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
+                <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80 pointer-events-none" />
                 <input
                   id="location-input"
                   type="text"
                   value={locationQuery}
                   onChange={(e) => {
                     setLocationQuery(e.target.value);
+                    setShowJobDropdown(false);
                     setShowLocationDropdown(true);
                   }}
-                  onFocus={() => setShowLocationDropdown(true)}
+                  onFocus={() => {
+                    setShowJobDropdown(false);
+                    setShowLocationDropdown(true);
+                  }}
                   placeholder=" "
                   className={`w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all duration-300 shadow-md ${
                     isMinimized ? "pr-12" : "pr-[46%]"
@@ -524,19 +558,26 @@ export function DesktopHeroSearch({
                 {/* Location Dropdown toggle button */}
                 <button
                   type="button"
-                  onMouseDown={(e) => {
+                  onPointerDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    setShowLocationDropdown(!showLocationDropdown);
+                    if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+                      document.activeElement.blur();
+                    }
+                    setShowJobDropdown(false);
+                    setShowLocationDropdown((prev) => !prev);
                   }}
                   className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20 ${
                     isMinimized ? "right-11" : "right-[130px]"
                   }`}
                   aria-label="Toggle Location List"
+                  aria-expanded={showLocationDropdown}
+                  aria-haspopup="listbox"
+                  aria-controls="desktop-location-dropdown-list"
                 >
                   {showLocationDropdown ? (
                     <ChevronUp className="h-4 w-4" />
@@ -548,7 +589,16 @@ export function DesktopHeroSearch({
                 {/* Current Location Capsule / Icon */}
                 <button
                   type="button"
-                  onClick={onGetCurrentLocation}
+                  onPointerDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onClick={() => {
+                    if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+                      document.activeElement.blur();
+                    }
+                    onGetCurrentLocation();
+                  }}
                   disabled={isLocating}
                   className={`absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center bg-emerald-50 border border-emerald-200 text-emerald-600 font-bold hover:bg-emerald-100 active:scale-95 transition-all duration-300 ease-out disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer z-20 overflow-hidden ${
                     isMinimized 
@@ -584,7 +634,11 @@ export function DesktopHeroSearch({
                     : towns;
                   if (filteredTowns.length === 0) return null;
                   return (
-                    <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1
+                    <div 
+                      id="desktop-location-dropdown-list"
+                      role="listbox"
+                      onPointerDown={(e) => e.stopPropagation()}
+                      className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1 transition-opacity duration-150 ease-out motion-reduce:transition-none
                       [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
                     {filteredTowns.map((town) => {
                       const isAvailable = activeTowns.includes(town.toLowerCase());
@@ -592,13 +646,19 @@ export function DesktopHeroSearch({
                         return (
                           <button
                             key={town}
+                            role="option"
+                            aria-selected={locationQuery.toLowerCase() === town.toLowerCase()}
                             type="button"
-                            onMouseDown={(e) => {
+                            onPointerDown={(e) => {
                               e.preventDefault();
-                              setLocationQuery(town);
-                              setShowLocationDropdown(false);
+                              e.stopPropagation();
                             }}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+                                document.activeElement.blur();
+                              }
                               setLocationQuery(town);
                               setShowLocationDropdown(false);
                             }}
@@ -614,6 +674,8 @@ export function DesktopHeroSearch({
                       return (
                         <div
                           key={town}
+                          role="option"
+                          aria-disabled="true"
                           className="w-full text-left px-4 py-2.5 text-sm font-semibold text-zinc-500 border-b border-zinc-100 last:border-b-0 flex items-center justify-between bg-zinc-50/90 select-none cursor-not-allowed grayscale"
                         >
                           <span className="flex items-center gap-2 text-zinc-500">
@@ -637,16 +699,20 @@ export function DesktopHeroSearch({
               2. {t("hero.jobLabel")}
             </label>
             <div className="relative w-full">
-              <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
+              <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80 pointer-events-none" />
               <input
                 id="job-input"
                 type="text"
                 value={jobQuery}
                 onChange={(e) => {
                   setJobQuery(e.target.value);
+                  setShowLocationDropdown(false);
                   setShowJobDropdown(true);
                 }}
-                onFocus={() => setShowJobDropdown(true)}
+                onFocus={() => {
+                  setShowLocationDropdown(false);
+                  setShowJobDropdown(true);
+                }}
                 placeholder=" "
                 className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-10 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
                 autoComplete="off"
@@ -663,17 +729,24 @@ export function DesktopHeroSearch({
               {/* Dropdown toggle button */}
               <button
                 type="button"
-                onMouseDown={(e) => {
+                onPointerDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                 }}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  setShowJobDropdown(!showJobDropdown);
+                  if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur();
+                  }
+                  setShowLocationDropdown(false);
+                  setShowJobDropdown((prev) => !prev);
                 }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
                 aria-label="Toggle Service List"
+                aria-expanded={showJobDropdown}
+                aria-haspopup="listbox"
+                aria-controls="desktop-job-dropdown-list"
               >
                   {showJobDropdown ? (
                     <ChevronUp className="h-4 w-4" />
@@ -691,7 +764,11 @@ export function DesktopHeroSearch({
                     : categoriesList;
                   if (filtered.length === 0) return null;
                   return (
-                    <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1
+                    <div 
+                      id="desktop-job-dropdown-list"
+                      role="listbox"
+                      onPointerDown={(e) => e.stopPropagation()}
+                      className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1 transition-opacity duration-150 ease-out motion-reduce:transition-none
                       [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
                       {filtered.map((category) => {
                         const isAvailable = activeCategories.includes(category.id);
@@ -699,13 +776,19 @@ export function DesktopHeroSearch({
                           return (
                             <button
                               key={category.id}
+                              role="option"
+                              aria-selected={jobQuery.toLowerCase() === t(`categories.${category.id}`).toLowerCase()}
                               type="button"
-                              onMouseDown={(e) => {
+                              onPointerDown={(e) => {
                                 e.preventDefault();
-                                setJobQuery(t(`categories.${category.id}`).split(" ")[0]);
-                                setShowJobDropdown(false);
+                                e.stopPropagation();
                               }}
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+                                  document.activeElement.blur();
+                                }
                                 setJobQuery(t(`categories.${category.id}`).split(" ")[0]);
                                 setShowJobDropdown(false);
                               }}
@@ -722,6 +805,8 @@ export function DesktopHeroSearch({
                         return (
                           <div
                             key={category.id}
+                            role="option"
+                            aria-disabled="true"
                             className="w-full text-left px-4 py-2.5 flex items-center justify-between border-b border-zinc-100 last:border-b-0 bg-zinc-50/90 select-none cursor-not-allowed grayscale"
                           >
                             <div className="flex items-center gap-3">
