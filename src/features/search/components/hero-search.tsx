@@ -103,27 +103,28 @@ export function MobileHeroSearch({
   }, [setShowLocationDropdown, setShowJobDropdown]);
 
   return (
-    <div className="sm:hidden px-4 pt-6 pb-6 bg-gradient-to-b from-primary/10/40 to-[#f5f8fc]">
+    <div className="sm:hidden px-4 pt-2.5 pb-5 bg-gradient-to-b from-primary/10/40 to-[#f5f8fc]">
       {/* Hero Area */}
-      <div className="flex justify-between items-center gap-3 py-2 mb-4">
-        <div className="flex-1 text-left relative z-10 py-1">
+      <div className="flex justify-between items-center gap-3 pt-1 pb-2 mb-3">
+        <div className="flex-1 text-left relative z-10">
           {language === "en" ? (
-            <h1 className="text-[28px] font-extrabold text-slate-900 tracking-tight leading-[1.18]">
-              Find Trusted Local <br />
-              <span className="text-primary">Workers</span> Near You
+            <h1 className="text-[27px] font-extrabold text-slate-900 tracking-tight leading-[1.18]">
+              <span className="whitespace-nowrap">Find Trusted Local</span> <br />
+              <span className="whitespace-nowrap"><span className="text-primary">Workers</span> Near You</span>
             </h1>
           ) : (
-            <h1 className="text-[24px] font-extrabold text-slate-900 tracking-tight leading-[1.25]">
-              <span className="whitespace-nowrap">അടുത്തുള്ള <span className="text-primary">തൊഴിലാളികളെ</span></span> കണ്ടെത്തൂ
+            <h1 className="text-[24px] font-extrabold text-slate-900 tracking-tight leading-[1.22]">
+              <span className="whitespace-nowrap">അടുത്തുള്ള <span className="text-primary">വിശ്വസ്തരായ</span></span> <br />
+              <span className="whitespace-nowrap">തൊഴിലാളികളെ കണ്ടെത്തൂ</span>
             </h1>
           )}
-          <p className="mt-2.5 text-[13px] text-gray-500 font-medium leading-relaxed">
+          <p className="mt-2 text-[13px] text-gray-500 font-medium leading-relaxed">
             {t("hero.subtitle")}
           </p>
         </div>
 
         {/* Map Illustration */}
-        <div className="w-[120px] h-[120px] relative flex-shrink-0 self-center">
+        <div className="w-[110px] h-[110px] relative flex-shrink-0 self-center">
           <img
             src="/mobile_map_illustration.png"
             alt="Local Workers"
