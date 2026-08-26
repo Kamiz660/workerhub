@@ -13,7 +13,7 @@ import {
   getWorkerById as apiGetWorkerById,
   searchWorkers as apiSearchWorkers,
 } from "@/lib/workers-api";
-import { workers as localSeedWorkers, categories, reviews } from "@/data/mock-workers";
+import { workers as localSeedWorkers, categories, reviews } from "@/data/workers";
 import type { Worker, CategoryInfo, Review } from "@/lib/types";
 
 /**

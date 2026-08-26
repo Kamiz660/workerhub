@@ -137,7 +137,7 @@ export function MobileHeroSearch({
         
         {/* Location Field */}
         <div className="relative z-30">
-          <label htmlFor="location-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
+          <label htmlFor="location-input-mobile" className="block text-[15px] font-bold text-gray-900 mb-2">
             {t("hero.locationLabel")}
           </label>
           <div className="relative w-full z-30" ref={locationDropdownRef}>
@@ -174,7 +174,7 @@ export function MobileHeroSearch({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setShowLocationDropdown((prev) => !prev);
+                setShowLocationDropdown(!showLocationDropdown);
               }}
               className="absolute right-[128px] top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
               aria-label="Toggle Location List"
@@ -254,7 +254,7 @@ export function MobileHeroSearch({
 
         {/* Job Field */}
         <div className="relative z-20">
-          <label htmlFor="job-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
+          <label htmlFor="job-input-mobile" className="block text-[15px] font-bold text-gray-900 mb-2">
             {t("hero.jobLabel")}
           </label>
           <div className="relative w-full z-20" ref={jobDropdownRef}>
@@ -291,7 +291,7 @@ export function MobileHeroSearch({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setShowJobDropdown((prev) => !prev);
+                setShowJobDropdown(!showJobDropdown);
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
               aria-label="Toggle Service List"
@@ -448,7 +448,7 @@ export function DesktopHeroSearch({
 
             {/* Field 1: Location */}
             <div className="flex-1 flex flex-col items-start gap-1.5 relative z-30" ref={locationDropdownRef}>
-              <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1 mt-1 sm:mt-0">
+              <label htmlFor="location-input" className="text-base font-bold text-gray-900 ml-1 mt-1 sm:mt-0">
                 1. {t("hero.locationLabel")}
               </label>
               <div className="relative w-full">
@@ -487,7 +487,7 @@ export function DesktopHeroSearch({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    setShowLocationDropdown((prev) => !prev);
+                    setShowLocationDropdown(!showLocationDropdown);
                   }}
                   className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20 ${
                     isMinimized ? "right-11" : "right-[130px]"
@@ -542,95 +542,95 @@ export function DesktopHeroSearch({
                   return (
                     <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1
                       [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
-                      {filteredTowns.map((town) => {
-                        const isAvailable = activeTowns.includes(town.toLowerCase());
-                        if (isAvailable) {
-                          return (
-                            <button
-                              key={town}
-                              type="button"
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                setLocationQuery(town);
-                                setShowLocationDropdown(false);
-                              }}
-                              onClick={() => {
-                                setLocationQuery(town);
-                                setShowLocationDropdown(false);
-                              }}
-                              className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors text-sm font-bold text-gray-900 border-b border-gray-100 last:border-b-0 flex items-center justify-between cursor-pointer"
-                            >
-                              <span className="flex items-center gap-2">
-                                <MapPin className="h-3.5 w-3.5 text-primary" /> {town}
-                              </span>
-                              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] flex-shrink-0 mr-1" title={language === "en" ? "Available" : "ലഭ്യമാണ്"} />
-                            </button>
-                          );
-                        }
+                    {filteredTowns.map((town) => {
+                      const isAvailable = activeTowns.includes(town.toLowerCase());
+                      if (isAvailable) {
                         return (
-                          <div
+                          <button
                             key={town}
-                            className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-600 border-b border-gray-100 last:border-b-0 flex items-center justify-between bg-slate-50/70 select-none cursor-not-allowed"
+                            type="button"
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              setLocationQuery(town);
+                              setShowLocationDropdown(false);
+                            }}
+                            onClick={() => {
+                              setLocationQuery(town);
+                              setShowLocationDropdown(false);
+                            }}
+                            className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors text-sm font-bold text-gray-900 border-b border-gray-100 last:border-b-0 flex items-center justify-between cursor-pointer"
                           >
-                            <span className="flex items-center gap-2 text-slate-500">
-                              <MapPin className="h-3.5 w-3.5 text-slate-400" /> {town}
+                            <span className="flex items-center gap-2">
+                              <MapPin className="h-3.5 w-3.5 text-primary" /> {town}
                             </span>
-                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-200/90 text-slate-600">
-                              {language === "en" ? "Coming Soon" : "ഉടൻ വരും"}
-                            </span>
-                          </div>
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] flex-shrink-0 mr-1" title={language === "en" ? "Available" : "ലഭ്യമാണ്"} />
+                          </button>
                         );
-                      })}
-                    </div>
-                  );
-                })()
-              )}
-            </div>
+                      }
+                      return (
+                        <div
+                          key={town}
+                          className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-600 border-b border-gray-100 last:border-b-0 flex items-center justify-between bg-slate-50/70 select-none cursor-not-allowed"
+                        >
+                          <span className="flex items-center gap-2 text-slate-500">
+                            <MapPin className="h-3.5 w-3.5 text-slate-400" /> {town}
+                          </span>
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-200/90 text-slate-600">
+                            {language === "en" ? "Coming Soon" : "ഉടൻ വരും"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()
+            )}
+          </div>
 
-            {/* Field 2: Job/Profession */}
-            <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={jobDropdownRef}>
-              <label htmlFor="job-input" className="text-sm font-semibold text-gray-700 ml-1">
-                2. {t("hero.jobLabel")}
-              </label>
-              <div className="relative w-full">
-                <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
-                <input
-                  id="job-input"
-                  type="text"
-                  value={jobQuery}
-                  onChange={(e) => {
-                    setJobQuery(e.target.value);
-                    setShowJobDropdown(true);
-                  }}
-                  onFocus={() => setShowJobDropdown(true)}
-                  placeholder=" "
-                  className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-10 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
-                  autoComplete="off"
-                />
-                {!jobQuery && (
-                  <span
-                    className="absolute left-11 top-0 bottom-0 flex items-center text-sm text-gray-400 font-medium pointer-events-none transition-all duration-700 ease-in-out z-10"
-                    style={{ opacity: placeholderVisible ? 1 : 0, transform: `translateY(${placeholderVisible ? '0px' : '-6px'})` }}
-                  >
-                    {jobExamples[placeholderIndex]}
-                  </span>
-                )}
-
-                {/* Dropdown toggle button */}
-                <button
-                  type="button"
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setShowJobDropdown((prev) => !prev);
-                  }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
-                  aria-label="Toggle Service List"
+          {/* Field 2: Job/Profession */}
+          <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={jobDropdownRef}>
+            <label htmlFor="job-input" className="text-base font-bold text-gray-900 ml-1">
+              2. {t("hero.jobLabel")}
+            </label>
+            <div className="relative w-full">
+              <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
+              <input
+                id="job-input"
+                type="text"
+                value={jobQuery}
+                onChange={(e) => {
+                  setJobQuery(e.target.value);
+                  setShowJobDropdown(true);
+                }}
+                onFocus={() => setShowJobDropdown(true)}
+                placeholder=" "
+                className="w-full bg-white border border-gray-200/90 hover:border-gray-300 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-10 py-3.5 text-sm font-semibold text-gray-900 outline-none transition-all shadow-md"
+                autoComplete="off"
+              />
+              {!jobQuery && (
+                <span
+                  className="absolute left-11 top-0 bottom-0 flex items-center text-sm text-gray-400 font-medium pointer-events-none transition-all duration-700 ease-in-out z-10"
+                  style={{ opacity: placeholderVisible ? 1 : 0, transform: `translateY(${placeholderVisible ? '0px' : '-6px'})` }}
                 >
+                  {jobExamples[placeholderIndex]}
+                </span>
+              )}
+
+              {/* Dropdown toggle button */}
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowJobDropdown(!showJobDropdown);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+                aria-label="Toggle Service List"
+              >
                   {showJobDropdown ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (

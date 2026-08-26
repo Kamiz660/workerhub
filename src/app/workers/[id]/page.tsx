@@ -308,13 +308,10 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                       )}
                     </div>
 
-                    {/* Star Rating & Review Count */}
-                    <div className="mt-2.5 flex items-center justify-center sm:justify-start">
-                      <RatingStars
-                        rating={worker.rating}
-                        reviewCount={worker.reviewCount}
-                        size="md"
-                      />
+                    {/* Location Badge */}
+                    <div className="mt-2.5 flex items-center justify-center sm:justify-start gap-1 text-sm font-medium text-slate-600">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <span>{locationDisplay}</span>
                     </div>
                   </div>
                 </div>
@@ -331,10 +328,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
 
                   <div className="bg-slate-50/90 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
                     <span className="text-slate-500 text-[11px] font-medium flex items-center justify-center sm:justify-start gap-1">
-                      <Briefcase className="h-3.5 w-3.5 text-slate-400" />
-                      {language === "en" ? "Experience" : "പരിചയം"}
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                      {language === "en" ? "Status" : "ലഭ്യത"}
                     </span>
-                    <span className="font-bold text-slate-800 mt-1 truncate">{experienceText}</span>
+                    <span className="font-bold text-emerald-700 mt-1 truncate">
+                      {availabilityText}
+                    </span>
                   </div>
 
                   <div className="bg-slate-50/90 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">

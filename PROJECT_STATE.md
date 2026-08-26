@@ -10,7 +10,7 @@
   - **Resilient Supabase Sync & Timeout Guard**: Asynchronously queries Supabase with a 1.5s timeout and merges newly registered remote workers (Supabase records take precedence, deduplicated by `id`).
   - **100% Offline & Error Fallback**: If Supabase is offline or times out, searches and profile lookups seamlessly return local seed matches without showing empty directory states.
   - **Modular Migration Switch**: `USE_LOCAL_CACHE_FIRST` flag enables switching back to pure direct Supabase queries with a single line change post-validation.
-- **Verified Service Providers in Koothattukulam**:
+- **Verified Live Service Providers in Koothattukulam (`src/data/workers.ts`)**:
   - **Vishnu Sajeevan** (`w25`): Electrician & Plumber (`+91 95269 48845`, `vishnusajeevan38@gmail.com`). Matches searches for both Electrician and Plumber.
   - **Ken Mathew** (`w26`): Electrician & Plumber (`+91 98464 78464`, `kenkm07@gmail.com`). Matches searches for both Electrician and Plumber.
   - **Sajeev P K** (`w27`): Electrician & Plumber (`+91 99613 50862`). Matches searches for both Electrician and Plumber.
@@ -55,14 +55,15 @@
   - **Mobile**: Translucent glass-style (`bg-primary/90` + `backdrop-blur-xl`) vertical block with action buttons "List Yourself" and "Add a Worker".
   - **Desktop**: Premium white card with thin border (`border-slate-200/80`), corner glow micro-decorations, Vercel-style vertical gradient divider, once-off mount shimmer, and interactive button hovers. Card 2 ("List Yourself") takes priority with a light-blue background.
 - **Compact Results Header**: On mobile, the available workers header is simplified into a clean single line showing `{Count} Workers` and a quick "Clear" filter link.
-- **Spacious Human-First Worker Cards**:
-  - **Human Identity & Credibility**: Elevated person card with `rounded-3xl` container, generous `w-16 h-16 rounded-2xl` gradient avatar with verified shield, prominent trade title, and rating + location row.
-  - **Live Availability Signal**: Pulsing emerald live beacon (*"Available for calls & visits"*) with experience tag.
-  - **Service Specialties**: Displays key service tag pills (e.g. `House Wiring`, `Pipe Repair`, `Inverter Setup`) directly on the card so users understand exact capabilities at a glance.
+- **Spacious Authentic Human Worker Cards**:
+  - **Human Identity & Zero Artificial Data**: Elevated person card with `rounded-3xl` container, generous `w-16 h-16 rounded-2xl` gradient avatar with verified shield, prominent trade title, and regional location badge (**"Koothattukulam · Nearby areas"** / **"കൂത്താട്ടുകുളം · സമീപ പ്രദേശങ്ങൾ"**). All fake ratings and artificial experience numbers stripped.
+  - **Live Availability Signal**: Pulsing emerald live beacon (*"Available for calls & visits"*).
+  - **High-Demand Work & Services Chips**: Displays the top statistically requested residential works (`House Wiring & Repairs`, `Pipe Leak & Tap Repair`, `Water Tank & Motor Setup`) with a `+ Others` chip appended at the end.
+  - **Phone & Identity Verification Trust Badge**: A prominent, left-aligned blue trust badge (*"Phone & Identity Verified"*) positioned directly above the Call Now & WhatsApp CTA action buttons.
   - **Dual Direct Actions**: High-contrast **"Call Now"** direct dialer button and emerald **"WhatsApp"** direct chat button with generous padding and micro-interactions.
   - **Spacious Grid Rhythm**: Relaxed `gap-6` spacing across desktop and mobile, with proportional `rounded-3xl` tail card for listing services.
 - **Hero Search Labels & Dropdown Toggles**:
-  - **Concise Form Labels**: Updated hero search input field labels to **"Location"** (`"സ്ഥലം"`) and **"Service"** (`"സേവനം"`).
+  - **Prominent Form Labels**: Updated hero search input field labels to bold larger typography (**"Location"** / **"സ്ഥലം"** and **"Service"** / **"സേവനം"**).
   - **Reliable 2nd Click Dropdown Toggle**: Dropdown toggle buttons prevent input focus conflict and use functional state updates, ensuring clicking a 2nd time cleanly closes the dropdown menu across mobile and desktop.
 - **Navbar & Navigation Interaction**:
   - **Smooth Scroll to Top**: Clicking the WorkerHub logo in the top navbar smoothly scrolls the window to top with the search hero in full view.

@@ -90,8 +90,8 @@ describe("Feature 004: Browse Workers", () => {
 
     expect(screen.getByText("Vishnu Sajeevan")).toBeInTheDocument();
     expect(screen.getByText("Electrician & Plumber")).toBeInTheDocument();
-    expect(screen.getByText("Koothattukulam")).toBeInTheDocument();
-    expect(screen.getByText("4.9")).toBeInTheDocument();
+    expect(screen.getByText("Koothattukulam · Nearby areas")).toBeInTheDocument();
+    expect(screen.getByText("Phone & Identity Verified")).toBeInTheDocument();
   });
 
   it("2. Search filters workers by location or job query", () => {
