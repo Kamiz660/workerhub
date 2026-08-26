@@ -64,11 +64,13 @@
   - **Spacious Grid Rhythm**: Relaxed `gap-6` spacing across desktop and mobile, with proportional `rounded-3xl` tail card for listing services.
 - **Hero Search Labels & Dropdown Toggles**:
   - **Prominent Form Labels**: Updated hero search input field labels to bold larger typography (**"Location"** / **"സ്ഥലം"** and **"Service"** / **"സേവനം"**).
-  - **Reliable 2nd Click Dropdown Toggle**: Dropdown toggle buttons prevent input focus conflict and use functional state updates, ensuring clicking a 2nd time cleanly closes the dropdown menu across mobile and desktop.
+  - **Reliable Dropdown Toggle & Mobile Keyboard Isolation**: Dropdown toggle buttons, suggestions, and capsules intercept touch events (`onTouchStart`/`onMouseDown` preventDefault) and blur active inputs, ensuring tapping dropdown controls or suggestions opens the menu without popping open the mobile keyboard. The on-screen keyboard only triggers when tapping directly into the typing input field.
+  - **Monotone Black & White Unclickable Options**: Options not yet available (unsupported locations and professions) are rendered completely in monotone grayscale (`grayscale`, `text-zinc-500`, `bg-zinc-50/90`, `bg-zinc-200/90 text-zinc-600` for the "Coming Soon" badge) with zero distracting colors.
 - **Navbar & Navigation Interaction**:
   - **Smooth Scroll to Top**: Clicking the WorkerHub logo in the top navbar smoothly scrolls the window to top with the search hero in full view.
-- **Mobile Hero Vertical Breathing Room**:
-  - Relaxed vertical padding (`pt-6 pb-6`) and line-height (`leading-[1.18]`) on the mobile hero header container, creating balanced vertical spacing between the navbar, headline text, and search input card without horizontal shift.
+- **Mobile Hero Header Spacing & Balanced Line Breaks**:
+  - Removed top dead space above the mobile hero title (`pt-2.5 pb-5`), positioning the header cleanly below the navbar.
+  - Formatted heading lines with strict minimum 2 words per line (e.g. `Find Trusted Local` / `Workers Near You` and `അടുത്തുള്ള വിശ്വസ്തരായ` / `തൊഴിലാളികളെ കണ്ടെത്തൂ`) using `whitespace-nowrap` on each line to prevent single-word orphan wraps.
 - **Brand Favicon & Identity**: Favicon updated to match the navbar logo (rounded primary-blue container with centered white HardHat emblem) in vector SVG and layout metadata.
 - **Design System Update**: Redesigned UI to use `Geist` font for a modern feel. Added a semantic slate-blue `primary` brand color. Replaced generic black shadows with tinted shadows.
 
