@@ -64,6 +64,15 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
+// Mock AuthContext
+vi.mock("@/context/auth-context", () => ({
+  useAuth: () => ({
+    user: null,
+    loading: false,
+    logout: vi.fn(),
+  }),
+}));
+
 import { WorkerResults } from "@/features/home/components/worker-results";
 import { WorkerCard } from "@/components/workers/worker-card";
 import WorkerDetailPage from "@/app/workers/[id]/page";
@@ -75,33 +84,32 @@ describe("Feature 004: Browse Workers", () => {
   });
 
   it("1. Worker cards render correctly", () => {
-    const sampleWorker: Worker = mockWorkersData[0]; // Rajesh Kumar
+    const sampleWorker: Worker = mockWorkersData[0]; // Vishnu Sajeevan
 
     render(<WorkerCard worker={sampleWorker} />);
 
-    expect(screen.getByText("Rajesh Kumar")).toBeInTheDocument();
-    expect(screen.getByText("Electrician")).toBeInTheDocument();
+    expect(screen.getByText("Vishnu Sajeevan")).toBeInTheDocument();
+    expect(screen.getByText("Electrician & Plumber")).toBeInTheDocument();
     expect(screen.getByText("Koothattukulam")).toBeInTheDocument();
     expect(screen.getByText("4.9")).toBeInTheDocument();
   });
 
   it("2. Search filters workers by location or job query", () => {
     const filteredWorkers = mockWorkersData.filter(
-      (w) => w.location === "Piravom"
+      (w) => w.location === "Koothattukulam" && w.name.includes("Vishnu")
     );
 
     render(
       <WorkerResults
         workers={filteredWorkers}
-        locationQuery="Piravom"
+        locationQuery="Koothattukulam"
         jobQuery=""
         onClearFilters={vi.fn()}
       />
     );
 
-    // Should render only Piravom workers
-    expect(screen.getByText("Suresh Menon")).toBeInTheDocument();
-    expect(screen.queryByText("Rajesh Kumar")).not.toBeInTheDocument();
+    expect(screen.getByText("Vishnu Sajeevan")).toBeInTheDocument();
+    expect(screen.queryByText("Ken Mathew")).not.toBeInTheDocument();
   });
 
   it("3. Category filters workers correctly", () => {
@@ -118,10 +126,10 @@ describe("Feature 004: Browse Workers", () => {
       />
     );
 
-    // Should render Biju Mathew (Plumber)
-    expect(screen.getByText("Biju Mathew")).toBeInTheDocument();
-    // Should NOT render Rajesh Kumar (Electrician)
-    expect(screen.queryByText("Rajesh Kumar")).not.toBeInTheDocument();
+    // Should render Ken Mathew (Plumber & Electrician)
+    expect(screen.getByText("Ken Mathew")).toBeInTheDocument();
+    // Should NOT render Vishnu Sajeevan when filtered by category=plumber
+    expect(screen.queryByText("Vishnu Sajeevan")).not.toBeInTheDocument();
   });
 
   it("4. Empty state is displayed when no workers match filters", () => {

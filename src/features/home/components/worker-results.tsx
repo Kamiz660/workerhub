@@ -39,15 +39,20 @@ export function WorkerResults({
     );
   }
 
-  const workerCountLabel = workers.length === 1 
+  const validWorkers = workers.filter((w) => {
+    const name = w.name?.toLowerCase().trim() || "";
+    return !name.includes("testuser") && !name.includes("test user") && name !== "test" && !name.startsWith("test");
+  });
+
+  const workerCountLabel = validWorkers.length === 1 
     ? t("results.countSingular") 
     : t("results.countPlural");
 
   // Format the "Showing {count} in {location}" subtext naturally
   const locationDisplay = locationQuery || (language === "en" ? "any location" : "എല്ലാ സ്ഥലങ്ങളും");
   const showingSubtext = language === "en"
-    ? `- Showing ${workers.length} in ${locationDisplay}`
-    : `- ${locationDisplay}ൽ ${workers.length} ${workerCountLabel} ലഭ്യമാണ്`;
+    ? `- Showing ${validWorkers.length} in ${locationDisplay}`
+    : `- ${locationDisplay}ൽ ${validWorkers.length} ${workerCountLabel} ലഭ്യമാണ്`;
 
   return (
     <section className="lg:col-span-9 flex flex-col gap-5" id="results-section">
@@ -56,7 +61,7 @@ export function WorkerResults({
           <h2 className="text-base sm:text-2xl font-bold text-gray-900 flex items-center gap-1.5 sm:gap-2">
             <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             <span className="hidden sm:inline">{t("results.title")}</span>
-            <span className="sm:hidden">{workers.length} {workerCountLabel}</span>
+            <span className="sm:hidden">{validWorkers.length} {workerCountLabel}</span>
           </h2>
           <span className="hidden sm:inline text-xs sm:text-sm text-gray-500">
             {showingSubtext}
@@ -78,22 +83,22 @@ export function WorkerResults({
         </div>
       </div>
 
-      {workers.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {workers.map((worker) => (
+      {validWorkers.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {validWorkers.map((worker) => (
             <WorkerCard key={worker.id} worker={worker} />
           ))}
 
           {/* Extra 'List Your Service' card as the tail card of the grid */}
           <button
             type="button"
-            className="bg-white border border-dashed border-slate-200 hover:border-primary/30 hover:bg-primary/[0.02] rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 active:scale-[0.98] active:duration-75
-              p-6 flex flex-col items-center justify-center gap-3
-              min-h-[220px] w-full h-full
+            className="bg-white border-2 border-dashed border-slate-200 hover:border-primary/40 hover:bg-primary/[0.02] rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 active:scale-[0.98] active:duration-75
+              p-6 flex flex-col items-center justify-center gap-3.5
+              min-h-[260px] w-full h-full
               cursor-pointer group"
             onClick={openModal}
           >
-            <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shadow-xs">
               <Plus className="h-6 w-6" />
             </div>
             <div className="text-center">
@@ -101,7 +106,7 @@ export function WorkerResults({
                 {t("results.tailCardTitle")}
                 <span className="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-100/50">{t("common.alwaysFree")}</span>
               </span>
-              <p className="text-xs text-gray-500 mt-1 max-w-[180px] mx-auto leading-normal">
+              <p className="text-xs text-gray-500 mt-1.5 max-w-[200px] mx-auto leading-relaxed">
                 {t("results.tailCardDesc")}
               </p>
             </div>

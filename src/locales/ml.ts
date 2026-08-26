@@ -48,7 +48,7 @@ export const ml = {
     subtitle: "വേഗതയേറിയത്. വിശ്വസിക്കാവുന്നത്. നിങ്ങളുടെ നാട്ടിൽ തന്നെ.",
     subtitleDesktop: "സ്ഥലം തിരഞ്ഞെടുക്കൂ. ജോലി തിരഞ്ഞെടുക്കൂ. നേരിട്ട് വിളിക്കൂ. ലളിതം, സൗജന്യം!",
     locationLabel: "സ്ഥലം",
-    jobLabel: "ജോലി?",
+    jobLabel: "സേവനം",
     currentLocation: "എന്റെ സ്ഥലം",
     locating: "സ്ഥലം കണ്ടെത്തുന്നു...",
     useCurrentLocation: "എന്റെ സ്ഥലം",

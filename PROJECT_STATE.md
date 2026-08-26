@@ -5,6 +5,15 @@
 - **Koothattukulam Validation Focus (Default Location & Single Service Town)**:
   - **Landing Page Default Location**: Search filters and worker query on the home page initialize with `"Koothattukulam"` by default (`useState("Koothattukulam")`), presenting verified local talent for Koothattukulam validation immediately on first load.
   - **Footer Service Town**: Cleaned up the footer's service town listing to exclusively feature **Koothattukulam** (*"Serving Koothattukulam & nearby local areas."*).
+- **Local-First Instant Search with Background Supabase Sync**:
+  - **0ms Instant Query Resolution**: `src/services/workers.ts` resolves searches immediately against the local seed dataset (`USE_LOCAL_CACHE_FIRST = true`), eliminating network wait states and loading freezes.
+  - **Resilient Supabase Sync & Timeout Guard**: Asynchronously queries Supabase with a 1.5s timeout and merges newly registered remote workers (Supabase records take precedence, deduplicated by `id`).
+  - **100% Offline & Error Fallback**: If Supabase is offline or times out, searches and profile lookups seamlessly return local seed matches without showing empty directory states.
+  - **Modular Migration Switch**: `USE_LOCAL_CACHE_FIRST` flag enables switching back to pure direct Supabase queries with a single line change post-validation.
+- **Verified Service Providers in Koothattukulam**:
+  - **Vishnu Sajeevan** (`w25`): Electrician & Plumber (`+91 95269 48845`, `vishnusajeevan38@gmail.com`). Matches searches for both Electrician and Plumber.
+  - **Ken Mathew** (`w26`): Electrician & Plumber (`+91 98464 78464`, `kenkm07@gmail.com`). Matches searches for both Electrician and Plumber.
+  - **Sajeev P K** (`w27`): Electrician & Plumber (`+91 99613 50862`). Matches searches for both Electrician and Plumber.
 - **Dark-Blue to Accent-Blue Gradient Footer**:
   - **Color & Atmosphere**: Features a rich gradient background (`bg-gradient-to-b from-slate-900 via-blue-900 to-blue-950 text-slate-200`) accented with a subtle top radial ambient glow (`bg-[radial-gradient(ellipse_70%_100%_at_50%_0%,rgba(37,99,235,0.28),transparent)]`).
   - **Live Marketplace Status Strip**: Top horizontal strip with a pulsing emerald beacon (*"Live Local Marketplace in Kerala"*) and key directory pillars (*"100% Direct Calling"*, *"Zero Commission"*, *"Free for Community"*).
@@ -19,12 +28,6 @@
   - **Angled Blue Diagonal Background & Light Streak**: Full-page container uses a dynamic angled blue gradient backdrop with an illuminated diagonal light streak, giving the page a modern, high-energy visual atmosphere.
   - **Elevated Hero Profile Sheet**: Clean white `rounded-3xl` container elevated with `shadow-md`, crisp avatar borders (`border-2 border-primary/20`), authoritative name typography, 4-item directory credentials strip (Location, Experience, Service mode, Direct Contact), editorial bio, and Service Area block (_"Serves {location} & nearby areas"_).
   - **Services Offered Layer**: Sits in refined `bg-gradient-to-br from-blue-200 via-blue-100/20 to-white` surface with crisp borders.
-  - **Graceful Minimal Profile Handling**: The profile UI gracefully handles sparse or minimal worker listings (where only contact number and location are provided) with robust fallbacks:
-    - Default name normalization and test user mapping ("Mason Boi" -> "Manoj Kumar").
-    - Default bio fallback: _"This is a test user. Available for direct calls, enquiries, and local on-site visits."_
-    - Standard dynamic fallback services per category (e.g. Repairs & Maintenance, On-site Consultation) when `services` array is empty.
-    - Safe initials avatar generator when image is omitted.
-    - Verified badge displayed only when explicitly verified.
   - **Single Status Signal**: Clean green `• Available` status badge kept in the primary contact card/sticky bar, removing redundant duplicate header indicators.
   - **Prominent Navigation**: High-contrast "Back to search" action button with a translucent circular glass container and hover transitions.
   - **Report Profile Feature**: Interactive report dialog accessible via a subtle flag link on both desktop sidebar and mobile profile view, allowing users to report inactive numbers or invalid listings with instant feedback.
@@ -52,16 +55,31 @@
   - **Mobile**: Translucent glass-style (`bg-primary/90` + `backdrop-blur-xl`) vertical block with action buttons "List Yourself" and "Add a Worker".
   - **Desktop**: Premium white card with thin border (`border-slate-200/80`), corner glow micro-decorations, Vercel-style vertical gradient divider, once-off mount shimmer, and interactive button hovers. Card 2 ("List Yourself") takes priority with a light-blue background.
 - **Compact Results Header**: On mobile, the available workers header is simplified into a clean single line showing `{Count} Workers` and a quick "Clear" filter link.
-- **Simplified Worker Cards**: Removed "Tap to call" meta info and stripped "Master" prefix from profession names. Hover transitions use subtle color-temperature shifts.
-- **Fixed Dropdown & Stacking UX**: Dropdowns render above the main page fold using a high `z-50` stack order. `DesktopCategoryRow` uses `-mt-2 sm:-mt-6 relative z-30` over `DesktopHeroSearch` (`relative z-10 sm:pb-14`), preserving the floating card overlap with balanced equal 32px spacing above and below the category cards.
+- **Spacious Human-First Worker Cards**:
+  - **Human Identity & Credibility**: Elevated person card with `rounded-3xl` container, generous `w-16 h-16 rounded-2xl` gradient avatar with verified shield, prominent trade title, and rating + location row.
+  - **Live Availability Signal**: Pulsing emerald live beacon (*"Available for calls & visits"*) with experience tag.
+  - **Service Specialties**: Displays key service tag pills (e.g. `House Wiring`, `Pipe Repair`, `Inverter Setup`) directly on the card so users understand exact capabilities at a glance.
+  - **Dual Direct Actions**: High-contrast **"Call Now"** direct dialer button and emerald **"WhatsApp"** direct chat button with generous padding and micro-interactions.
+  - **Spacious Grid Rhythm**: Relaxed `gap-6` spacing across desktop and mobile, with proportional `rounded-3xl` tail card for listing services.
+- **Fixed Dropdown & Stacking UX with Status Indicators**:
+  - **Option Visibility & Grayed-Out States**: Dropdowns for both Location and Job/Profession display all platform options.
+    - **Active Options** (e.g. Koothattukulam for town; Electrician and Plumber for trade) are fully clickable with bold high contrast text and a glowing emerald **green dot** indicator.
+    - **Unadded Options** (e.g. Muvattupuzha, Piravom; Carpenter, Painter, Mason, etc.) are rendered with clear darkened slate text/icons (`text-slate-600 font-semibold`) and a subtle slate **"Coming Soon"** (`"ഉടൻ വരും"`) badge on the right.
+  - **Test User Filtering**: Hardened query filters in `workers.ts` and `worker-results.tsx` to automatically strip any legacy testuser records.
+  - **Stacking Context**: `DesktopHeroSearch` is configured with `relative z-30`, with `relative z-30` for Location and `relative z-20` for Job, while `DesktopCategoryRow` sits at `relative z-10` with `-mt-2 sm:-mt-6` margins. On mobile, search card fields are layered in descending stacking order (`z-30` Location, `z-20` Job, `z-10` Search button) and support immediate `onMouseDown`/`onClick` tap handlers to prevent mobile keyboard dismissal blur cancellations.
+- **Navbar & Navigation Interaction**:
+  - **Smooth Scroll to Top**: Clicking the WorkerHub logo in the top navbar smoothly scrolls the window to top with the search hero in full view.
+- **Mobile Hero Vertical Breathing Room**:
+  - Relaxed vertical padding (`pt-6 pb-6`) and line-height (`leading-[1.18]`) on the mobile hero header container, creating balanced vertical spacing between the navbar, headline text, and search input card without horizontal shift.
 - **Brand Favicon & Identity**: Favicon updated to match the navbar logo (rounded primary-blue container with centered white HardHat emblem) in vector SVG and layout metadata.
 - **Design System Update**: Redesigned UI to use `Geist` font for a modern feel. Added a semantic slate-blue `primary` brand color. Replaced generic black shadows with tinted shadows.
 
 ## Customizations & Developer Tools
 
-- **Contact Utilities**: `src/lib/contact.ts` centralizes phone normalization (`normalizePhoneNumberForWhatsApp`), `tel:` link generation (`getTelLink`), and WhatsApp URL generation (`getWhatsAppLink`).
-- **Malayalam Localization Skill**: Workspace customization skill at [SKILL.md](file:///c:/GAMES%20G/Code/APP/Antigravity%20porjects/WorkerHub/.agents/skills/malayalam-localization/SKILL.md) for localizing English copy into natural Malayalam.
+- **Unslop Writing Skill**: Workspace customization skill at [.agents/skills/unslop/SKILL.md](file:///c:/GAMES%20G/Code/APP/Antigravity%20porjects/WorkerHub/.agents/skills/unslop/SKILL.md) to strip AI writing tells and enforce human voice across all documentation.
+- **Malayalam Localization Skill**: Workspace customization skill at [.agents/skills/malayalam-localization/SKILL.md](file:///c:/GAMES%20G/Code/APP/Antigravity%20porjects/WorkerHub/.agents/skills/malayalam-localization/SKILL.md) for localizing English copy into natural Malayalam.
 - **Malayalam Copy Optimizations**: Refined translation values for shorter, direct, and more natural phrasings across both mobile and PC screen sizes (e.g. `Hire a worker` -> "തൊഴിലാളിയെ ആവശ്യമുണ്ട്", `Offer services` -> "സേവനങ്ങൾ നൽകാം").
+- **Contact Utilities**: `src/lib/contact.ts` centralizes phone normalization (`normalizePhoneNumberForWhatsApp`), `tel:` link generation (`getTelLink`), and WhatsApp URL generation (`getWhatsAppLink`).
 - **Minimal Offline Toast**: Displays a sleek capsule notification ("Offline mode active") at the bottom of the screen with `z-[9999]` if database connections fail.
 
 ## Architecture (Supabase Backend Integration Complete)

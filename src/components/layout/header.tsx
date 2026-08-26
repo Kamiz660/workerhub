@@ -19,8 +19,17 @@ export function Header() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3.5" id="header-logo">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+            <Link
+              href="/"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className="flex items-center gap-3.5 cursor-pointer"
+              id="header-logo"
+            >
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-xs">
                 <HardHat className="h-4 w-4 text-white" strokeWidth={2} />
               </div>
               <span className="text-xl font-bold text-gray-900">

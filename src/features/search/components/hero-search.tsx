@@ -33,6 +33,9 @@ const popularTownsMl = [
   "കൂത്താട്ടുകുളം", "മൂവാറ്റുപുഴ", "പിറവം", "തൊടുപുഴ", "പെരുമ്പാവൂർ", "കോലഞ്ചേരി",
 ];
 
+const activeTowns = ["koothattukulam", "കൂത്താട്ടുകുളം"];
+const activeCategories = ["electrician", "plumber"];
+
 interface HeroSearchProps {
   locationQuery: string;
   setLocationQuery: (value: string) => void;
@@ -83,7 +86,7 @@ export function MobileHeroSearch({
 
   // Handle outside clicks for dropdowns
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
         setShowLocationDropdown(false);
       }
@@ -92,25 +95,29 @@ export function MobileHeroSearch({
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, [setShowLocationDropdown, setShowJobDropdown]);
 
   return (
-    <div className="sm:hidden px-4 pt-4 pb-4 bg-gradient-to-b from-primary/10/40 to-[#f5f8fc]">
+    <div className="sm:hidden px-4 pt-6 pb-6 bg-gradient-to-b from-primary/10/40 to-[#f5f8fc]">
       {/* Hero Area */}
-      <div className="flex justify-between items-start gap-3">
-        <div className="flex-1 text-left relative z-10">
+      <div className="flex justify-between items-center gap-3 py-2 mb-4">
+        <div className="flex-1 text-left relative z-10 py-1">
           {language === "en" ? (
-            <h1 className="text-[28px] font-extrabold text-slate-900 tracking-tighter leading-[1.1]">
+            <h1 className="text-[28px] font-extrabold text-slate-900 tracking-tight leading-[1.18]">
               Find Trusted Local <br />
               <span className="text-primary">Workers</span> Near You
             </h1>
           ) : (
-            <h1 className="text-[24px] font-extrabold text-slate-900 tracking-tighter leading-[1.2]">
+            <h1 className="text-[24px] font-extrabold text-slate-900 tracking-tight leading-[1.25]">
               <span className="whitespace-nowrap">അടുത്തുള്ള <span className="text-primary">തൊഴിലാളികളെ</span></span> കണ്ടെത്തൂ
             </h1>
           )}
-          <p className="mt-2 text-[13px] text-gray-500 font-medium leading-relaxed">
+          <p className="mt-2.5 text-[13px] text-gray-500 font-medium leading-relaxed">
             {t("hero.subtitle")}
           </p>
         </div>
@@ -126,14 +133,14 @@ export function MobileHeroSearch({
       </div>
 
       {/* Search Card */}
-      <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 -mt-1 relative z-40 flex flex-col gap-4">
+      <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 relative z-40 flex flex-col gap-4">
         
         {/* Location Field */}
-        <div>
+        <div className="relative z-30">
           <label htmlFor="location-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
             {t("hero.locationLabel")}
           </label>
-          <div className="relative w-full" ref={locationDropdownRef}>
+          <div className="relative w-full z-30" ref={locationDropdownRef}>
             <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80 z-10" />
             <input
               id="location-input-mobile"
@@ -157,41 +164,100 @@ export function MobileHeroSearch({
               </span>
             )}
 
+            {/* Location Dropdown toggle button */}
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowLocationDropdown((prev) => !prev);
+              }}
+              className="absolute right-[128px] top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+              aria-label="Toggle Location List"
+            >
+              {showLocationDropdown ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </button>
+
             {/* Current Location Capsule */}
             <button
+              type="button"
               onClick={onGetCurrentLocation}
               disabled={isLocating}
-              className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 text-[11px] font-bold hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 text-[11px] font-bold hover:bg-emerald-100 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer z-10"
             >
               {isLocating ? t("hero.locating") : t("hero.currentLocation")}
             </button>
 
             {/* Location Suggestions Dropdown */}
-            {showLocationDropdown && locationQuery.trim().length > 0 && towns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
-              <div className="absolute top-[105%] left-0 right-0 w-full bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl z-50 overflow-hidden max-h-48 overflow-y-auto mt-1
-                [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
-                {towns
-                  .filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
-                  .map((town) => (
-                    <button
-                      key={town}
-                      onClick={() => { setLocationQuery(town); setShowLocationDropdown(false); }}
-                      className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors text-xs font-bold text-gray-700 border-b border-gray-50 last:border-b-0 flex items-center gap-2"
-                    >
-                      <MapPin className="h-3.5 w-3.5 text-gray-400" /> {town}
-                    </button>
-                  ))}
-              </div>
+            {showLocationDropdown && (
+              (() => {
+                const filteredTowns = locationQuery.trim()
+                  ? towns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
+                  : towns;
+                if (filteredTowns.length === 0) return null;
+                return (
+                  <div className="absolute top-[105%] left-0 right-0 w-full bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl z-50 overflow-hidden max-h-52 overflow-y-auto mt-1
+                    [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
+                    {filteredTowns.map((town) => {
+                      const isAvailable = activeTowns.includes(town.toLowerCase());
+                      if (isAvailable) {
+                        return (
+                          <button
+                            key={town}
+                            type="button"
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              setLocationQuery(town);
+                              setShowLocationDropdown(false);
+                            }}
+                            onClick={() => {
+                              setLocationQuery(town);
+                              setShowLocationDropdown(false);
+                            }}
+                            className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors text-xs font-bold text-gray-900 border-b border-gray-100 last:border-b-0 flex items-center justify-between cursor-pointer"
+                          >
+                            <span className="flex items-center gap-2">
+                              <MapPin className="h-3.5 w-3.5 text-primary" /> {town}
+                            </span>
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] flex-shrink-0 mr-1" title={language === "en" ? "Available" : "ലഭ്യമാണ്"} />
+                          </button>
+                        );
+                      }
+                      return (
+                        <div
+                          key={town}
+                          className="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-600 border-b border-gray-100 last:border-b-0 flex items-center justify-between bg-slate-50/70 select-none cursor-not-allowed"
+                        >
+                          <span className="flex items-center gap-2 text-slate-500">
+                            <MapPin className="h-3.5 w-3.5 text-slate-400" /> {town}
+                          </span>
+                          <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-slate-200/90 text-slate-600">
+                            {language === "en" ? "Coming Soon" : "ഉടൻ വരും"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()
             )}
           </div>
         </div>
 
         {/* Job Field */}
-        <div>
+        <div className="relative z-20">
           <label htmlFor="job-input-mobile" className="block text-[13px] font-bold text-gray-800 mb-2">
             {t("hero.jobLabel")}
           </label>
-          <div className="relative w-full" ref={jobDropdownRef}>
+          <div className="relative w-full z-20" ref={jobDropdownRef}>
             <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-primary/80" />
             <input
               id="job-input-mobile"
@@ -218,11 +284,17 @@ export function MobileHeroSearch({
             {/* Dropdown toggle button */}
             <button
               type="button"
-              onClick={(e) => {
+              onMouseDown={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
-                setShowJobDropdown(!showJobDropdown);
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowJobDropdown((prev) => !prev);
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+              aria-label="Toggle Service List"
             >
               {showJobDropdown ? (
                 <ChevronUp className="h-4 w-4" />
@@ -239,19 +311,49 @@ export function MobileHeroSearch({
                   : categoriesList;
                 if (filtered.length === 0) return null;
                 return (
-                  <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1
+                  <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1
                     [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
-                    {filtered.map((category) => (
-                      <button
-                        key={category.id}
-                        type="button"
-                        onClick={() => { setJobQuery(t(`categories.${category.id}`).split(" ")[0]); setShowJobDropdown(false); }}
-                        className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
-                      >
-                        <span className="text-lg flex-shrink-0">{category.icon}</span>
-                        <span className="font-semibold text-gray-800 text-sm">{t(`categories.${category.id}`)}</span>
-                      </button>
-                    ))}
+                    {filtered.map((category) => {
+                      const isAvailable = activeCategories.includes(category.id);
+                      if (isAvailable) {
+                        return (
+                          <button
+                            key={category.id}
+                            type="button"
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              setJobQuery(t(`categories.${category.id}`).split(" ")[0]);
+                              setShowJobDropdown(false);
+                            }}
+                            onClick={() => {
+                              setJobQuery(t(`categories.${category.id}`).split(" ")[0]);
+                              setShowJobDropdown(false);
+                            }}
+                            className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center justify-between border-b border-gray-100 last:border-b-0 cursor-pointer"
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg flex-shrink-0">{category.icon}</span>
+                              <span className="font-semibold text-gray-900 text-sm">{t(`categories.${category.id}`)}</span>
+                            </div>
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] flex-shrink-0 mr-1" title={language === "en" ? "Available" : "ലഭ്യമാണ്"} />
+                          </button>
+                        );
+                      }
+                      return (
+                        <div
+                          key={category.id}
+                          className="w-full text-left px-4 py-2.5 flex items-center justify-between border-b border-gray-100 last:border-b-0 bg-slate-50/70 select-none cursor-not-allowed"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-lg flex-shrink-0 opacity-80">{category.icon}</span>
+                            <span className="font-semibold text-slate-600 text-sm">{t(`categories.${category.id}`)}</span>
+                          </div>
+                          <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-slate-200/90 text-slate-600">
+                            {language === "en" ? "Coming Soon" : "ഉടൻ വരും"}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               })()
@@ -261,7 +363,7 @@ export function MobileHeroSearch({
 
         <button
           onClick={onScrollToResults}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-xl text-[15px] transition-all shadow-[0_8px_16px_-6px_rgba(0,0,0,0.1)] active:scale-[0.98] flex items-center justify-center gap-2 border-0 cursor-pointer"
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-xl text-[15px] transition-all shadow-[0_8px_16px_-6px_rgba(0,0,0,0.1)] active:scale-[0.98] flex items-center justify-center gap-2 border-0 cursor-pointer relative z-10"
         >
           <Search className="h-4.5 w-4.5" />
           {t("hero.searchBtn")}
@@ -300,7 +402,7 @@ export function DesktopHeroSearch({
 
   // Handle outside clicks for dropdowns
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
         setShowLocationDropdown(false);
       }
@@ -309,11 +411,15 @@ export function DesktopHeroSearch({
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, [setShowLocationDropdown, setShowJobDropdown]);
 
   return (
-    <section className="bg-gradient-to-b from-primary/10/70 to-[#fcfdff] border-b border-gray-100/60 relative z-10 pt-4 sm:pt-10 pb-10 sm:pb-14">
+    <section className="bg-gradient-to-b from-primary/10/70 to-[#fcfdff] border-b border-gray-100/60 relative z-30 pt-4 sm:pt-10 pb-10 sm:pb-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative">
 
         {/* Left: Heading & Search Box */}
@@ -341,7 +447,7 @@ export function DesktopHeroSearch({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mt-6 sm:mt-8 max-w-4xl lg:-mr-24 relative z-40">
 
             {/* Field 1: Location */}
-            <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={locationDropdownRef}>
+            <div className="flex-1 flex flex-col items-start gap-1.5 relative z-30" ref={locationDropdownRef}>
               <label htmlFor="location-input" className="text-sm font-semibold text-gray-700 ml-1 mt-1 sm:mt-0">
                 1. {t("hero.locationLabel")}
               </label>
@@ -371,6 +477,30 @@ export function DesktopHeroSearch({
                   </span>
                 )}
                 
+                {/* Location Dropdown toggle button */}
+                <button
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowLocationDropdown((prev) => !prev);
+                  }}
+                  className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20 ${
+                    isMinimized ? "right-11" : "right-[130px]"
+                  }`}
+                  aria-label="Toggle Location List"
+                >
+                  {showLocationDropdown ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
+
                 {/* Current Location Capsule / Icon */}
                 <button
                   type="button"
@@ -403,26 +533,62 @@ export function DesktopHeroSearch({
               </div>
 
               {/* Location Suggestions */}
-              {showLocationDropdown && locationQuery.trim().length > 0 && towns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase())).length > 0 && (
-                <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1
-                  [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
-                  {towns
-                    .filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
-                    .map((town) => (
-                      <button
-                        key={town}
-                        onClick={() => { setLocationQuery(town); setShowLocationDropdown(false); }}
-                        className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors text-sm font-semibold text-gray-700 border-b border-gray-50 last:border-b-0 flex items-center gap-2"
-                      >
-                        <MapPin className="h-3.5 w-3.5 text-gray-400" /> {town}
-                      </button>
-                    ))}
-                </div>
+              {showLocationDropdown && (
+                (() => {
+                  const filteredTowns = locationQuery.trim()
+                    ? towns.filter(t => t.toLowerCase().includes(locationQuery.toLowerCase()))
+                    : towns;
+                  if (filteredTowns.length === 0) return null;
+                  return (
+                    <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1
+                      [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
+                      {filteredTowns.map((town) => {
+                        const isAvailable = activeTowns.includes(town.toLowerCase());
+                        if (isAvailable) {
+                          return (
+                            <button
+                              key={town}
+                              type="button"
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                setLocationQuery(town);
+                                setShowLocationDropdown(false);
+                              }}
+                              onClick={() => {
+                                setLocationQuery(town);
+                                setShowLocationDropdown(false);
+                              }}
+                              className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors text-sm font-bold text-gray-900 border-b border-gray-100 last:border-b-0 flex items-center justify-between cursor-pointer"
+                            >
+                              <span className="flex items-center gap-2">
+                                <MapPin className="h-3.5 w-3.5 text-primary" /> {town}
+                              </span>
+                              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] flex-shrink-0 mr-1" title={language === "en" ? "Available" : "ലഭ്യമാണ്"} />
+                            </button>
+                          );
+                        }
+                        return (
+                          <div
+                            key={town}
+                            className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-600 border-b border-gray-100 last:border-b-0 flex items-center justify-between bg-slate-50/70 select-none cursor-not-allowed"
+                          >
+                            <span className="flex items-center gap-2 text-slate-500">
+                              <MapPin className="h-3.5 w-3.5 text-slate-400" /> {town}
+                            </span>
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-200/90 text-slate-600">
+                              {language === "en" ? "Coming Soon" : "ഉടൻ വരും"}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()
               )}
             </div>
 
             {/* Field 2: Job/Profession */}
-            <div className="flex-1 flex flex-col items-start gap-1.5 relative z-10" ref={jobDropdownRef}>
+            <div className="flex-1 flex flex-col items-start gap-1.5 relative z-20" ref={jobDropdownRef}>
               <label htmlFor="job-input" className="text-sm font-semibold text-gray-700 ml-1">
                 2. {t("hero.jobLabel")}
               </label>
@@ -453,11 +619,17 @@ export function DesktopHeroSearch({
                 {/* Dropdown toggle button */}
                 <button
                   type="button"
-                  onClick={(e) => {
+                  onMouseDown={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
-                    setShowJobDropdown(!showJobDropdown);
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowJobDropdown((prev) => !prev);
                   }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer flex items-center justify-center z-20"
+                  aria-label="Toggle Service List"
                 >
                   {showJobDropdown ? (
                     <ChevronUp className="h-4 w-4" />
@@ -475,19 +647,49 @@ export function DesktopHeroSearch({
                     : categoriesList;
                   if (filtered.length === 0) return null;
                   return (
-                    <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto z-50 mt-1
+                    <div className="absolute top-[105%] left-0 right-0 bg-slate-50/98 border border-primary/20 rounded-xl shadow-xl overflow-hidden max-h-52 overflow-y-auto z-50 mt-1
                       [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-300">
-                      {filtered.map((category) => (
-                        <button
-                          key={category.id}
-                          type="button"
-                          onClick={() => { setJobQuery(t(`categories.${category.id}`).split(" ")[0]); setShowJobDropdown(false); }}
-                          className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center gap-3 border-b border-gray-50 last:border-b-0"
-                        >
-                          <span className="text-lg flex-shrink-0">{category.icon}</span>
-                          <span className="font-semibold text-gray-800 text-sm">{t(`categories.${category.id}`)}</span>
-                        </button>
-                      ))}
+                      {filtered.map((category) => {
+                        const isAvailable = activeCategories.includes(category.id);
+                        if (isAvailable) {
+                          return (
+                            <button
+                              key={category.id}
+                              type="button"
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                setJobQuery(t(`categories.${category.id}`).split(" ")[0]);
+                                setShowJobDropdown(false);
+                              }}
+                              onClick={() => {
+                                setJobQuery(t(`categories.${category.id}`).split(" ")[0]);
+                                setShowJobDropdown(false);
+                              }}
+                              className="w-full text-left px-4 py-2.5 hover:bg-primary/10 transition-colors flex items-center justify-between border-b border-gray-100 last:border-b-0 cursor-pointer"
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className="text-lg flex-shrink-0">{category.icon}</span>
+                                <span className="font-semibold text-gray-900 text-sm">{t(`categories.${category.id}`)}</span>
+                              </div>
+                              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] flex-shrink-0 mr-1" title={language === "en" ? "Available" : "ലഭ്യമാണ്"} />
+                            </button>
+                          );
+                        }
+                        return (
+                          <div
+                            key={category.id}
+                            className="w-full text-left px-4 py-2.5 flex items-center justify-between border-b border-gray-100 last:border-b-0 bg-slate-50/70 select-none cursor-not-allowed"
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg flex-shrink-0 opacity-80">{category.icon}</span>
+                              <span className="font-semibold text-slate-600 text-sm">{t(`categories.${category.id}`)}</span>
+                            </div>
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-200/90 text-slate-600">
+                              {language === "en" ? "Coming Soon" : "ഉടൻ വരും"}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   );
                 })()

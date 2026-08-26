@@ -136,8 +136,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
     );
   }
 
-  const rawName = worker.name?.trim() || "Worker";
-  const displayName = rawName.toLowerCase() === "mason boi" ? "Manoj Kumar" : rawName;
+  const displayName = worker.name?.trim() || "Worker";
   const firstName = displayName.split(" ")[0];
 
   const initials = displayName
@@ -182,8 +181,8 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
   const bioDisplay = worker.bio?.trim()
     ? worker.bio
     : language === "en"
-    ? "This is a test user. Available for direct calls, enquiries, and local on-site visits."
-    : "ഇതൊരു ടെസ്റ്റ് പ്രൊഫൈൽ ആണ്. നേരിട്ടുള്ള അന്വേഷണങ്ങൾക്കും പ്രാദേശിക സേവനങ്ങൾക്കും ലഭ്യമാണ്.";
+    ? "Experienced local service provider available for direct calls, enquiries, and on-site visits."
+    : "നേരിട്ടുള്ള അന്വേഷണങ്ങൾക്കും സേവനങ്ങൾക്കും ലഭ്യമായ പ്രാദേശിക വിദഗ്ദ്ധ തൊഴിലാളി.";
 
   const displayServices = (worker.services && worker.services.length > 0)
     ? worker.services 
