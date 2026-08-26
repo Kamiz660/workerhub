@@ -65,8 +65,8 @@ export const workers: Worker[] = [
     name: "Vishnu Sajeevan",
     profession: "Electrician & Plumber",
     category: "electrician",
-    rating: 4.9,
-    reviewCount: 52,
+    rating: 0,
+    reviewCount: 0,
     location: "Koothattukulam",
     experience: 7,
     jobsCompleted: 160,
@@ -91,8 +91,8 @@ export const workers: Worker[] = [
     name: "Ken Mathew",
     profession: "Electrician & Plumber",
     category: "plumber",
-    rating: 4.8,
-    reviewCount: 41,
+    rating: 0,
+    reviewCount: 0,
     location: "Koothattukulam",
     experience: 6,
     jobsCompleted: 130,
@@ -117,8 +117,8 @@ export const workers: Worker[] = [
     name: "Sajeev P K",
     profession: "Electrician & Plumber",
     category: "electrician",
-    rating: 4.9,
-    reviewCount: 48,
+    rating: 0,
+    reviewCount: 0,
     location: "Koothattukulam",
     experience: 10,
     jobsCompleted: 220,
@@ -140,59 +140,4 @@ export const workers: Worker[] = [
   },
 ];
 
-export const reviews: Review[] = [
-  {
-    id: "r1",
-    workerId: "w25",
-    author: "Thomas C.",
-    rating: 5,
-    comment:
-      "Vishnu did an excellent job with our home wiring and inverter installation. Prompt, professional, and very neat work. Highly recommended in Koothattukulam!",
-    date: "2026-02-15",
-  },
-  {
-    id: "r2",
-    workerId: "w25",
-    author: "Mary K.",
-    rating: 5,
-    comment:
-      "Quick response and reasonable rates. Fixed our electrical switchboard and pipe leak in one visit.",
-    date: "2026-02-10",
-  },
-  {
-    id: "r3",
-    workerId: "w26",
-    author: "George P.",
-    rating: 5,
-    comment:
-      "Ken fixed a major plumbing leak in our bathroom and set up our water tank pump perfectly. Very honest and skilled worker.",
-    date: "2026-02-18",
-  },
-  {
-    id: "r4",
-    workerId: "w26",
-    author: "Anu S.",
-    rating: 5,
-    comment:
-      "Arrived on time, identified the problem quickly and completed the plumbing repairs neatly. Will definitely call again.",
-    date: "2026-02-12",
-  },
-  {
-    id: "r5",
-    workerId: "w27",
-    author: "Rajan M.",
-    rating: 5,
-    comment:
-      "Sajeev is very reliable and experienced. Handled our full house wiring and bathroom plumbing with great care.",
-    date: "2026-02-20",
-  },
-  {
-    id: "r6",
-    workerId: "w27",
-    author: "Mini V.",
-    rating: 5,
-    comment:
-      "Prompt response for an emergency pipe leak and fuse issue. Very polite and reasonably priced.",
-    date: "2026-02-14",
-  },
-];
+export const reviews: Review[] = [];

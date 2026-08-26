@@ -28,6 +28,7 @@
   - **Angled Blue Diagonal Background & Light Streak**: Full-page container uses a dynamic angled blue gradient backdrop with an illuminated diagonal light streak, giving the page a modern, high-energy visual atmosphere.
   - **Elevated Hero Profile Sheet**: Clean white `rounded-3xl` container elevated with `shadow-md`, crisp avatar borders (`border-2 border-primary/20`), authoritative name typography, 4-item directory credentials strip (Location, Experience, Service mode, Direct Contact), editorial bio, and Service Area block (_"Serves {location} & nearby areas"_).
   - **Services Offered Layer**: Sits in refined `bg-gradient-to-br from-blue-200 via-blue-100/20 to-white` surface with crisp borders.
+  - **Zero Fake Reviews & Clean Review Layer**: Stripped all artificial reviews and fake scores. The review section cleanly reflects genuine customer feedback (empty state with invite to review upon hire).
   - **Single Status Signal**: Clean green `• Available` status badge kept in the primary contact card/sticky bar, removing redundant duplicate header indicators.
   - **Prominent Navigation**: High-contrast "Back to search" action button with a translucent circular glass container and hover transitions.
   - **Report Profile Feature**: Interactive report dialog accessible via a subtle flag link on both desktop sidebar and mobile profile view, allowing users to report inactive numbers or invalid listings with instant feedback.
@@ -56,9 +57,9 @@
   - **Desktop**: Premium white card with thin border (`border-slate-200/80`), corner glow micro-decorations, Vercel-style vertical gradient divider, once-off mount shimmer, and interactive button hovers. Card 2 ("List Yourself") takes priority with a light-blue background.
 - **Compact Results Header**: On mobile, the available workers header is simplified into a clean single line showing `{Count} Workers` and a quick "Clear" filter link.
 - **Spacious Authentic Human Worker Cards**:
-  - **Human Identity & Zero Artificial Data**: Elevated person card with `rounded-3xl` container, generous `w-16 h-16 rounded-2xl` gradient avatar with verified shield, prominent trade title, and regional location badge (**"Koothattukulam · Nearby areas"** / **"കൂത്താട്ടുകുളം · സമീപ പ്രദേശങ്ങൾ"**). All fake ratings and artificial experience numbers stripped.
+  - **Human Identity & Zero Artificial Data**: Elevated person card with `rounded-3xl` container, generous `w-16 h-16 rounded-2xl` gradient avatar with verified shield, prominent trade title, and high-contrast bold dark location badge (**"Koothattukulam · Nearby areas"** / **"കൂത്താട്ടുകുളം · സമീപ പ്രദേശങ്ങൾ"`text-gray-900 font-bold`). All fake ratings and artificial experience numbers stripped.
   - **Live Availability Signal**: Pulsing emerald live beacon (*"Available for calls & visits"*).
-  - **High-Demand Work & Services Chips**: Displays the top statistically requested residential works (`House Wiring & Repairs`, `Pipe Leak & Tap Repair`, `Water Tank & Motor Setup`) with a `+ Others` chip appended at the end.
+  - **High-Demand Work & Services Chips**: Displays the top statistically requested residential works (`House Wiring & Repairs`, `Pipe Leak & Tap Repair`, `Water Tank & Motor Setup`) in clean, muted tags (`text-slate-500`) with a `+ Others` chip appended at the end.
   - **Phone & Identity Verification Trust Badge**: A prominent, left-aligned blue trust badge (*"Phone & Identity Verified"*) positioned directly above the Call Now & WhatsApp CTA action buttons.
   - **Dual Direct Actions**: High-contrast **"Call Now"** direct dialer button and emerald **"WhatsApp"** direct chat button with generous padding and micro-interactions.
   - **Spacious Grid Rhythm**: Relaxed `gap-6` spacing across desktop and mobile, with proportional `rounded-3xl` tail card for listing services.

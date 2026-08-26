@@ -68,8 +68,8 @@ export function WorkerCard({ worker }: WorkerCardProps) {
             </div>
 
             {/* Location row with "· Nearby areas" */}
-            <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-slate-500">
-              <MapPin className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+            <div className="flex items-center gap-1.5 mt-2 text-xs font-medium text-gray-800">
+              <MapPin className="h-3.5 w-3.5 text-primary flex-shrink-0" />
               <span className="truncate">{locationDisplay}</span>
             </div>
           </div>
@@ -78,10 +78,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
         {/* Live Availability Strip */}
         <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
             <span className="font-semibold text-emerald-700">
               {language === "en" ? "Available for calls & visits" : "നേരിട്ടുള്ള സേവനങ്ങൾക്ക് ലഭ്യമാണ്"}
             </span>
@@ -94,12 +91,12 @@ export function WorkerCard({ worker }: WorkerCardProps) {
             {topServices.map((service) => (
               <span
                 key={service}
-                className="text-[11px] font-medium bg-slate-50 border border-slate-200/70 text-slate-700 px-2.5 py-1 rounded-lg"
+                className="text-[11px] font-medium bg-slate-50/90 border border-slate-200/60 text-slate-500 px-2.5 py-1 rounded-lg"
               >
                 {service}
               </span>
             ))}
-            <span className="text-[11px] font-medium bg-slate-50 border border-slate-200/70 text-slate-700 px-2.5 py-1 rounded-lg">
+            <span className="text-[11px] font-medium bg-slate-50/90 border border-slate-200/60 text-slate-500 px-2.5 py-1 rounded-lg">
               {language === "en" ? "+ Others" : "+ മറ്റുള്ളവ"}
             </span>
           </div>
@@ -107,7 +104,7 @@ export function WorkerCard({ worker }: WorkerCardProps) {
       </div>
 
       {/* Verification & Trust Badge Above CTA */}
-      <div className="mt-5 pt-3.5 border-t border-slate-100 flex flex-col gap-2.5">
+      <div className="mt-2.5 pt-2 border-t border-slate-100 flex flex-col gap-2.5">
         <div className="flex items-center justify-start gap-2 text-[13px] font-bold text-primary bg-blue-50/90 border border-primary/20 rounded-xl py-1.5 px-3 select-none">
           <BadgeCheck className="h-4.5 w-4.5 text-primary fill-blue-100 flex-shrink-0" />
           <span>{language === "en" ? "Phone & Identity Verified" : "ഫോൺ & തിരിച്ചറിയൽ രേഖകൾ പരിശോധിച്ചത്"}</span>

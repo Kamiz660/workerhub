@@ -467,20 +467,24 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
                   <div>
                     <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                      <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+                      <Star className="h-4 w-4 text-slate-400" />
                       <span>{language === "en" ? "Customer Reviews" : "ഉപഭോക്തൃ അഭിപ്രായങ്ങൾ"}</span>
                       <span className="text-slate-400 font-normal">({reviews.length})</span>
                     </h2>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      {language === "en" ? `Feedback from clients who worked with ${firstName}` : "സേവനം സ്വീകരിച്ചവരുടെ അഭിപ്രായങ്ങൾ"}
+                      {reviews.length > 0
+                        ? (language === "en" ? `Feedback from clients who worked with ${firstName}` : "സേവനം സ്വീകരിച്ചവരുടെ അഭിപ്രായങ്ങൾ")
+                        : (language === "en" ? "Verified reviews from local homeowners" : "തദ്ദേശവാസികളുടെ പരിശോധിച്ച അഭിപ്രായങ്ങൾ")}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-black text-slate-900 leading-none">
-                      {worker.rating.toFixed(1)}
+                  {reviews.length > 0 && worker.rating > 0 && (
+                    <div className="text-right">
+                      <div className="text-2xl font-black text-slate-900 leading-none">
+                        {worker.rating.toFixed(1)}
+                      </div>
+                      <div className="text-[11px] font-semibold text-slate-500 mt-0.5">out of 5.0</div>
                     </div>
-                    <div className="text-[11px] font-semibold text-slate-500 mt-0.5">out of 5.0</div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Non-blocking login prompt for reviews */}
