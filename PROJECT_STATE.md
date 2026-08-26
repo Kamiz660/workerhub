@@ -61,12 +61,9 @@
   - **Service Specialties**: Displays key service tag pills (e.g. `House Wiring`, `Pipe Repair`, `Inverter Setup`) directly on the card so users understand exact capabilities at a glance.
   - **Dual Direct Actions**: High-contrast **"Call Now"** direct dialer button and emerald **"WhatsApp"** direct chat button with generous padding and micro-interactions.
   - **Spacious Grid Rhythm**: Relaxed `gap-6` spacing across desktop and mobile, with proportional `rounded-3xl` tail card for listing services.
-- **Fixed Dropdown & Stacking UX with Status Indicators**:
-  - **Option Visibility & Grayed-Out States**: Dropdowns for both Location and Job/Profession display all platform options.
-    - **Active Options** (e.g. Koothattukulam for town; Electrician and Plumber for trade) are fully clickable with bold high contrast text and a glowing emerald **green dot** indicator.
-    - **Unadded Options** (e.g. Muvattupuzha, Piravom; Carpenter, Painter, Mason, etc.) are rendered with clear darkened slate text/icons (`text-slate-600 font-semibold`) and a subtle slate **"Coming Soon"** (`"ഉടൻ വരും"`) badge on the right.
-  - **Test User Filtering**: Hardened query filters in `workers.ts` and `worker-results.tsx` to automatically strip any legacy testuser records.
-  - **Stacking Context**: `DesktopHeroSearch` is configured with `relative z-30`, with `relative z-30` for Location and `relative z-20` for Job, while `DesktopCategoryRow` sits at `relative z-10` with `-mt-2 sm:-mt-6` margins. On mobile, search card fields are layered in descending stacking order (`z-30` Location, `z-20` Job, `z-10` Search button) and support immediate `onMouseDown`/`onClick` tap handlers to prevent mobile keyboard dismissal blur cancellations.
+- **Hero Search Labels & Dropdown Toggles**:
+  - **Concise Form Labels**: Updated hero search input field labels to **"Location"** (`"സ്ഥലം"`) and **"Service"** (`"സേവനം"`).
+  - **Reliable 2nd Click Dropdown Toggle**: Dropdown toggle buttons prevent input focus conflict and use functional state updates, ensuring clicking a 2nd time cleanly closes the dropdown menu across mobile and desktop.
 - **Navbar & Navigation Interaction**:
   - **Smooth Scroll to Top**: Clicking the WorkerHub logo in the top navbar smoothly scrolls the window to top with the search hero in full view.
 - **Mobile Hero Vertical Breathing Room**:
