@@ -85,8 +85,10 @@ export function MobileHeroSearch({
   const jobExamples = language === "en" ? jobExamplesEn : jobExamplesMl;
 
   // Handle outside clicks and keyboard navigation for dropdowns
+  // Uses pointerdown (same event type as toggle buttons) so stopPropagation
+  // from toggle buttons prevents this handler from running on the same tap.
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent | TouchEvent) {
+    function handleClickOutside(event: PointerEvent) {
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
         setShowLocationDropdown(false);
       }
@@ -100,12 +102,10 @@ export function MobileHeroSearch({
         setShowJobDropdown(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [setShowLocationDropdown, setShowJobDropdown]);
@@ -447,8 +447,10 @@ export function DesktopHeroSearch({
   const isMinimized = isLocating || locationQuery.trim() !== "";
 
   // Handle outside clicks and keyboard navigation for dropdowns
+  // Uses pointerdown (same event type as toggle buttons) so stopPropagation
+  // from toggle buttons prevents this handler from running on the same tap.
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent | TouchEvent) {
+    function handleClickOutside(event: PointerEvent) {
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
         setShowLocationDropdown(false);
       }
@@ -462,12 +464,10 @@ export function DesktopHeroSearch({
         setShowJobDropdown(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [setShowLocationDropdown, setShowJobDropdown]);
