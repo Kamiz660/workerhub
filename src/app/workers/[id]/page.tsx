@@ -256,7 +256,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
             <div className="lg:col-span-7 xl:col-span-8 space-y-6 sm:space-y-7">
               
               {/* Layer 1: Main Anchor Sheet (Hero Identity + Highlights + Bio + Service Area) - Elevated Prominence */}
-              <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8">
+              <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-white/60 shadow-lg p-6 sm:p-8">
                 
                 {/* 1.A. Hero Identity Header */}
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6">
@@ -318,7 +318,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
 
                 {/* 1.B. Structured Key Highlights Row */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-6 pt-5 border-t border-slate-100 text-xs">
-                  <div className="bg-slate-50/90 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
+                  <div className="bg-white/60 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
                     <span className="text-slate-500 text-[11px] font-medium flex items-center justify-center sm:justify-start gap-1">
                       <MapPin className="h-3.5 w-3.5 text-slate-400" />
                       {language === "en" ? "Location" : "സ്ഥലം"}
@@ -326,7 +326,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                     <span className="font-bold text-slate-800 mt-1 truncate">{locationDisplay}</span>
                   </div>
 
-                  <div className="bg-slate-50/90 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
+                  <div className="bg-white/60 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
                     <span className="text-slate-500 text-[11px] font-medium flex items-center justify-center sm:justify-start gap-1">
                       <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
                       {language === "en" ? "Status" : "ലഭ്യത"}
@@ -336,7 +336,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                     </span>
                   </div>
 
-                  <div className="bg-slate-50/90 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
+                  <div className="bg-white/60 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
                     <span className="text-slate-500 text-[11px] font-medium flex items-center justify-center sm:justify-start gap-1">
                       <Clock className="h-3.5 w-3.5 text-slate-400" />
                       {language === "en" ? "Service" : "സേവനം"}
@@ -346,7 +346,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                     </span>
                   </div>
 
-                  <div className="bg-slate-50/90 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
+                  <div className="bg-white/60 border border-slate-200/60 rounded-xl p-3 text-center sm:text-left flex flex-col justify-center">
                     <span className="text-slate-500 text-[11px] font-medium flex items-center justify-center sm:justify-start gap-1">
                       <Shield className="h-3.5 w-3.5 text-slate-400" />
                       {language === "en" ? "Contact" : "ബന്ധപ്പെടുക"}
@@ -374,7 +374,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                     <Compass className="h-4 w-4 text-primary" />
                     <span>{language === "en" ? "Service Area" : "സേവന പരിധി"}</span>
                   </h3>
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs sm:text-sm text-slate-700 bg-slate-50/90 border border-slate-200/70 rounded-xl p-3.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs sm:text-sm text-slate-700 bg-white/60 border border-slate-200/70 rounded-xl p-3.5">
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-primary shrink-0" />
                       <span className="font-bold text-slate-900">

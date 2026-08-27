@@ -120,25 +120,24 @@ export async function getWorkers(): Promise<Worker[]> {
   return localSeedWorkers.filter((w) => !isTestWorker(w));
 }
 
-/** Find a single worker by ID (Supabase first with instant local seed fallback). */
+/** Find a single worker by ID (instant local seed, Supabase only if no local match). */
 export async function getWorkerById(
   id: string
 ): Promise<Worker | undefined> {
-  if (!USE_LOCAL_CACHE_FIRST) {
-    const remote = await apiGetWorkerById(id);
-    if (remote && !isTestWorker(remote)) return remote;
-    return undefined;
-  }
+  // Always check local seed first for instant resolution
+  const local = localSeedWorkers.find((w) => w.id === id);
+  if (local && !isTestWorker(local)) return local;
 
+  // Only hit Supabase if no local match
   try {
-    const remote = await withTimeout(apiGetWorkerById(id), 1500);
+    const remote = USE_LOCAL_CACHE_FIRST
+      ? await withTimeout(apiGetWorkerById(id), 1500)
+      : await apiGetWorkerById(id);
     if (remote && !isTestWorker(remote)) return remote;
   } catch {
     // Silently fallback on Supabase error/offline
   }
 
-  const local = localSeedWorkers.find((w) => w.id === id);
-  if (local && !isTestWorker(local)) return local;
   return undefined;
 }
 
