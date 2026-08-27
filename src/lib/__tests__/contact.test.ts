@@ -50,6 +50,10 @@ describe("Contact Utilities", () => {
       expect(getTelLink("09876543210")).toBe("tel:+919876543210");
     });
 
+    it("creates safe tel: URI for 12-digit numbers starting with 91 without plus", () => {
+      expect(getTelLink("919876543210")).toBe("tel:+919876543210");
+    });
+
     it("handles international numbers with + symbol safely", () => {
       expect(getTelLink("+1 (555) 123-4567")).toBe("tel:+15551234567");
     });

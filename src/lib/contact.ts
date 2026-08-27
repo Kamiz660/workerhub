@@ -29,7 +29,8 @@ export function normalizePhoneNumberForWhatsApp(phone: string | null | undefined
 
 /**
  * Formats a phone number safely for a `tel:` URI.
- * Removes spaces, hyphens, and parentheses, keeping '+' if present or prepending +91 for 10-digit numbers.
+ * Guarantees +91 is prepended for Indian phone numbers (10-digit, 11-digit starting with 0, or 12-digit starting with 91).
+ * Preserves international '+' codes if present.
  * Returns an empty string if the phone is missing or invalid.
  */
 export function getTelLink(phone: string | null | undefined): string {
@@ -53,7 +54,10 @@ export function getTelLink(phone: string | null | undefined): string {
   if (digitsOnly.length === 11 && digitsOnly.startsWith("0")) {
     return `tel:+91${digitsOnly.slice(1)}`;
   }
-  return `tel:+${digitsOnly}`;
+  if (digitsOnly.length === 12 && digitsOnly.startsWith("91")) {
+    return `tel:+${digitsOnly}`;
+  }
+  return `tel:+91${digitsOnly}`;
 }
 
 /**

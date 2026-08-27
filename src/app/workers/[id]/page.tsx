@@ -256,7 +256,7 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
             <div className="lg:col-span-7 xl:col-span-8 space-y-6 sm:space-y-7">
               
               {/* Layer 1: Main Anchor Sheet (Hero Identity + Highlights + Bio + Service Area) - Elevated Prominence */}
-              <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-white/60 shadow-lg p-6 sm:p-8">
+              <div className="bg-white/90 backdrop-blur-lg rounded-3xl border border-white/60 shadow-lg p-6 sm:p-8">
                 
                 {/* 1.A. Hero Identity Header */}
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6">
