@@ -7,10 +7,6 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./src/test-setup.ts"],
     css: false,
-    pool: "forks",
-    forks: {
-      singleFork: true,
-    },
   },
   resolve: {
     alias: {
