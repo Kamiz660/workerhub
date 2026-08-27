@@ -183,10 +183,6 @@ export function MobileHeroSearch({
               onPointerDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
                 if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                   document.activeElement.blur();
                 }
@@ -210,10 +206,6 @@ export function MobileHeroSearch({
             <button
               type="button"
               onPointerDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
@@ -251,10 +243,6 @@ export function MobileHeroSearch({
                             aria-selected={locationQuery.toLowerCase() === town.toLowerCase()}
                             type="button"
                             onPointerDown={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                               if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
@@ -334,10 +322,6 @@ export function MobileHeroSearch({
               onPointerDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
                 if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                   document.activeElement.blur();
                 }
@@ -381,10 +365,6 @@ export function MobileHeroSearch({
                             aria-selected={jobQuery.toLowerCase() === t(`categories.${category.id}`).toLowerCase()}
                             type="button"
                             onPointerDown={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                               if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
@@ -561,10 +541,6 @@ export function DesktopHeroSearch({
                   onPointerDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
                     if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                       document.activeElement.blur();
                     }
@@ -592,8 +568,6 @@ export function DesktopHeroSearch({
                   onPointerDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                  }}
-                  onClick={() => {
                     if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                       document.activeElement.blur();
                     }
@@ -650,10 +624,6 @@ export function DesktopHeroSearch({
                             aria-selected={locationQuery.toLowerCase() === town.toLowerCase()}
                             type="button"
                             onPointerDown={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                               if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
@@ -732,10 +702,6 @@ export function DesktopHeroSearch({
                 onPointerDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
                   if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
                     document.activeElement.blur();
                   }
@@ -780,10 +746,6 @@ export function DesktopHeroSearch({
                               aria-selected={jobQuery.toLowerCase() === t(`categories.${category.id}`).toLowerCase()}
                               type="button"
                               onPointerDown={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
-                              onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
