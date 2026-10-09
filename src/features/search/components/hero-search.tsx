@@ -13,6 +13,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import { trackMetaConversion } from "@/lib/meta-tracker";
 
 const categoriesList = [
   { id: "electrician", icon: "🔌" },
@@ -408,7 +409,13 @@ export function MobileHeroSearch({
         </div>
 
         <button
-          onClick={onScrollToResults}
+          onClick={() => {
+            onScrollToResults();
+            const query = jobQuery.trim() || locationQuery.trim();
+            if (query) {
+              trackMetaConversion("Search", { search_string: query });
+            }
+          }}
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-xl text-[15px] transition-all shadow-[0_8px_16px_-6px_rgba(0,0,0,0.1)] active:scale-[0.98] flex items-center justify-center gap-2 border-0 cursor-pointer relative z-10"
         >
           <Search className="h-4.5 w-4.5" />
@@ -789,7 +796,13 @@ export function DesktopHeroSearch({
 
             {/* Action Button */}
             <button
-              onClick={onScrollToResults}
+              onClick={() => {
+                onScrollToResults();
+                const query = jobQuery.trim() || locationQuery.trim();
+                if (query) {
+                  trackMetaConversion("Search", { search_string: query });
+                }
+              }}
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 py-3.5 rounded-xl text-[15px] transition-all shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center justify-center gap-2 cursor-pointer h-[52px] border-0 mt-4 sm:mt-0"
             >
               <UserSearch className="h-5 w-5" />

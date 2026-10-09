@@ -41,6 +41,7 @@ import { useLanguage } from "@/context/language-context";
 import { useAuth } from "@/context/auth-context";
 import { AuthDialog } from "@/components/shared/auth-dialog";
 import { getTelLink, getWhatsAppLink } from "@/lib/contact";
+import { trackMetaConversion } from "@/lib/meta-tracker";
 
 interface WorkerProfilePageProps {
   params: Promise<{ id: string }>;
@@ -72,6 +73,10 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
         if (isActive) {
           setWorker(w ?? null);
           if (w) {
+            trackMetaConversion("ViewContent", {
+              content_name: w.profession,
+              content_category: w.category,
+            });
             const r = await getReviewsByWorkerId(w.id);
             if (isActive) setReviews(r);
           }
@@ -602,6 +607,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                   {telLink && (
                     <a
                       href={telLink}
+                      onClick={() => {
+                        trackMetaConversion("Contact", {
+                          content_name: "phone_call",
+                          content_category: worker.category,
+                        });
+                      }}
                       className="w-full relative inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-bold h-12 px-6 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] cursor-pointer text-sm sm:text-base"
                       id="desktop-sidebar-call-btn"
                     >
@@ -615,6 +626,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
                       href={whatsAppLink}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        trackMetaConversion("Contact", {
+                          content_name: "whatsapp",
+                          content_category: worker.category,
+                        });
+                      }}
                       className="w-full relative inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 px-6 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] cursor-pointer text-sm sm:text-base"
                       id="desktop-sidebar-whatsapp-btn"
                     >
@@ -674,6 +691,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
         {telLink && (
           <a
             href={telLink}
+            onClick={() => {
+              trackMetaConversion("Contact", {
+                content_name: "phone_call",
+                content_category: worker.category,
+              });
+            }}
             className="flex-1 relative inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-bold h-12 px-4 rounded-xl text-sm shadow-sm active:scale-[0.98] transition-all whitespace-nowrap cursor-pointer"
             id="profile-contact-btn-mobile"
           >
@@ -687,6 +710,12 @@ export default function WorkerProfilePage({ params }: WorkerProfilePageProps) {
             href={whatsAppLink}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              trackMetaConversion("Contact", {
+                content_name: "whatsapp",
+                content_category: worker.category,
+              });
+            }}
             className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold h-12 px-5 rounded-xl shadow-sm active:scale-[0.98] transition-all shrink-0 whitespace-nowrap cursor-pointer text-sm"
             title="WhatsApp"
             id="profile-whatsapp-btn-mobile"

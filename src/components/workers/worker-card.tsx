@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MapPin, BadgeCheck, Phone, MessageCircle, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { getTelLink, getWhatsAppLink } from "@/lib/contact";
+import { trackMetaConversion } from "@/lib/meta-tracker";
 import type { Worker } from "@/lib/types";
 import { useLanguage } from "@/context/language-context";
 
@@ -115,6 +116,12 @@ export function WorkerCard({ worker }: WorkerCardProps) {
         <div className="grid grid-cols-2 gap-2.5">
           <a
             href={telLink}
+            onClick={() => {
+              trackMetaConversion("Contact", {
+                content_name: "phone_call",
+                content_category: worker.category,
+              });
+            }}
             className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold text-sm py-2.5 px-3 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
             id={`call-btn-${worker.id}`}
           >
@@ -125,6 +132,12 @@ export function WorkerCard({ worker }: WorkerCardProps) {
             href={whatsAppLink}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              trackMetaConversion("Contact", {
+                content_name: "whatsapp",
+                content_category: worker.category,
+              });
+            }}
             className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-2.5 px-3 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
             id={`whatsapp-btn-${worker.id}`}
           >

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import type { Worker } from "@/lib/types";
 import { useLanguage } from "@/context/language-context";
 import { getTelLink, getWhatsAppLink } from "@/lib/contact";
+import { trackMetaConversion } from "@/lib/meta-tracker";
 
 interface ContactModalProps {
   worker: Worker;
@@ -29,7 +30,10 @@ export function ContactModal({
 
   function handleContact(method: string) {
     setContacted(true);
-    console.log(`Contact attempt: ${method} for worker ${worker.id}`);
+    trackMetaConversion("Contact", {
+      content_name: method === "phone" ? "phone_call" : "whatsapp",
+      content_category: worker.category,
+    });
   }
 
   const modalTitle = language === "en"

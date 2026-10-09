@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { searchWorkers } from "@/services/workers";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { EVENTS } from "@/lib/constants";
+import { trackMetaConversion } from "@/lib/meta-tracker";
 import type { Worker } from "@/lib/types";
 import { X } from "lucide-react";
 
@@ -112,6 +113,9 @@ export default function HomePage() {
   const handleCategorySelect = (label: string) => {
     setJobQuery(label);
     scrollToResults();
+    if (label.trim()) {
+      trackMetaConversion("Search", { search_string: label.trim() });
+    }
   };
 
   const handleClearFilters = () => {
